@@ -1,0 +1,49 @@
+<div class="jeu-phrase-container">
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">🎵</div>
+      <span class="logo-text">MusiMots</span>
+    </div>
+    <button class="btn-config" (click)="goToConfig()">⚙️ Config</button>
+  </header>
+
+  <main class="main-content">
+    <h1 class="title">Ouvre tes oreilles 🎧</h1>
+
+    <div class="instruction">
+      Remets les mots dans le bon ordre pour compléter la phrase !
+    </div>
+
+    <div class="controls-top">
+      <button class="btn-listen" (click)="playSentence()">🔊 Écouter</button>
+    </div>
+
+    <div class="answer-container">
+      <span *ngFor="let word of getDisplayWords(); let i = index"
+            class="selected-word"
+            (click)="removeWordFromAnswer(i)">
+        {{ word.text }}
+      </span>
+    </div>
+
+    <div class="word-bank">
+      <button *ngFor="let word of availableWords"
+              class="word-chip"
+              (click)="addWordToAnswer(word)">
+        {{ word }}
+      </button>
+    </div>
+
+    <div class="validation-message"
+         [class.correct]="isAnswerValid"
+         [class.incorrect]="isAnswerValid === false">
+      {{ validationMessage }}
+    </div>
+
+    <div class="controls-bottom">
+      <button class="btn-reset" (click)="resetAnswer()">↩️ Réinitialiser</button>
+      <button class="btn-validate" (click)="validateAnswer()">✅ Valider</button>
+
+    </div>
+  </main>
+</div>

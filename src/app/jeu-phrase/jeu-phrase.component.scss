@@ -1,0 +1,77 @@
+.jeu-phrase-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+  
+  .available-words, .selected-words {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .available-words button {
+    background-color: #e0e0e0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .available-words button:hover {
+    background-color: #d6d6d6;
+    transform: scale(1.05);
+  }
+  
+  .selected-words span {
+    background-color: #a5d6a7;
+    border: 2px solid #81c784;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 18px;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .selected-words span:hover {
+    background-color: #81c784;
+    transform: scale(1.05);
+  }
+  
+  .controls {
+    margin-top: 30px;
+  }
+  
+  button.btn-primary, button.btn-secondary {
+    margin: 10px;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+  
+  .validation-message {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    height: 40px;
+  
+    &.correct {
+      color: green;
+    }
+  
+    &.incorrect {
+      color: red;
+    }
+  }
+  

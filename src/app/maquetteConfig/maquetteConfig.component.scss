@@ -76,6 +76,16 @@
     border-radius: 20px;
 }
 
+button {
+    position: relative;
+    z-index: 10; /* Assure-toi que le bouton est au-dessus des autres éléments */
+    cursor: pointer; /* Change le curseur quand on passe sur le bouton */
+}
+  
+button:hover {
+    background-color: #6C63FF; /* Change la couleur au survol pour tester */
+}  
+
 .MaquetteConfig .nav-button:hover,
 .MaquetteConfig .nav-button.active {
     background-color: var(--primary);

@@ -11,27 +11,27 @@
     --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.MaquetteJeu * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Comfortaa', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.MaquetteJeu body {
+body {
     background-color: var(--background);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-.MaquetteJeu .container {
+.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.MaquetteJeu header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,7 +39,7 @@
     margin-bottom: 20px;
 }
 
-.MaquetteJeu .logo {
+.logo {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -48,7 +48,7 @@
     color: var(--primary);
 }
 
-.MaquetteJeu .logo-icon {
+.logo-icon {
     width: 40px;
     height: 40px;
     background-color: var(--primary);
@@ -60,7 +60,7 @@
     font-size: 20px;
 }
 
-.MaquetteJeu .user-profile {
+.user-profile {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -70,11 +70,11 @@
     transition: all 0.2s;
 }
 
-.MaquetteJeu .user-profile:hover {
+.user-profile:hover {
     background-color: rgba(108, 99, 255, 0.1);
 }
 
-.MaquetteJeu .user-avatar {
+.user-avatar {
     width: 38px;
     height: 38px;
     border-radius: 50%;
@@ -86,28 +86,28 @@
     font-weight: bold;
 }
 
-.MaquetteJeu .user-info {
+.user-info {
     display: flex;
     flex-direction: column;
 }
 
-.MaquetteJeu .user-name {
+.user-name {
     font-weight: 600;
     font-size: 14px;
 }
 
-.MaquetteJeu .user-role {
+.user-role {
     font-size: 12px;
     color: var(--light-text);
 }
 
-.MaquetteJeu h2 {
+h2 {
     margin-bottom: 20px;
     color: var(--primary);
     font-size: 28px;
 }
 
-.MaquetteJeu .btn {
+.btn {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -116,49 +116,49 @@
     transition: all 0.2s;
 }
 
-.MaquetteJeu .btn-primary {
+.btn-primary {
     background-color: blueviolet;
     color: white;
 }
 
-.MaquetteJeu .btn-primary:hover {
+.btn-primary:hover {
     background-color: #554dff;
     transform: translateY(-2px);
 }
 
-.MaquetteJeu .btn-secondary {
+.btn-secondary {
     background-color: grey;
     color: white;
 }
 
-.MaquetteJeu .btn-secondary:hover {
+.btn-secondary:hover {
     background-color: #ff4a70;
     transform: translateY(-2px);
 }
 
-.MaquetteJeu .btn-icon {
+.btn-icon {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 /* Game specific styles */
-.MaquetteJeu .game-container {
+.game-container {
     position: relative;
     min-height: 500px;
 }
 
-.MaquetteJeu .game-stage {
+.game-stage {
     background-color: #f5eeff;
     border-radius: 16px;
-    height: 400px;
+    height: 450px;
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
     box-shadow: inset 0 0 20px rgba(108, 99, 255, 0.2);
 }
 
-.MaquetteJeu .game-stage::before {
+.game-stage::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -170,7 +170,7 @@
     border-top-right-radius: 100px;
 }
 
-.MaquetteJeu .game-stage::after {
+.game-stage::after {
     /*content: '🎵';*/
     position: absolute;
     top: 20px;
@@ -178,7 +178,7 @@
     font-size: 32px;
 }
 
-.MaquetteJeu .game-audience {
+.game-audience {
     position: absolute;
     bottom: 10px;
     right: 20px;
@@ -186,7 +186,7 @@
     gap: 5px;
 }
 
-.MaquetteJeu .audience-member {
+.audience-member {
     width: 30px;
     height: 30px;
     background-color: #ddd;
@@ -197,7 +197,7 @@
     font-size: 12px;
 }
 
-.MaquetteJeu .phrase-container {
+.phrase-container {
     position: absolute;
     top: 60px;
     left: 50%;
@@ -210,20 +210,20 @@
     text-align: center;
 }
 
-.MaquetteJeu .instruction {
+.instruction {
     color: var(--light-text);
     margin-bottom: 15px;
     font-size: 18px;
 }
 
-.MaquetteJeu .phrase-text {
+.phrase-text {
     font-size: 24px;
     margin-bottom: 15px;
     font-weight: bold;
     color: var(--primary);
 }
 
-.MaquetteJeu .word-bank {
+.word-bank {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -231,7 +231,7 @@
     margin-top: 20px;
 }
 
-.MaquetteJeu .word-chip {
+.word-chip {
     padding: 10px 15px;
     background-color: blueviolet;
     color: white;
@@ -242,12 +242,39 @@
     user-select: none;
 }
 
-.MaquetteJeu .word-chip:hover {
-    transform: scale(1.05);
-    color:grey;
+.word-chip.correct {
+    background-color: #4CAF50 !important;
+    color: white !important;
 }
 
-.MaquetteJeu .answer-container {
+.word-chip.incorrect {
+    background-color: #F44336 !important;
+    color: white !important;
+}
+
+.word-chip:hover {
+    transform: scale(1.05);
+    color: grey;
+}
+
+.validation-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.validation-message.correct {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #2e7d32;
+}
+
+.validation-message.incorrect {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #c62828;
+}
+
+.answer-container {
     background-color: #f0ebff;
     border-radius: 8px;
     padding: 15px;
@@ -257,16 +284,21 @@
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
+    overflow: hidden; /* Assure que le contenu ne dépasse pas */
 }
 
-.MaquetteJeu .player-controls {
+
+.player-controls {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-top: 20px;
+    flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si nécessaire */
+    width: 100%; /* Assure que le conteneur prend toute la largeur disponible */
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
 }
 
-.MaquetteJeu .progress-container {
+.progress-container {
     background-color: white;
     border-radius: 8px;
     padding: 15px;
@@ -275,21 +307,21 @@
     margin-top: 20px;
 }
 
-.MaquetteJeu .progress-item {
+.progress-item {
     text-align: center;
 }
 
-.MaquetteJeu .progress-icon {
+.progress-icon {
     font-size: 24px;
     margin-bottom: 5px;
 }
 
-.MaquetteJeu .progress-value {
+.progress-value {
     font-weight: bold;
     color: var(--primary);
 }
 
-.MaquetteJeu .progress-label {
+.progress-label {
     font-size: 12px;
     color: var(--light-text);
 }
@@ -312,7 +344,7 @@
         position: relative;
         z-index: 10; /* Assure qu'il est au-dessus */
         gap: 5px;
-      }
+    }
 
     .MaquetteJeu .word-chip {
         padding: 8px 12px;

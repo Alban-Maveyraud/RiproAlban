@@ -1,0 +1,29 @@
+<div class="jeu-voiture-container">
+
+  <!-- Barre d'infos essence + tours -->
+  <div class="game-ui">
+    <div class="fuel-bar">
+      <div class="fuel-level" [style.width.%]="fuel"></div>
+    </div>
+    <div class="lap-counter">
+      Tours : {{ tours }}
+    </div>
+  </div>
+
+  <!-- Affichage conditionnel -->
+  <ng-container *ngIf="!showPhraseGame; else miniJeu">
+    <iframe 
+      src="assets/voiture/v4.final.html"
+      width="1024"
+      height="768"
+      frameborder="0"
+      class="game-iframe">
+    </iframe>
+  </ng-container>
+
+  <!-- Template du mini-jeu -->
+  <ng-template #miniJeu>
+    <app-jeu-phrase (phraseCompleted)="onPhraseCompleted()"></app-jeu-phrase>
+  </ng-template>
+
+</div>

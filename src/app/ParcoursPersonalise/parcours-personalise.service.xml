@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parcoursPersonnalise>
+  <eleve id="1">Lucas Martin</eleve>
+  <niveau id="2">Niveau 2 - Intermédiaire</niveau>
+  <aspect id="spelling">Orthographe</aspect>
+  <exercices>
+    <exercice id="ex1">
+      <titre>Ouvre tes oreilles</titre>
+      <description>Reconstitue la phrase entendue</description>
+    </exercice>
+    <exercice id="ex3">
+      <titre>Lettre manquante</titre>
+      <description>Compléter les mots</description>
+    </exercice>
+  </exercices>
+  <dateCreation>2025-04-07T12:34:56.789Z</dateCreation>
+</parcoursPersonnalise>

@@ -11,6 +11,16 @@
     --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+button {
+    position: relative;
+    z-index: 10; /* Assure-toi que le bouton est au-dessus des autres éléments */
+    cursor: pointer; /* Change le curseur quand on passe sur le bouton */
+}
+  
+button:hover {
+    background-color: #6C63FF; /* Change la couleur au survol pour tester */
+}  
+
 .MaquetteResultat * {
     margin: 0;
     padding: 0;
@@ -206,44 +216,85 @@
     position: relative;
 }
 
-.MaquetteResultat .chart-bars {
-    display: flex;
-    height: 200px;
-    align-items: flex-end;
-    gap: 15px;
-    padding-top: 20px;
+/* Progress bars */
+.MaquetteResultat .progress-bar {
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
+.MaquetteResultat .progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary); /* #6C63FF */
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Chart bars */
 .MaquetteResultat .chart-bar {
     flex: 1;
-    background-color: var(--primary);
+    background-color: var(--primary); /* #6C63FF */
     min-width: 30px;
     border-radius: 8px 8px 0 0;
     position: relative;
     transition: height 0.5s ease;
 }
 
-.MaquetteResultat .chart-bar-label {
-    position: absolute;
-    bottom: -25px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 12px;
-    color: var(--light-text);
+/* Loading bars */
+.MaquetteResultat .loading-bar {
+    height: 4px;
+    width: 100%;
+    position: relative;
+    background-color: #f0f0f0;
+    overflow: hidden;
 }
 
-.MaquetteResultat .chart-bar-value {
+.MaquetteResultat .loading-bar-fill {
     position: absolute;
-    top: -25px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--primary);
+    height: 100%;
+    width: 100%;
+    background-color: var(--primary); /* #6C63FF */
+    animation: loading 2s ease-in-out infinite;
+    transform-origin: left;
 }
 
+@keyframes loading {
+    0% {
+        transform: scaleX(0);
+    }
+    50% {
+        transform: scaleX(1);
+    }
+    100% {
+        transform: scaleX(0);
+    }
+}
+
+.MaquetteResultat .skill-bar {
+    margin-bottom: 15px;
+}
+
+.MaquetteResultat .skill-bar-label {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.MaquetteResultat .skill-bar-container {
+    height: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.MaquetteResultat .skill-bar-fill {
+    height: 100%;
+    background-color: var(--primary); /* #6C63FF */
+    color: blue;
+    border-radius: 5px;
+    transition: width 1s ease;
+}
 .MaquetteResultat .timeline {
     position: relative;
     padding-left: 30px;
@@ -306,7 +357,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: violet;
     margin-right: 15px;
     font-weight: bold;
 }
@@ -320,19 +371,6 @@
     margin-bottom: 5px;
 }
 
-.MaquetteResultat .progress-bar {
-    height: 8px;
-    background-color: #eee;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.MaquetteResultat .progress-bar-fill {
-    height: 100%;
-    background-color: var(--primary);
-    border-radius: 4px;
-    transition: width 0.5s ease;
-}
 
 .MaquetteResultat .word-cloud {
     height: 200px;
@@ -389,14 +427,6 @@
         display: none;
     }
 
-    .MaquetteResultat .chart-bars {
-        gap: 5px;
-    }
-
-    .MaquetteResultat .chart-bar-label {
-        transform: rotate(-45deg);
-        bottom: -35px;
-    }
 
     .MaquetteResultat .word-cloud {
         height: auto;

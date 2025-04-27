@@ -1,0 +1,149 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.game-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 500px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    background-color: #ff6584;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info {
+    font-size: 14px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #6c63ff;
+}
+
+.word-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.word-chip {
+    background-color: #6c63ff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.word-chip:hover {
+    background-color: #554dff;
+}
+
+.answer-slot-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.word-slot {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.word-slot:hover {
+    background-color: #388e3c;
+}
+
+.game-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #554dff;
+}
+
+.btn-secondary {
+    background-color: #ccc;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #ff4a70;
+}
+
+.validation-message {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.validation-message.correct {
+    color: #2e7d32;
+    background-color: rgba(76, 175, 80, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.validation-message.incorrect {
+    color: #f44336;
+    background-color: rgba(244, 67, 54, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+}
