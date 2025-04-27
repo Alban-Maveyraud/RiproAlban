@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusiMots - Configuration</title>
+    <link rel="stylesheet" href="./maquetteConfig.component.html"/>
+</head>
+<body>
+    <div class="MaquetteConfig">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <div class="logo-icon">🎵</div>
+                    <span>MusiMots</span>
+                </div>
+                <nav>
+                    <button class="nav-button">Jeu</button>
+                    <button class="nav-button active">Configuration</button>
+                    <button class="nav-button">Résultats</button>
+                </nav>
+                <div class="user-profile">
+                    <div class="user-avatar">L</div>
+                    <div class="user-info">
+                        <div class="user-name">Dr. Laure</div>
+                        <div class="user-role">Ergothérapeute</div>
+                    </div>
+                </div>
+            </header>
+
+            <h2>Configuration</h2>
+            <div class="tab-navigation">
+                <button class="tab-button active">Participants</button>
+                <button class="tab-button">Exercices</button>
+                <button class="tab-button">Paramètres</button>
+            </div>
+            <div class="config-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Liste des participants</div>
+                        <button class="btn btn-primary btn-icon">
+                            <span>Ajouter</span> +
+                        </button>
+                    </div>
+                    <ul class="student-list">
+                        <li class="student-item">
+                            <div class="student-avatar">L</div>
+                            <div class="student-details">
+                                <div class="student-name">Lucas Martin</div>
+                                <div class="student-info">8 ans - Niveau 2</div>
+                            </div>
+                            <div class="student-actions">
+                                <button class="action-button">✏️</button>
+                                <button class="action-button">👁️</button>
+                            </div>
+                        </li>
+                        <li class="student-item">
+                            <div class="student-avatar">E</div>
+                            <div class="student-details">
+                                <div class="student-name">Emma Dubois</div>
+                                <div class="student-info">7 ans - Niveau 1</div>
+                            </div>
+                            <div class="student-actions">
+                                <button class="action-button">✏️</button>
+                                <button class="action-button">👁️</button>
+                            </div>
+                        </li>
+                        <li class="student-item">
+                            <div class="student-avatar">T</div>
+                            <div class="student-details">
+                                <div class="student-name">Thomas Bernard</div>
+                                <div class="student-info">9 ans - Niveau 3</div>
+                            </div>
+                            <div class="student-actions">
+                                <button class="action-button">✏️</button>
+                                <button class="action-button">👁️</button>
+                            </div>
+                        </li>
+                        <li class="student-item">
+                            <div class="student-avatar">S</div>
+                            <div class="student-details">
+                                <div class="student-name">Sofia Lambert</div>
+                                <div class="student-info">8 ans - Niveau 2</div>
+                            </div>
+                            <div class="student-actions">
+                                <button class="action-button">✏️</button>
+                                <button class="action-button">👁️</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Créer un parcours personnalisé</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="student">Élève</label>
+                        <select class="form-control" id="student">
+                            <option value="">Sélectionner un élève</option>
+                            <option value="1">Lucas Martin</option>
+                            <option value="2">Emma Dubois</option>
+                            <option value="3">Thomas Bernard</option>
+                            <option value="4">Sofia Lambert</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="difficulty">Niveau de difficulté</label>
+                        <select class="form-control" id="difficulty">
+                            <option value="1">Niveau 1 - Débutant</option>
+                            <option value="2">Niveau 2 - Intermédiaire</option>
+                            <option value="3">Niveau 3 - Avancé</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="focus">Aspect à travailler</label>
+                        <select class="form-control" id="focus">
+                            <option value="spelling">Orthographe</option>
+                            <option value="grammar">Grammaire</option>
+                            <option value="memory">Mémorisation</option>
+                            <option value="vocabulary">Vocabulaire</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mini-jeux à inclure</label>
+                        <div class="exercise-list">
+                            <div class="exercise-card selected">
+                                <div class="exercise-icon">🎵</div>
+                                <div class="exercise-title">Ouvre tes oreilles</div>
+                                <div class="exercise-desc">Reconstitue la phrase entendue</div>
+                            </div>
+                            <div class="exercise-card">
+                                <div class="exercise-icon">🔍</div>
+                                <div class="exercise-title">Trouve l'intrus</div>
+                                <div class="exercise-desc">Repérer les anomalies</div>
+                            </div>
+                            <div class="exercise-card selected">
+                                <div class="exercise-icon">🔤</div>
+                                <div class="exercise-title">Lettre manquante</div>
+                                <div class="exercise-desc">Compléter les mots</div>
+                            </div>
+                            <div class="exercise-card">
+                                <div class="exercise-icon">🎤</div>
+                                <div class="exercise-title">Karao-Quiz</div>
+                                <div class="exercise-desc">Mémoriser les mots</div>
+                            </div>
+                            <div class="exercise-card">
+                                <div class="exercise-icon">🎲</div>
+                                <div class="exercise-title">Loto des mots</div>
+                                <div class="exercise-desc">Ré-association des syllabes</div>
+                            </div>
+                            <div class="exercise-card">
+                                <div class="exercise-icon">🔄</div>
+                                <div class="exercise-title">Association</div>
+                                <div class="exercise-desc">Synonymes et contextes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Créer le parcours</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

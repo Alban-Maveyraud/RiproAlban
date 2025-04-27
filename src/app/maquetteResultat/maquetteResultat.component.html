@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusiMots - Résultats et Suivi</title>
+    <link rel="stylesheet" href="./maquetteResultat.component.scss"/>
+</head>
+<body>
+    <div class="MaquetteResultat">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <div class="logo-icon">🎵</div>
+                    <span>MusiMots</span>
+                </div>
+                <nav>
+                    <button class="nav-button">Jeu</button>
+                    <button class="nav-button">Configuration</button>
+                    <button class="nav-button active">Résultats</button>
+                </nav>
+                <div class="user-profile">
+                    <div class="user-avatar">L</div>
+                    <div class="user-info">
+                        <div class="user-name">Dr. Laure</div>
+                        <div class="user-role">Ergothérapeute</div>
+                    </div>
+                </div>
+            </header>
+
+            <h2>Résultats et suivi</h2>
+            <div class="tab-navigation">
+                <button class="tab-button active">Vue d'ensemble</button>
+                <button class="tab-button">Progression individuelle</button>
+                <button class="tab-button">Rapports</button>
+            </div>
+            <div class="results-grid">
+                <div class="card stats-card">
+                    <div class="stats-value">87%</div>
+                    <div class="stats-label">Taux de réussite moyen</div>
+                </div>
+                <div class="card stats-card">
+                    <div class="stats-value">24</div>
+                    <div class="stats-label">Exercices complétés cette semaine</div>
+                </div>
+                <div class="card stats-card">
+                    <div class="stats-value">18</div>
+                    <div class="stats-label">Minutes moyennes par session</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Progression par élève</div>
+                </div>
+                <div class="student-progress">
+                    <div class="student-progress-avatar">L</div>
+                    <div class="student-progress-details">
+                        <div class="student-progress-name">Lucas Martin</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="student-progress">
+                    <div class="student-progress-avatar">E</div>
+                    <div class="student-progress-details">
+                        <div class="student-progress-name">Emma Dubois</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="student-progress">
+                    <div class="student-progress-avatar">T</div>
+                    <div class="student-progress-details">
+                        <div class="student-progress-name">Thomas Bernard</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="student-progress">
+                    <div class="student-progress-avatar">S</div>
+                    <div class="student-progress-details">
+                        <div class="student-progress-name">Sofia Lambert</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 68%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Performance par mini-jeu</div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bars">
+                            <div class="chart-bar" style="height: 80%;">
+                                <div class="chart-bar-value">80%</div>
+                                <div class="chart-bar-label">Ouvre tes oreilles</div>
+                            </div>
+                            <div class="chart-bar" style="height: 65%;">
+                                <div class="chart-bar-value">65%</div>
+                                <div class="chart-bar-label">Trouve l'intrus</div>
+                            </div>
+                            <div class="chart-bar" style="height: 90%;">
+                                <div class="chart-bar-value">90%</div>
+                                <div class="chart-bar-label">Lettre manquante</div>
+                            </div>
+                            <div class="chart-bar" style="height: 75%;">
+                                <div class="chart-bar-value">75%</div>
+                                <div class="chart-bar-label">Karao-Quiz</div>
+                            </div>
+                            <div class="chart-bar" style="height: 60%;">
+                                <div class="chart-bar-value">60%</div>
+                                <div class="chart-bar-label">Loto des mots</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Activité récente</div>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Aujourd'hui, 14:25</div>
+                            <div class="timeline-title">Emma a terminé son exercice</div>
+                            <div class="timeline-desc">Séance de 15 minutes avec 8 phrases complétées.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Aujourd'hui, 11:10</div>
+                            <div class="timeline-title">Thomas a atteint le niveau 3</div>
+                            <div class="timeline-desc">Excellente progression avec 92% de réussite.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Hier, 16:40</div>
+                            <div class="timeline-title">Lucas a débloqué un nouvel accessoire</div>
+                            <div class="timeline-desc">A gagné le micro doré après 5 réussites consécutives.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Hier, 10:15</div>
+                            <div class="timeline-title">Sofia a commencé un nouveau parcours</div>
+                            <div class="timeline-desc">Focus sur la mémorisation des mots complexes.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Mots les plus travaillés</div>
+                </div>
+                <div class="word-cloud">
+                    <div class="word-cloud-item" style="font-size: 22px;">maison</div>
+                    <div class="word-cloud-item" style="font-size: 18px;">chat</div>
+                    <div class="word-cloud-item" style="font-size: 24px;">école</div>
+                    <div class="word-cloud-item" style="font-size: 16px;">jardin</div>
+                    <div class="word-cloud-item" style="font-size: 20px;">famille</div>
+                    <div class="word-cloud-item" style="font-size: 14px;">voiture</div>
+                    <div class="word-cloud-item" style="font-size: 19px;">musique</div>
+                    <div class="word-cloud-item" style="font-size: 17px;">chanson</div>
+                    <div class="word-cloud-item" style="font-size: 21px;">ami</div>
+                    <div class="word-cloud-item" style="font-size: 15px;">animaux</div>
+                    <div class="word-cloud-item" style="font-size: 23px;">jouer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

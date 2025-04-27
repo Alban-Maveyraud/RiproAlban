@@ -1,0 +1,405 @@
+:root {
+    --primary: #6C63FF;
+    --secondary: #FF6584;
+    --accent: #FFC107;
+    --success: #4CAF50;
+    --error: #F44336;
+    --background: #f9f7ff;
+    --text: #333333;
+    --light-text: #777777;
+    --card-bg: #ffffff;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.MaquetteResultat * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Comfortaa', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.MaquetteResultat body {
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.MaquetteResultat .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.MaquetteResultat header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    margin-bottom: 20px;
+}
+
+.MaquetteResultat .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.MaquetteResultat .logo-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.MaquetteResultat nav {
+    display: flex;
+    gap: 20px;
+}
+
+.MaquetteResultat .nav-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--light-text);
+    font-weight: 500;
+    transition: all 0.2s;
+    padding: 8px 15px;
+    border-radius: 20px;
+}
+
+.MaquetteResultat .nav-button:hover,
+.MaquetteResultat .nav-button.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.MaquetteResultat .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 20px;
+    transition: all 0.2s;
+}
+
+.MaquetteResultat .user-profile:hover {
+    background-color: rgba(108, 99, 255, 0.1);
+}
+
+.MaquetteResultat .user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.MaquetteResultat .user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.MaquetteResultat .user-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.MaquetteResultat .user-role {
+    font-size: 12px;
+    color: var(--light-text);
+}
+
+.MaquetteResultat h2 {
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 28px;
+}
+
+/* Cards and components */
+.MaquetteResultat .card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.MaquetteResultat .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.MaquetteResultat .btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.MaquetteResultat .btn-primary:hover {
+    background-color: #554dff;
+    transform: translateY(-2px);
+}
+
+/* Results specific */
+.MaquetteResultat .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.MaquetteResultat .tab-navigation {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.MaquetteResultat .tab-button {
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.MaquetteResultat .tab-button.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.MaquetteResultat .stats-card {
+    text-align: center;
+    padding: 20px;
+}
+
+.MaquetteResultat .stats-value {
+    font-size: 42px;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.MaquetteResultat .stats-label {
+    color: var(--light-text);
+}
+
+.MaquetteResultat .chart-container {
+    height: 250px;
+    position: relative;
+}
+
+.MaquetteResultat .chart-bars {
+    display: flex;
+    height: 200px;
+    align-items: flex-end;
+    gap: 15px;
+    padding-top: 20px;
+}
+
+.MaquetteResultat .chart-bar {
+    flex: 1;
+    background-color: var(--primary);
+    min-width: 30px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transition: height 0.5s ease;
+}
+
+.MaquetteResultat .chart-bar-label {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--light-text);
+}
+
+.MaquetteResultat .chart-bar-value {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.MaquetteResultat .timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.MaquetteResultat .timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #ddd;
+}
+
+.MaquetteResultat .timeline-item {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.MaquetteResultat .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    border: 2px solid white;
+}
+
+.MaquetteResultat .timeline-date {
+    font-size: 12px;
+    color: var(--light-text);
+    margin-bottom: 5px;
+}
+
+.MaquetteResultat .timeline-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.MaquetteResultat .timeline-desc {
+    font-size: 14px;
+    color: var(--text);
+}
+
+.MaquetteResultat .student-progress {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.MaquetteResultat .student-progress-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.MaquetteResultat .student-progress-details {
+    flex: 1;
+}
+
+.MaquetteResultat .student-progress-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.MaquetteResultat .progress-bar {
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.MaquetteResultat .progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.MaquetteResultat .word-cloud {
+    height: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.MaquetteResultat .word-cloud-item {
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: rgba(108, 99, 255, 0.1);
+    border-radius: 20px;
+    color: var(--primary);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.MaquetteResultat .word-cloud-item:hover {
+    transform: scale(1.1);
+    background-color: var(--primary);
+    color: white;
+}
+
+.MaquetteResultat .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.MaquetteResultat .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .MaquetteResultat .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .MaquetteResultat nav {
+        display: none;
+    }
+
+    .MaquetteResultat .user-info {
+        display: none;
+    }
+
+    .MaquetteResultat .logo span {
+        display: none;
+    }
+
+    .MaquetteResultat .chart-bars {
+        gap: 5px;
+    }
+
+    .MaquetteResultat .chart-bar-label {
+        transform: rotate(-45deg);
+        bottom: -35px;
+    }
+
+    .MaquetteResultat .word-cloud {
+        height: auto;
+        padding: 10px 0;
+    }
+}
