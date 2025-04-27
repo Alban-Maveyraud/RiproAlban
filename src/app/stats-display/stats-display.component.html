@@ -1,0 +1,57 @@
+<div class="MaquetteResultat">
+    <div class="container">
+      <div class="stats-container">
+        <h2>Statistiques de jeu</h2>
+        
+        <div class="results-grid">
+          <div class="card stats-card">
+            <h3>Score moyen</h3>
+            <div class="stats-value">{{ getAverageScore() }}%</div>
+          </div>
+          
+          <div class="card stats-card">
+            <h3>Total tentatives</h3>
+            <div class="stats-value">{{ overallStats.totalAttempts }}</div>
+          </div>
+          
+          <div class="card stats-card">
+            <h3>Erreurs de verbes</h3>
+            <div class="stats-value">{{ overallStats.errorTypes.verb }}</div>
+          </div>
+          
+          <div class="card stats-card">
+            <h3>Erreurs d'adjectifs</h3>
+            <div class="stats-value">{{ overallStats.errorTypes.adjective }}</div>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Historique des phrases</div>
+          </div>
+          <div class="detailed-stats">
+            <div *ngFor="let record of statsHistory" class="phrase-stat">
+              <p><strong>Phrase:</strong> {{ record.phrase }}</p>
+              <p><strong>Score:</strong> {{ record.score }}%</p>
+              <p><strong>Écoutes:</strong> {{ record.listenCount }}</p>
+              <p><strong>Erreurs:</strong> 
+                Verbes ({{ record.errors.verb }}), 
+                Adjectifs ({{ record.errors.adjective }}), 
+                Noms ({{ record.errors.noun }}), 
+                Autres ({{ record.errors.other }})
+              </p>
+              <div *ngIf="record.suggestions.length > 0">
+                <p><strong>Suggestions:</strong></p>
+                <ul>
+                  <li *ngFor="let suggestion of record.suggestions">
+                    {{ getSuggestionText(suggestion) }}
+                  </li>
+                </ul>
+              </div>
+              <p class="timeline-date">{{ formatDate(record.timestamp) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,131 @@
+:root {
+    --primary: #6C63FF;
+    --secondary: #FF6584;
+    --accent: #FFC107;
+    --success: #4CAF50;
+    --error: #F44336;
+    --background: #f9f7ff;
+    --text: #333333;
+    --light-text: #777777;
+    --card-bg: #ffffff;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stats-container {
+    padding: 20px;
+  }
+  
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 20px;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .stats-card {
+    text-align: center;
+    
+    h3 {
+      color: var(--light-text);
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  }
+  
+  .stats-value {
+    font-size: 42px;
+    font-weight: bold;
+    color: var(--primary);
+  }
+  
+  .detailed-stats {
+    .phrase-stat {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
+      &:last-child {
+        border-bottom: none;
+      }
+  
+      p {
+        margin-bottom: 8px;
+        line-height: 1.5;
+      }
+  
+      strong {
+        color: var(--primary);
+      }
+    }
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  
+  ul {
+    padding-left: 20px;
+    margin-top: 10px;
+  
+    li {
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .stats-value {
+      font-size: 36px;
+    }
+    .phrase-stat {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        p {
+          margin-bottom: 8px;
+        }
+      }
+      
+      .timeline-date {
+        color: #777;
+        font-size: 12px;
+        margin-top: 10px;
+      }
+      
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+  }

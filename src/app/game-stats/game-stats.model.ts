@@ -7,7 +7,7 @@ export interface GameStats {
   };
   reconstructionStats: {
     startTime: Date;
-    endTime: Date;
+    endTime?: Date;
     attempts: number;
     misplacedWords: {
       word: string;
