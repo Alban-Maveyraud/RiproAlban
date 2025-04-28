@@ -222,6 +222,9 @@ export class JeuPhraseComponent implements OnInit {
   }
 
   goToRes() {
+    this.gameStateService.resetTour();
+    this.gameStateService.refillFuel();
+    
     if (this.currentStudent) {
       this.studentService.saveCurrentSessionToHistory(this.currentStudent);
     } else {
