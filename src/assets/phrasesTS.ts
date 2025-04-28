@@ -1,3 +1,13 @@
+export interface Word {
+  word: string;
+  type: string;
+}
+
+export interface Phrase {
+  text: string;
+  words: Word[];
+}
+
 export const phrases = [
   {
     text: "Le chat dort sous le soleil.",
@@ -53,7 +63,6 @@ export const phrases = [
       { word: "un", type: "déterminant" },
       { word: "tacos", type: "nom" },
       { word: "succulent", type: "adjectif" },
-      { word: "succulent", type: "longWord" }
     ]
   },
   {
@@ -66,3 +75,20 @@ export const phrases = [
     ]
   }
 ];
+
+// Fonction pour ajouter une phrase avec les types manuellement définis
+export function addPhraseWithTypes(phraseText: string, wordTypes: { [key: string]: string }): void {
+  const words = phraseText.split(' ').map((word: string, index: number) => {
+    // On récupère le type du mot selon l'index
+    const type = wordTypes[word] || 'autre'; // Si aucun type n'est trouvé, le type sera "autre"
+    return { word, type };
+  });
+
+  const newPhrase: Phrase = {
+    text: phraseText,
+    words: words
+  };
+
+  phrases.push(newPhrase); // Ajouter la nouvelle phrase au tableau des phrases
+  console.log('Phrase ajoutée:', newPhrase);
+}

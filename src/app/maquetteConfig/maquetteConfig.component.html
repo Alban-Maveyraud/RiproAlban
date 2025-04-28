@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MusiMots - Configuration</title>
-  <link rel="stylesheet" href="./maquetteConfig.component.scss"/>
-</head>
-<body>
 <div class="MaquetteConfig">
   <div class="container">
     <header>
@@ -29,27 +20,48 @@
 
     <h2>Configuration</h2>
 
-    <div class="config-grid">
-
-      <!-- Liste des participants -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Liste des participants</div>
+    <!-- Section pour ajouter une nouvelle phrase -->
+    <div class="add-phrase-section">
+      <h3>Ajouter une Phrase</h3>
+      <form [formGroup]="addPhraseForm" (ngSubmit)="addPhrase()">
+        <div class="form-group">
+          <label for="phrase">Phrase</label>
+          <input id="phrase" type="text" class="form-control" formControlName="phrase" placeholder="Entrez une phrase" />
         </div>
+        <button type="submit" class="btn btn-lightblue" [disabled]="addPhraseForm.invalid">Ajouter la Phrase</button>
+      </form>
+    </div>
 
-        <!-- Liste des étudiants sans cases à cocher -->
-        <ul class="student-list">
-          <li *ngFor="let student of studentsList" class="student-item" (click)="selectStudent(student)">
-            <div class="student-avatar">{{student.nom.charAt(0)}}</div>
-            <div class="student-details">
-              <div class="student-name">{{student.nom}}</div>
-              <div class="student-info">{{student.age}} ans - Niveau {{student.niveau}}</div>
-            </div>
-          </li>
-        </ul>
+    <!-- Bouton pour afficher/masquer les phrases -->
+    <button (click)="togglePhrases()" class="btn btn-lightblue">Voir les phrases</button>
+
+    <!-- Liste des phrases -->
+    <div *ngIf="showPhrases">
+      <div *ngFor="let phrase of phrases" class="phrase">
+        <p>
+      <span *ngFor="let word of phrase.words" [ngStyle]="{'color': getColorForType(word.type)}">
+        {{ word.word }}
+      </span>
+        </p>
       </div>
+    </div>
+
+    <!-- Liste des participants -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Liste des participants</div>
+      </div>
+
+      <!-- Liste des étudiants sans cases à cocher -->
+      <ul class="student-list">
+        <li *ngFor="let student of studentsList" class="student-item" (click)="selectStudent(student)">
+          <div class="student-avatar">{{ student.nom.charAt(0) }}</div>
+          <div class="student-details">
+            <div class="student-name">{{ student.nom }}</div>
+            <div class="student-info">{{ student.age }} ans - Niveau {{ student.niveau }}</div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
-</body>
-</html>
