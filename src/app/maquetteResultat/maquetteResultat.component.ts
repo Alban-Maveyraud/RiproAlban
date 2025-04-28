@@ -35,8 +35,8 @@ export class MaquetteResultatComponent implements OnInit {
     });
   }
 
-  goToConfig() {
-    this.router.navigate(['/config']);
+  goToAccueil() {
+    this.router.navigate(['/jeu']);
   }
 
   /** Récupère les statistiques de la dernière partie du joueur */

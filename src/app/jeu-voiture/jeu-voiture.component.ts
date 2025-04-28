@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GameStateService } from '../game-state.service';
 import { Router } from '@angular/router';
+import { StudentService, Student } from '../student/student.service';
 
 
 @Component({
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./jeu-voiture.component.scss']
 })
 export class JeuVoitureComponent implements OnInit, OnDestroy {
+  participant: Student | null = null;
   private fuelInterval!: any;
   private tourInterval!: any;
   showPhraseGame: boolean = false;
@@ -16,6 +18,12 @@ export class JeuVoitureComponent implements OnInit, OnDestroy {
   constructor(private gameStateService: GameStateService, private router: Router) {}
 
   ngOnInit(): void {
+    this.participant = this.gameStateService.getParticipant(); // Ajoute ça !
+    if (!this.participant) {
+      alert('Aucun participant sélectionné ! 🚨');
+      this.router.navigate(['/jeu']); // Redirige si aucun participant n'est trouvé
+      return;
+    }
     this.startFuelConsumption();
     this.startTourMonitoring();
   }

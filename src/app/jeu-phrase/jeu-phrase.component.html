@@ -4,8 +4,10 @@
             <div class="logo-icon">🎵</div>
             <span class="logo-text">MusiMots</span>
         </div>
-        <button class="btn-config" (click)="goToConfig()">⚙️ Configuration</button>
-        <button class="btn-config" (click)="goToRes()">Quitter le jeu</button>
+        <button class="btn-config" (click)="goToRes()">Quitter fzf le jeu</button>
+      <div *ngIf="currentStudent" class="current-student">
+        🎯 Joueur : <strong>{{ currentStudent.nom }}</strong> (Niveau {{ currentStudent.niveau }})
+      </div>
     </header>
 
     <main class="main-content">

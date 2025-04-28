@@ -3,62 +3,38 @@
 
     <!-- Header avec bouton config -->
     <div class="header">
-      <h2>Statistiques de jeu 🎮</h2>
-      <button class="btn-config" (click)="goToConfig()">Aller à la configuration ⚙️</button>
-    </div>
-
-    <!-- Statistiques principales -->
-    <div class="results-grid">
-      <div class="card stats-card">
-        <h3>Score moyen</h3>
-        <div class="stats-value">{{ getAverageScore() }}%</div>
-      </div>
-
-      <div class="card stats-card">
-        <h3>Total tentatives</h3>
-        <div class="stats-value">{{ overallStats.totalAttempts }}</div>
-      </div>
-
-      <div class="card stats-card">
-        <h3>Erreurs de verbes</h3>
-        <div class="stats-value">{{ overallStats.errorTypes.verb }}</div>
-      </div>
-
-      <div class="card stats-card">
-        <h3>Erreurs d'adjectifs</h3>
-        <div class="stats-value">{{ overallStats.errorTypes.adjective }}</div>
-      </div>
+      <h2 class="fade-in">Statistiques de jeu 🎮</h2>
+      <button class="btn-config fade-in" (click)="goToAccueil()">Retourner au jeu</button>
     </div>
 
     <!-- Historique détaillé -->
-    <div class="card">
+    <div class="card detailed-card fade-in-up" *ngIf="statsHistory.length > 0; else noStats">
       <div class="card-header">
-        <div class="card-title">Historique des phrases 📝</div>
+        <div class="card-title">Historique des sessions 📝</div>
       </div>
+
       <div class="detailed-stats">
-        <div *ngFor="let record of statsHistory" class="phrase-stat">
-          <p><strong>Phrase :</strong> {{ record.phrase }}</p>
-          <p><strong>Score :</strong> {{ record.score }}%</p>
-          <p><strong>Écoutes :</strong> {{ record.listenCount }}</p>
-          <p><strong>Erreurs :</strong>
-            Verbes ({{ record.errors.verb }}),
-            Adjectifs ({{ record.errors.adjective }}),
-            Noms ({{ record.errors.noun }}),
-            Autres ({{ record.errors.other }})
-          </p>
-          <div *ngIf="record.suggestions.length > 0">
-            <p><strong>Suggestions :</strong></p>
-            <ul>
-              <li *ngFor="let suggestion of record.suggestions">
-                {{ getSuggestionText(suggestion) }}
-              </li>
-            </ul>
-          </div>
-          <p class="timeline-date">{{ formatDate(record.timestamp) }}</p>
+        <div *ngFor="let record of statsHistory" class="phrase-stat fade-in-up">
+          <p><strong>Erreurs :</strong></p>
+          <ul>
+            <div *ngFor="let stat of statsHistory">
+              <p>Nombre total d'erreurs : {{ getTotalErrors(stat) }}</p>
+              <p>Erreurs de verbes : {{ getErrorByType(stat, 'verbErrors') }}</p>
+              <p>Erreurs d'adjectifs : {{ getErrorByType(stat, 'adjectiveErrors') }}</p>
+              <p>Erreurs de déterminants : {{ getErrorByType(stat, 'determinantErrors') }}</p>
+              <p>Erreurs de ponctuation : {{ getPunctuationErrors(stat) }}</p>
+              <p>Réécritures ratées : {{ getRewriteErrors(stat) }}</p>
+              <small>{{ formatDate(stat.date) }}</small>
+            </div>
+          </ul>
           <hr>
         </div>
       </div>
     </div>
+
+    <ng-template #noStats>
+      <p class="fade-in">Aucune statistique disponible pour l’instant. Commence à jouer ! 🚀</p>
+    </ng-template>
 
   </div>
 </div>

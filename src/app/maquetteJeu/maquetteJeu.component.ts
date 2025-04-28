@@ -45,6 +45,7 @@ export class MaquetteJeuComponent implements OnInit {
 
     // 🛑 Enregistrer le participant dans le GameState
     this.gameStateService.setParticipant(this.participant);
+    this.studentService.setCurrentStudent(this.participant);
 
     setTimeout(() => {
       this.showAnimation = false;

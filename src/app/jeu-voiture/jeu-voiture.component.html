@@ -10,9 +10,14 @@
     </div>
   </div>
 
+  <!-- Message du joueur sélectionné -->
+  <div class="selected-student" *ngIf="participant">
+    🚗 Joueur sélectionné : <strong>{{ participant.nom }}</strong> (Niveau {{ participant.niveau }}) 🔥
+  </div>
+
   <!-- Affichage conditionnel -->
   <ng-container *ngIf="!showPhraseGame; else miniJeu">
-    <iframe 
+    <iframe
       src="assets/voiture/v4.final.html"
       width="1024"
       height="768"

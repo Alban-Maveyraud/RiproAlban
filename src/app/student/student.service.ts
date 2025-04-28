@@ -33,7 +33,6 @@ export interface Student {
 })
 export class StudentService {
 
-  // (3) Initialisation du tableau d'étudiants
   private students: Student[] = [
     {
       id: 1,
@@ -62,25 +61,13 @@ export class StudentService {
       currentSession: this.createEmptySession(),
       history: []
     },
-    {
-      id: 4,
-      nom: 'Sofia Lambert',
-      age: 8,
-      niveau: 2,
-      description: "Il est tarpin fort",
-      currentSession: this.createEmptySession(),
-      history: []
-    }
   ];
+
+  private currentStudent: Student | null = null;
 
   constructor() {}
 
-  getStudents(): Observable<Student[]> {
-    return of(this.students);
-  }
-
-  // (4) Fonction utilitaire : créer une session vide
-  private createEmptySession(): GameSessionStats {
+  createEmptySession(): GameSessionStats {
     return {
       listenCount: 0,
       totalErrors: 0,
@@ -96,11 +83,30 @@ export class StudentService {
     };
   }
 
+  getStudents(): Observable<Student[]> {
+    return of(this.students);
+  }
+
+  getStudentById(id: number): Student | undefined {
+    return this.students.find(student => student.id === id);
+  }
+
+  addStudent(newStudent: Student): void {
+    this.students.push(newStudent);
+  }
+
+  removeStudent(student: Student): void {
+    const index = this.students.indexOf(student);
+    if (index !== -1) {
+      this.students.splice(index, 1);
+    }
+  }
+
   finishGame(student: Student): void {
     // Ajoute la session actuelle dans l'historique
     student.history.push({ ...student.currentSession });
 
-    // Reset la session actuelle pour une nouvelle partie
+    // Réinitialiser la session actuelle pour une nouvelle partie
     student.currentSession = this.createEmptySession();
   }
 
@@ -115,4 +121,43 @@ export class StudentService {
     return student.history;
   }
 
+
+  getCurrentSession(student: Student): GameSessionStats {
+    return student.currentSession;
+  }
+
+
+  setCurrentStudent(student: Student): void {
+    this.currentStudent = student;
+  }
+
+  getCurrentStudent(): Student | null {
+    return this.currentStudent;
+  }
+
+  saveCurrentSessionToHistory(student: Student): void {
+    if (!student) {
+      console.error('Aucun étudiant fourni à saveCurrentSessionToHistory()');
+      return;
+    }
+
+    // Clone proprement la session actuelle pour éviter les effets de bord
+    const sessionCopy: GameSessionStats = { ...student.currentSession, date: new Date() };
+
+    // Ajoute au début de l'historique pour avoir les dernières parties en haut (optionnel)
+    student.history.unshift(sessionCopy);
+
+    // Réinitialise la session actuelle
+    student.currentSession = this.createEmptySession();
+  }
+
+  clearStudentHistory(student: Student): void {
+    if (!student) {
+      console.error('Aucun étudiant fourni à clearStudentHistory()');
+      return;
+    }
+
+    student.history = [];
+    student.currentSession = this.createEmptySession(); // On reset aussi la session actuelle pour être propre
+  }
 }
