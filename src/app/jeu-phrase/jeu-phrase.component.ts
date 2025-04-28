@@ -144,6 +144,7 @@ export class JeuPhraseComponent implements OnInit {
       this.typedAnswerIsCorrect = true;
       this.finalValidationDone = true;
       setTimeout(() => {
+        this.gameStateService.refillFuel();
         this.router.navigate(['/jeu-voiture']);
       }, 1000);
     } else {
