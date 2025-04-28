@@ -13,6 +13,7 @@ export class GameStateService {
   decreaseFuel(amount: number) { this.fuel -= amount; }
   increaseTour() { this.tours++; }
   refillFuel() { this.fuel = 100; }
+  resetTour() {this.tours = 0; }
   getFuel() { return this.fuel; }
   getTours() { return this.tours; }
 
