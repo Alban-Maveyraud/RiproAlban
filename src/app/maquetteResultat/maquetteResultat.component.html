@@ -26,37 +26,33 @@
             <button class="tab-button">Progression individuelle</button>
             <button class="tab-button">Rapports</button>
         </div>
-        
+
         <div class="results-grid">
             <div class="card stats-card">
-                <div class="stats-value">{{averageScore}}%</div>
                 <div class="stats-label">Taux de réussite moyen</div>
             </div>
             <div class="card stats-card">
-                <div class="stats-value">{{exercisesCompleted}}</div>
                 <div class="stats-label">Exercices complétés cette semaine</div>
             </div>
             <div class="card stats-card">
-                <div class="stats-value">{{averageSessionTime}}</div>
                 <div class="stats-label">Minutes moyennes par session</div>
             </div>
         </div>
 
+        <!-- Progression des élèves -->
         <div class="card">
             <div class="card-header">
                 <div class="card-title">Progression par élève</div>
             </div>
             <div *ngFor="let student of students" class="student-progress">
-                <div class="student-progress-avatar">{{student.avatar}}</div>
+                <div class="student-progress-avatar">🎓</div>
                 <div class="student-progress-details">
-                    <div class="student-progress-name">{{student.name}}</div>
-                    <div class="progress-bar">
-                        <div class="progress-bar-fill" [style.width.%]="student.progress"></div>
-                    </div>
+                    <div class="student-progress-name">{{ student.nom }}</div>
                 </div>
             </div>
         </div>
 
+        <!-- Performance par mini-jeu -->
         <div class="results-grid">
             <div class="card">
                 <div class="card-header">
@@ -64,57 +60,63 @@
                 </div>
                 <div class="chart-container">
                     <div class="chart-bars">
-                        <div *ngFor="let game of games" class="chart-bar" [style.height.%]="game.score">
-                            <div class="chart-bar-value">{{game.score}}%</div>
-                            <div class="chart-bar-label">{{game.name}}</div>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
+            <!-- Activité récente -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">Activité récente</div>
                 </div>
                 <div class="timeline">
-                    <div *ngFor="let activity of recentActivities" class="timeline-item">
-                        <div class="timeline-date">{{activity.date}}</div>
-                        <div class="timeline-title">{{activity.title}}</div>
-                        <div class="timeline-desc">{{activity.description}}</div>
-                    </div>
+
                 </div>
             </div>
         </div>
 
+        <!-- Nuage de mots -->
         <div class="card">
             <div class="card-header">
                 <div class="card-title">Mots les plus travaillés</div>
             </div>
             <div class="word-cloud">
-                <div *ngFor="let word of words" class="word-cloud-item" [style.fontSize.px]="word.size">
-                    {{word.text}}
-                </div>
+
             </div>
         </div>
 
+        <!-- Statistiques détaillées -->
+        <!-- Progression des élèves avec erreurs détaillées -->
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Statistiques détaillées</div>
+                <div class="card-title">Progression par élève</div>
             </div>
-            <div *ngFor="let stat of stats">
-                <h3>{{stat.phrase}}</h3>
-                <p>Score: {{stat.finalScore}}%</p>
-                <p>Écoutes: {{stat.listenStats.listenCount}}</p>
-                <p>Erreurs: {{stat.reconstructionStats.misplacedWords.length}}</p>
-                <div *ngIf="stat.difficultyAdjustments.suggested.length > 0">
-                    <p>Suggestions:</p>
-                    <ul>
-                        <li *ngFor="let suggestion of stat.difficultyAdjustments.suggested">
-                            {{getSuggestionText(suggestion)}}
-                        </li>
-                    </ul>
+
+            <div *ngFor="let student of students" class="student-progress">
+                <div class="student-progress-avatar">🎓</div>
+
+                <div class="student-progress-details">
+                    <div class="student-progress-name">{{ student.nom }}</div>
+
+                    <!-- Détail des erreurs par type -->
+                    <div class="error-bars">
+                        <div class="error-bar">
+                            <span>Erreurs de verbes :</span>
+
+                        </div>
+
+                        <div class="error-bar">
+                            <span>Erreurs d'adjectifs :</span>
+
+                        </div>
+
+                        <div class="error-bar">
+                            <span>Autres erreurs :</span>
+
+                        </div>
+                    </div>
                 </div>
-                <hr>
             </div>
         </div>
     </div>

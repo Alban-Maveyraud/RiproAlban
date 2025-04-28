@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GameStats } from '../game-stats/game-stats.model';
 import { config as statsConfig } from '../stats-config/stats-config';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -21,6 +22,11 @@ export class StatsDisplayComponent implements OnInit {
       other: 0
     }
   };
+  constructor(private router: Router) {}
+
+  goToConfig() {
+    this.router.navigate(['/config']);
+  }
 
   ngOnInit() {
     this.loadStats();
@@ -29,7 +35,7 @@ export class StatsDisplayComponent implements OnInit {
   loadStats() {
     const history = statsConfig.getStatsHistory();
     this.statsHistory = history;
-    
+
     // Calculer les stats globales
     this.overallStats = {
       averageScore: history.reduce((sum, record) => sum + record.score, 0) / (history.length || 1),

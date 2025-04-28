@@ -2,10 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Router, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router'; // ← Correction ici aussi !
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { MaquetteJeuComponent } from './maquetteJeu/maquetteJeu.component';
+import { MaquetteJeuComponent } from './maquetteJeu/maquetteJeu.component'; // Bon import
 import { MaquetteConfigComponent } from './maquetteConfig/maquetteConfig.component';
 import { MaquetteResultatComponent } from './maquetteResultat/maquetteResultat.component';
 import { MaquetteVoitureComponent } from './maquetteVoiture/maquetteVoiture.component';
@@ -14,15 +15,13 @@ import { JeuVoitureComponent } from './jeu-voiture/jeu-voiture.component';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { JeuPhraseComponent } from './jeu-phrase/jeu-phrase.component';
 import { StatsDisplayComponent } from './stats-display/stats-display.component';
-import { RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'jeu', pathMatch: 'full' },
-  { path: 'jeu', component: MaquetteJeuComponent },
+  { path: 'jeu', component: MaquetteJeuComponent }, // ← Correction ici
   { path: 'config', component: MaquetteConfigComponent },
   { path: 'final', component: V4FinalComponent },
   { path: 'resultat', component: StatsDisplayComponent },
-
   { path: 'jeu-voiture', component: JeuVoitureComponent },
   { path: 'jeu-phrase', component: JeuPhraseComponent }
 ];
@@ -31,15 +30,15 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     HeaderComponent,
-    MaquetteJeuComponent,
+    MaquetteJeuComponent, // ← Correction ici
     MaquetteConfigComponent,
     MaquetteResultatComponent,
     MaquetteVoitureComponent,
     V4FinalComponent,
     JeuVoitureComponent,
     SafeUrlPipe,
-    JeuPhraseComponent,  // Doit être déclaré ici
-    JeuVoitureComponent
+    JeuPhraseComponent,
+    StatsDisplayComponent
   ],
   imports: [
     BrowserModule,

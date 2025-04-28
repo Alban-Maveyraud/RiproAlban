@@ -4,32 +4,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GameStateService {
-  fuel: number = 100; // 100% d'essence au départ
-  tours: number = 0;  // nombre de tours effectués
+  private fuel: number = 100;
+  private tours: number = 0;
+  private participant: any = null; // <<< 🔥 Ajout ici
 
-  constructor() {}
+  constructor() { }
 
-  decreaseFuel(amount: number) {
-    this.fuel = Math.max(0, this.fuel - amount);
-  }
+  decreaseFuel(amount: number) { this.fuel -= amount; }
+  increaseTour() { this.tours++; }
+  refillFuel() { this.fuel = 100; }
+  getFuel() { return this.fuel; }
+  getTours() { return this.tours; }
 
-  refillFuel() {
-    this.fuel = 100;
-  }
-
-  increaseTour() {
-    this.tours++;
-  }
-
-  resetTours() {
-    this.tours = 0;
-  }
-
-  getFuel() {
-    return this.fuel;
-  }
-
-  getTours() {
-    return this.tours;
-  }
+  // Pour stocker/récupérer le participant
+  setParticipant(participant: any) { this.participant = participant; }
+  getParticipant() { return this.participant; }
 }

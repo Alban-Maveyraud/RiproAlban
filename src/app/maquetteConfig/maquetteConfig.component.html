@@ -1,111 +1,140 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MusiMots - Configuration</title>
-  <link rel="stylesheet" href="./maquetteConfig.component.scss"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusiMots - Configuration</title>
+    <link rel="stylesheet" href="./maquetteConfig.component.scss"/>
 </head>
 <body>
-  <div class="MaquetteConfig">
+<div class="MaquetteConfig">
     <div class="container">
-      <header>
-        <div class="logo">
-          <div class="logo-icon">🎵</div>
-          <span>MusiMots</span>
-        </div>
-        <nav>
-          <button (click)="goToJeu()" class="btn btn-secondary">🎮 Lancer le jeu</button>
-          <button (click)="goToRes()" class="btn btn-secondary">Résultats</button>
-        </nav>
-        <div class="user-profile">
-          <div class="user-avatar">L</div>
-          <div class="user-info">
-            <div class="user-name">Dr. Laure</div>
-            <div class="user-role">Ergothérapeute</div>
-          </div>
-        </div>
-      </header>
-
-      <h2>Configuration</h2>
-
-      <div class="tab-navigation">
-        <button class="tab-button" [class.active]="activeTab === 'participants'" (click)="changeTab('participants')">Participants</button>
-        <button class="tab-button" [class.active]="activeTab === 'exercices'" (click)="changeTab('exercices')">Exercices</button>
-        <button class="tab-button" [class.active]="activeTab === 'parametres'" (click)="changeTab('parametres')">Paramètres</button>
-      </div>
-
-      <div class="config-grid">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Liste des participants</div>
-            <button class="btn btn-primary btn-icon">
-              <span>Ajouter</span> +
-            </button>
-          </div>
-          <ul class="student-list">
-            <li class="student-item" *ngFor="let student of students">
-              <div class="student-avatar">{{student.nom.charAt(0)}}</div>
-              <div class="student-details">
-                <div class="student-name">{{student.nom}}</div>
-                <div class="student-info">{{student.age}} ans - Niveau {{student.niveau}}</div>
-              </div>
-              <div class="student-actions">
-                <button class="action-button">✏️</button>
-                <button class="action-button">👁️</button>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Créer un parcours personnalisé</div>
-          </div>
-          <form [formGroup]="parcourForm" (ngSubmit)="creerParcours()">
-            <div class="form-group">
-              <label for="student">Élève</label>
-              <select class="form-control" id="student" formControlName="eleve">
-                <option value="">Sélectionner un élève</option>
-                <option *ngFor="let student of students" [value]="student.id">{{student.nom}}</option>
-              </select>
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🎵</div>
+                <span>MusiMots</span>
             </div>
-
-            <div class="form-group">
-              <label for="difficulty">Niveau de difficulté</label>
-              <select class="form-control" id="difficulty" formControlName="niveau">
-                <option value="">Sélectionner un niveau</option>
-                <option *ngFor="let difficulty of difficulties" [value]="difficulty.id">{{difficulty.libelle}}</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="focus">Aspect à travailler</label>
-              <select class="form-control" id="focus" formControlName="aspect">
-                <option value="">Sélectionner un aspect</option>
-                <option *ngFor="let aspect of aspects" [value]="aspect.id">{{aspect.libelle}}</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Mini-jeux à inclure</label>
-              <div class="exercise-list">
-                <div class="exercise-card"
-                     *ngFor="let exercise of exercises; let i = index"
-                     (click)="goToExercise(exercise)">
-                  <div class="exercise-icon">{{exercise.icon}}</div>
-                  <div class="exercise-title">{{exercise.titre}}</div>
-                  <div class="exercise-desc">{{exercise.description}}</div>
+            <nav>
+                <button (click)="lancerLeJeu()" class="btn btn-lightblue">🎮 Lancer le jeu</button>
+                <button (click)="goToRes()" class="btn btn-lightblue">Résultats</button>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">L</div>
+                <div class="user-info">
+                    <div class="user-name">Dr. Laure</div>
+                    <div class="user-role">Ergothérapeute</div>
                 </div>
-              </div>
+            </div>
+        </header>
+
+        <h2>Configuration</h2>
+
+        <div class="config-grid">
+
+            <!-- Liste des participants -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Liste des participants</div>
+                    <button class="btn btn-lightblue btn-icon" (click)="ouvrirPopup()">➕ Ajouter</button>
+                    <!-- Modal ajout participant -->
+                    <div class="modal" *ngIf="popupVisible">
+                        <div class="modal-content">
+                            <h3>Ajouter un participant</h3>
+                            <form (ngSubmit)="ajouterParticipant()">
+                                <div>
+                                    <label>Nom :</label>
+                                    <input [(ngModel)]="nouveauParticipant.nom" name="nom" required>
+                                </div>
+                                <div>
+                                    <label>Âge :</label>
+                                    <input type="number" [(ngModel)]="nouveauParticipant.age" name="age" required>
+                                </div>
+                                <div>
+                                    <label>Description :</label>
+                                    <textarea [(ngModel)]="nouveauParticipant.description" name="description" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-lightblue">Valider</button>
+                                <button type="button" (click)="fermerPopup()" class="btn btn-secondary">Annuler</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal voir détails participant -->
+                    <div class="modal" *ngIf="selectedStudent">
+                        <div class="modal" *ngIf="selectedStudent">
+                            <div class="modal-content">
+                                <h3>Détails du participant</h3>
+                                <<p><strong>Nom :</strong> {{selectedStudent?.nom}}</p>
+                                <p><strong>Âge :</strong> {{selectedStudent?.age}} ans</p>
+                                <p><strong>Niveau :</strong> {{selectedStudent?.niveau}}</p>
+                                <p><strong>Description :</strong> {{selectedStudent?.description}}</p>
+                                <button class="btn btn-lightblue" (click)="fermerDetails()">Fermer</button>
+                                <button class="btn btn-danger" (click)="supprimerParticipant(selectedStudent!)">Supprimer</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Liste affichée -->
+                <ul class="student-list">
+                    <li class="student-item" *ngFor="let student of students" (click)="voirDetails(student)">
+                        <div class="student-avatar">{{student.nom.charAt(0)}}</div>
+                        <div class="student-details">
+                            <div class="student-name">{{student.nom}}</div>
+                            <div class="student-info">{{student.age}} ans - Niveau {{student.niveau}}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
 
-            <button type="submit" class="btn btn-primary">Créer le parcours</button>
-          </form>
-        </div>
+            <!-- Formulaire création parcours -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Créer un parcours personnalisé</div>
+                </div>
+                <form [formGroup]="parcourForm" (ngSubmit)="creerParcours()">
+                    <div class="form-group">
+                        <label for="student">Élève</label>
+                        <select class="form-control" id="student" formControlName="eleve">
+                            <option value="">Sélectionner un élève</option>
+                            <option *ngFor="let student of students" [value]="student.id">{{student.nom}}</option>
+                        </select>
+                    </div>
 
-      </div>
+                    <div class="form-group">
+                        <label for="difficulty">Niveau de difficulté</label>
+                        <select class="form-control" id="difficulty" formControlName="niveau">
+                            <option value="">Sélectionner un niveau</option>
+                            <option *ngFor="let difficulty of difficulties" [value]="difficulty.id">{{difficulty.libelle}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="focus">Aspect à travailler</label>
+                        <select class="form-control" id="focus" formControlName="aspect">
+                            <option value="">Sélectionner un aspect</option>
+                            <option *ngFor="let aspect of aspects" [value]="aspect.id">{{aspect.libelle}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mini-jeux à inclure</label>
+                        <div class="exercise-list">
+                            <div class="exercise-card" *ngFor="let exercise of exercises; let i = index" (click)="goToExercise(exercise)">
+                                <div class="exercise-icon">{{exercise.icon}}</div>
+                                <div class="exercise-title">{{exercise.titre}}</div>
+                                <div class="exercise-desc">{{exercise.description}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-lightblue">Créer le parcours</button>
+                </form>
+            </div>
+
+        </div>
     </div>
-  </div>
+</div>
 </body>
 </html>

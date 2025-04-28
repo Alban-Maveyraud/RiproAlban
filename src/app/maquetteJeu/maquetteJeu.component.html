@@ -1,56 +1,50 @@
 <div class="MaquetteJeu">
-  <div class="container">
-    <header>
-      <div class="logo">
-        <div class="logo-icon">🎵</div>
-        <span>MusiMots</span>
-      </div>
-      <div class="user-profile">
-        <div class="user-avatar">L</div>
-        <div class="user-info">
-          <div class="user-name">Lucas</div>
-          <div class="user-role">Niveau 2</div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🚗</div>
+                <span>MusiMots</span>
+            </div>
+            <div class="user-profile" *ngIf="participant">
+                <div class="user-avatar">{{ participant.nom.charAt(0) }}</div>
+                <div class="user-info">
+                    <div class="user-name">{{ participant.nom }}</div>
+                    <div class="user-role">Niveau {{ participant.niveau }}</div>
+                </div>
+            </div>
+        </header>
+
+        <h2>🚦 Prêt pour la course {{ participant?.nom || '...'}} ?</h2>
+
+        <div class="select-container" *ngIf="!raceStarted">
+            <label for="participant">Sélectionne ton pilote :</label>
+            <select id="participant" (change)="onParticipantSelected($event)">
+                <option value="">-- Choisis ton joueur --</option>
+                <option *ngFor="let student of students" [value]="student.nom">{{ student.nom }}</option>
+            </select>
         </div>
-      </div>
-    </header>
 
-    <h2>Ouvre tes oreilles</h2>
+        <div class="start-button-container" *ngIf="!raceStarted" style="text-align: center; margin: 20px;">
+            <button (click)="startRace()" class="btn btn-primary btn-large" [disabled]="!participant">
+                🚀 Démarrer la course
+            </button>
+        </div>
 
-    <div class="config-button-container" style="text-align: right; margin: 10px;">
-      <button (click)="goToConfig()" class="btn btn-secondary">
-        Aller à la configuration ⚙️
-      </button>
+
+        <!-- Animation au lancement -->
+        <div *ngIf="showAnimation" class="launch-animation">
+            Que la course commence ! 🏁
+        </div>
+
+        <!-- Iframe du jeu après l'animation -->
+        <div *ngIf="showGame">
+            <iframe
+                    src="assets/voiture/v4.final.html"
+                    width="1024"
+                    height="768"
+                    frameborder="0"
+                    class="game-iframe">
+            </iframe>
+        </div>
     </div>
-
-    <div class="start-button-container" style="text-align: center; margin: 20px;">
-      <button (click)="startRace()" class="btn btn-primary btn-large">
-        🚗 Commencer la course
-      </button>
-    </div>
-
-    <!-- Ici tu pourrais remettre plus tard ton jeu directement si besoin -->
-    
-    <div class="progress-container">
-      <div class="progress-item">
-        <div class="progress-icon">👂</div>
-        <div class="progress-value">3</div>
-        <div class="progress-label">Écoutes complétées</div>
-      </div>
-      <div class="progress-item">
-        <div class="progress-icon">👥</div>
-        <div class="progress-value">24</div>
-        <div class="progress-label">Fans</div>
-      </div>
-      <div class="progress-item">
-        <div class="progress-icon">💰</div>
-        <div class="progress-value">120</div>
-        <div class="progress-label">Pièces</div>
-      </div>
-      <div class="progress-item">
-        <div class="progress-icon">⭐</div>
-        <div class="progress-value">2</div>
-        <div class="progress-label">Niveau</div>
-      </div>
-    </div>
-  </div>
 </div>

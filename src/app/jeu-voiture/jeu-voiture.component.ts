@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GameStateService } from '../game-state.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-jeu-voiture',
@@ -11,7 +13,7 @@ export class JeuVoitureComponent implements OnInit, OnDestroy {
   private tourInterval!: any;
   showPhraseGame: boolean = false;
 
-  constructor(private gameStateService: GameStateService) {}
+  constructor(private gameStateService: GameStateService, private router: Router) {}
 
   ngOnInit(): void {
     this.startFuelConsumption();
@@ -37,10 +39,18 @@ export class JeuVoitureComponent implements OnInit, OnDestroy {
 
   startTourMonitoring() {
     this.tourInterval = setInterval(() => {
-      this.showPhraseGame = true;
       clearInterval(this.tourInterval);
       clearInterval(this.fuelInterval);
-    }, 30000);
+
+      // 🚀 Redirection vers jeu-phrase avec participant
+      const participant = this.gameStateService.getParticipant();
+      if (participant) {
+        this.router.navigate(['/jeu-phrase'], { state: { participant } });
+      } else {
+        alert("Pas de participant sélectionné 😅");
+        this.router.navigate(['/jeu']); // ou autre
+      }
+    }, 30000); // 30 secondes
   }
 
   onPhraseCompleted() {

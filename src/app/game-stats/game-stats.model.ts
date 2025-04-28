@@ -29,4 +29,16 @@ export interface GameStats {
     suggested: string[];
     applied: string[];
   };
+  errors?: {
+    wordErrors: { [word: string]: number };
+    errorCountsByType: {
+      verb: number;
+      noun: number;
+      adjective: number;
+      determiner: number;
+      longWord: number;
+    };
+    totalWordSelectionErrors: number;
+    phraseRetypeErrors: number;
+  };
 }

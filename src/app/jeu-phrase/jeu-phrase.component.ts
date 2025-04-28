@@ -1,243 +1,192 @@
 // jeu-phrase.component.ts
-import { Component, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GameStateService } from '../game-state.service';
 import { statsConfig } from '../stats-config/stats-config';
 import { GameStats } from '../game-stats/game-stats.model';
-import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { Router } from '@angular/router';
 
 interface Word {
   text: string;
   selected: boolean;
   type?: 'verb' | 'adjective' | 'noun' | 'other';
 }
+
 @Component({
   selector: 'app-jeu-phrase',
   templateUrl: './jeu-phrase.component.html',
   styleUrls: ['./jeu-phrase.component.scss']
 })
 export class JeuPhraseComponent implements OnInit {
-  @Output() phraseCompleted = new EventEmitter<GameStats>(); // << important pour communiquer avec le parent !
+  @Output() phraseCompleted = new EventEmitter<GameStats>();
 
   availableWords: string[] = [];
   selectedWords: Word[] = [];
   correctPhraseWords: Word[] = [];
-  validationMessage: string = '';
+  validationMessage = '';
   isAnswerValid: boolean | null = null;
+  typedAnswer = '';
+  typedValidationMessage = '';
+  typedAnswerIsCorrect: boolean | null = null;
+  finalValidationDone = false;
+  correctSentence = '';
 
-    // Stats tracking
-    currentStats: Partial<GameStats> = {
-      listenStats: {
-        listenCount: 0,
-        pauseCount: 0
-      },
-      reconstructionStats: {
-          startTime: new Date(),
-          attempts: 0,
-          misplacedWords: [],
-      }
-    };
-    listenStartTime: Date | null = null;
+  listenCount = 0;
+  wordErrors: { [word: string]: number } = {};
+  errorCountsByType = { verb: 0, noun: 0, adjective: 0, determiner: 0, longWord: 0 };
+  totalWordSelectionErrors = 0;
+  phraseRetypeErrors = 0;
 
-    constructor(private http: HttpClient, private gameStateService: GameStateService) {}
+  currentStats: Partial<GameStats> = {
+    listenStats: { listenCount: 0, pauseCount: 0 },
+    reconstructionStats: { startTime: new Date(), attempts: 0, misplacedWords: [] }
+  };
+  listenStartTime: Date | null = null;
 
-    ngOnInit(): void {
-      this.loadRandomPhrase();
+  constructor(
+      private http: HttpClient,
+      private gameStateService: GameStateService,
+      private router: Router // 🛣️ Ajout du Router ici
+  ) {}
+
+  ngOnInit(): void {
+    this.loadRandomPhrase();
+  }
+
+  validateTypedAnswer() {
+    const expected = this.correctSentence.trim();
+    if (this.typedAnswer.trim() === expected) {
+      this.typedValidationMessage = '✅ Bien joué, phrase correctement recopiée !';
+      this.typedAnswerIsCorrect = true;
+      this.finalValidationDone = true;
+
+      const completedStats: GameStats = {
+        phrase: this.currentStats.phrase!,
+        listenStats: this.currentStats.listenStats!,
+        reconstructionStats: {
+          ...this.currentStats.reconstructionStats!,
+          endTime: new Date()
+        },
+        finalScore: this.calculateScore(),
+        errors: {
+          wordErrors: this.wordErrors,
+          errorCountsByType: this.errorCountsByType,
+          totalWordSelectionErrors: this.totalWordSelectionErrors,
+          phraseRetypeErrors: this.phraseRetypeErrors
+        },
+        difficultyAdjustments: this.currentStats.difficultyAdjustments ?? {
+          suggested: [],
+          applied: []
+        }
+      };
+      this.phraseCompleted.emit(completedStats);
+      setTimeout(() => {
+        this.router.navigate(['/jeu-voiture']);
+      }, 1000); // petit délai pour laisser afficher "Bravo" avant de switcher
+    } else {
+      this.typedValidationMessage = '❌ Ce n\'est pas tout à fait correct. Réessaie !';
+      this.typedAnswerIsCorrect = false;
+      this.phraseRetypeErrors++;
     }
-  
-    loadRandomPhrase(): void {
-      this.http.get('assets/phrases.txt', { responseType: 'text' }).subscribe(
-        (data: string) => {
+  }
+
+  loadRandomPhrase(): void {
+    this.resetStats();
+    this.http.get('assets/phrases.txt', { responseType: 'text' }).subscribe(
+        data => {
           const phrases = data.split('\n').map(p => p.trim()).filter(p => p.length > 0);
           const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-          
-          // Reset stats for new phrase
-          this.currentStats = {
-            phrase: randomPhrase,
-            listenStats: {
-              listenCount: 0,
-              pauseCount: 0
-            },
-            reconstructionStats: {
-              startTime: new Date(),
-              attempts: 0,
-              misplacedWords: []
-            }
-          };
-          
-          // Analyze phrase for word types (simplified - would need NLP in real app)
+
+          this.currentStats.phrase = randomPhrase;
           this.correctPhraseWords = randomPhrase.split(' ').map(word => ({
             text: word,
             selected: false,
             type: this.detectWordType(word)
           }));
-          
+
           this.availableWords = this.shuffleArray([...this.correctPhraseWords.map(w => w.text)]);
-          this.selectedWords = [];
-          this.validationMessage = '';
-          this.isAnswerValid = null;
         },
-        error => {
-          console.error('Erreur de chargement du fichier phrases.txt', error);
-        }
-      );
-    }
-  
-    private detectWordType(word: string): 'verb' | 'adjective' | 'noun' | 'other' {
-      // Simplified detection - in real app use NLP or a dictionary
-      if (word.endsWith('é') || word.endsWith('er') || word.endsWith('ait')) return 'verb';
-      if (word.endsWith('eux') || word.endsWith('ive')) return 'adjective';
-      if (word.length > 5 && !word.includes("'")) return 'noun';
-      return 'other';
-    }
-  
-    playSentence(): void {
-      this.currentStats.listenStats!.listenCount++;
-      
-      if (this.listenStartTime) {
-        // If there was a previous listen that wasn't completed
-        this.currentStats.listenStats!.pauseCount++;
-      }
-      
-      this.listenStartTime = new Date();
-      
-      const phrase = this.correctPhraseWords.map(w => w.text).join(' ');
-      const utterance = new SpeechSynthesisUtterance(phrase);
-      utterance.lang = 'fr-FR';
-      
-      utterance.onend = () => {
-        this.listenStartTime = null;
-      };
-      
-      speechSynthesis.speak(utterance);
-    }
-  
-    // Dans la méthode validateAnswer()
-validateAnswer(): void {
-  this.currentStats.reconstructionStats!.attempts++;
-  this.currentStats.reconstructionStats!.endTime = new Date();
-  
-  const answer = this.selectedWords.map(w => w.text).join(' ').trim();
-  const correct = this.correctPhraseWords.map(w => w.text).join(' ').trim();
-
-  if (answer === correct) {
-    this.isAnswerValid = true;
-    this.validationMessage = 'Bravo ! 🎉';
-    
-    this.currentStats.finalScore = this.calculateScore();
-    this.currentStats.difficultyAdjustments = this.analyzeDifficulties();
-
-    // Enregistrer les stats
-    statsConfig.recordStats(this.currentStats as GameStats);
-
-    setTimeout(() => {
-      this.gameStateService.refillFuel();
-      this.phraseCompleted.emit(this.currentStats as GameStats);
-    }, 2000);
-
-  } else {
-    this.isAnswerValid = false;
-    this.validationMessage = 'Essaie encore ! ❌';
-    
-    this.trackMisplacedWords(answer, correct);
-    // Enregistrer les stats même en cas d'erreur
-    this.currentStats.finalScore = this.calculateScore();
-    this.currentStats.difficultyAdjustments = this.analyzeDifficulties();
-    statsConfig.recordStats(this.currentStats as GameStats);
+        error => console.error('Erreur de chargement du fichier phrases.txt', error)
+    );
   }
-}
-  
-    private trackMisplacedWords(answer: string, correct: string): void {
-      const answerWords = answer.split(' ');
-      const correctWords = correct.split(' ');
-      
-      answerWords.forEach((word, index) => {
-        if (word !== correctWords[index]) {
-          const correctIndex = correctWords.indexOf(word);
-          if (correctIndex !== -1) {
-            const correctWordData = this.correctPhraseWords[correctIndex];
-            this.currentStats.reconstructionStats!.misplacedWords.push({
-              word: word,
-              position: index,
-              correctPosition: correctIndex,
-              wordType: correctWordData.type || 'other'
-            });
-          }
-        }
+
+  resetStats(): void {
+    this.wordErrors = {};
+    this.errorCountsByType = { verb: 0, noun: 0, adjective: 0, determiner: 0, longWord: 0 };
+    this.totalWordSelectionErrors = 0;
+    this.phraseRetypeErrors = 0;
+    this.correctSentence = '';
+    this.listenCount = 0;
+    this.isAnswerValid = null;
+    this.finalValidationDone = false;
+    this.typedAnswer = '';
+    this.typedAnswerIsCorrect = null;
+    this.validationMessage = '';
+    this.typedValidationMessage = '';
+  }
+
+  playSentence(): void {
+    this.listenCount++;
+    this.currentStats.listenStats!.listenCount++;
+    if (this.listenStartTime) this.currentStats.listenStats!.pauseCount++;
+    this.listenStartTime = new Date();
+
+    const phrase = this.correctPhraseWords.map(w => w.text).join(' ');
+    const utterance = new SpeechSynthesisUtterance(phrase);
+    utterance.lang = 'fr-FR';
+    utterance.onend = () => this.listenStartTime = null;
+    speechSynthesis.speak(utterance);
+  }
+
+  validateAnswer() {
+    const correctSentenceWords = this.getCorrectSentenceWords();
+    const userSentenceWords = this.getDisplayWords().map(w => w.text);
+
+    if (this.arraysEqual(correctSentenceWords, userSentenceWords)) {
+      this.isAnswerValid = true;
+      this.validationMessage = '✅ Bravo, bonne réponse !';
+      this.correctSentence = correctSentenceWords.join(' ');
+    } else {
+      this.isAnswerValid = false;
+      this.validationMessage = '❌ Désolé, ce n\'est pas encore correct.';
+      this.totalWordSelectionErrors++;
+      userSentenceWords.forEach((word, index) => {
+        if (word !== correctSentenceWords[index]) this.trackWordError(word);
       });
     }
-  
-    private calculateScore(): number {
-      const { listenStats, reconstructionStats } = this.currentStats;
-      let score = 100;
-      
-      // Apply listening penalties
-      if (listenStats!.listenCount > statsConfig.listeningStats.maxListensPerPhrase) {
-        const extraListens = listenStats!.listenCount - statsConfig.listeningStats.maxListensPerPhrase;
-        score -= extraListens * statsConfig.listeningStats.listenPenaltyPerExtra;
-      }
-      score -= listenStats!.pauseCount * statsConfig.listeningStats.pausePenalty;
-      
-      // Apply reconstruction penalties
-      const timeTaken = (new Date(reconstructionStats!.endTime!).getTime() - 
-                        new Date(reconstructionStats!.startTime!).getTime()) / 1000;
-      
-      if (timeTaken > statsConfig.reconstructionStats.timeThresholds.minScoreTime) {
-        score = 0;
-      } else if (timeTaken > statsConfig.reconstructionStats.timeThresholds.perfectScoreTime) {
-        const timePenalty = (timeTaken - statsConfig.reconstructionStats.timeThresholds.perfectScoreTime) / 10;
-        score -= Math.min(timePenalty, 30);
-      }
-      
-      reconstructionStats!.misplacedWords.forEach(word => {
-        score -= statsConfig.reconstructionStats.errorPenalties[word.wordType] || 5;
-      });
-      
-      return Math.max(0, Math.round(score));
-    }
-  
-    private analyzeDifficulties(): { suggested: string[]; applied: string[] } {
-      const difficulties: string[] = [];
-      const { listenStats, reconstructionStats } = this.currentStats;
-      
-      // Listening difficulties
-      if (listenStats!.listenCount > statsConfig.listeningStats.maxListensPerPhrase) {
-        difficulties.push('too_many_listens');
-      }
-      if (listenStats!.pauseCount > 0) {
-        difficulties.push('pauses_during_listening');
-      }
-      
-      // Reconstruction difficulties
-      const verbErrors = reconstructionStats!.misplacedWords.filter(w => w.wordType === 'verb').length;
-      if (verbErrors > 0) {
-        difficulties.push('verb_placement_issues');
-      }
-      
-      const adjErrors = reconstructionStats!.misplacedWords.filter(w => w.wordType === 'adjective').length;
-      if (adjErrors > 0) {
-        difficulties.push('adjective_placement_issues');
-      }
-      
-      // Determine suggestions based on difficulties
-      const suggestions: string[] = [];
-      if (difficulties.includes('too_many_listens')) {
-        suggestions.push('visual_clues');
-        suggestions.push('segmented_listening');
-      }
-      if (difficulties.includes('verb_placement_issues')) {
-        suggestions.push('pre_placed_verbs');
-        suggestions.push('verb_conjugation_practice');
-      }
-      // ... add more conditions based on other difficulties
-      
-      return {
-        suggested: suggestions,
-        applied: [] // Would be populated when suggestions are implemented
-      };
-    }
+  }
+
+  trackWordError(word: string) {
+    this.wordErrors[word] = (this.wordErrors[word] || 0) + 1;
+    if (this.isVerb(word)) this.errorCountsByType.verb++;
+    else if (this.isNoun(word)) this.errorCountsByType.noun++;
+    else if (this.isAdjective(word)) this.errorCountsByType.adjective++;
+    else if (this.isDeterminer(word)) this.errorCountsByType.determiner++;
+    if (word.length > 8) this.errorCountsByType.longWord++;
+  }
+
+  detectWordType(word: string): 'verb' | 'adjective' | 'noun' | 'other' {
+    if (word.endsWith('er') || word.endsWith('ait') || word.endsWith('é')) return 'verb';
+    if (word.endsWith('eux') || word.endsWith('ive')) return 'adjective';
+    if (word.length > 5 && !word.includes("'")) return 'noun';
+    return 'other';
+  }
+
+  isVerb(word: string): boolean {
+    return ['manger', 'courir', 'chanter', 'écouter', 'sauter'].includes(word.toLowerCase());
+  }
+
+  isNoun(word: string): boolean {
+    return ['chat', 'chien', 'maison', 'musique', 'voiture'].includes(word.toLowerCase());
+  }
+
+  isAdjective(word: string): boolean {
+    return ['grand', 'petit', 'joli', 'rapide', 'lent'].includes(word.toLowerCase());
+  }
+
+  isDeterminer(word: string): boolean {
+    return ['le', 'la', 'les', 'un', 'une', 'des'].includes(word.toLowerCase());
+  }
 
   shuffleArray(array: string[]): string[] {
     for (let i = array.length - 1; i > 0; i--) {
@@ -270,9 +219,16 @@ validateAnswer(): void {
     this.validationMessage = '';
   }
 
-
   getDisplayWords(): Word[] {
     return this.selectedWords;
+  }
+
+  getCorrectSentenceWords(): string[] {
+    return this.correctPhraseWords.map(w => w.text);
+  }
+
+  arraysEqual(a: string[], b: string[]): boolean {
+    return a.length === b.length && a.every((val, index) => val === b[index]);
   }
 
   getWordClass(word: Word): string {
@@ -282,5 +238,62 @@ validateAnswer(): void {
   goToConfig(): void {
     window.location.href = '/config';
   }
+
+  goToRes() {
+    const errorSummary = {
+      listenCount: this.listenCount,
+      totalWordSelectionErrors: this.totalWordSelectionErrors,
+      phraseRetypeErrors: this.phraseRetypeErrors,
+      errorCountsByType: this.errorCountsByType,
+      wordErrors: this.wordErrors,
+      majusculeAndPointErrors: this.calculateMajusculePointErrors() // 👈 fonction à ajouter
+    };
+
+    this.router.navigate(['/resultat'], { state: { errorSummary } });
+  }
+
+
+  private calculateScore(): number {
+    const { listenStats, reconstructionStats } = this.currentStats;
+    let score = 100;
+
+    // Appliquer pénalités sur l'écoute
+    if (listenStats!.listenCount > 3) { // Exemple : 3 écoutes maximum autorisées
+      const extraListens = listenStats!.listenCount - 3;
+      score -= extraListens * 5;
+    }
+    score -= listenStats!.pauseCount * 2;
+
+    // Appliquer pénalités sur le temps
+    const endTime = reconstructionStats?.endTime || new Date();
+    const startTime = reconstructionStats?.startTime || new Date();
+    const timeTaken = (endTime.getTime() - startTime.getTime()) / 1000;
+
+    if (timeTaken > 60) {
+      score = Math.max(0, score - 20);
+    }
+
+    // Appliquer pénalités sur les mots mal placés
+    reconstructionStats?.misplacedWords.forEach(word => {
+      score -= 5;
+    });
+
+    return Math.max(0, Math.round(score));
+  }
+
+  private calculateMajusculePointErrors(): number {
+    let errors = 0;
+    const userTyped = this.typedAnswer.trim();
+    const expected = this.correctSentence.trim();
+
+    if (!userTyped || !expected) return 0;
+
+    if (userTyped.charAt(0) !== expected.charAt(0)) errors++; // Majuscule au début
+    if (userTyped.slice(-1) !== expected.slice(-1)) errors++; // Point ou ponctuation en fin
+
+    return errors;
+  }
+
+
 
 }

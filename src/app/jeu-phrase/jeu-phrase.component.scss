@@ -1,77 +1,177 @@
 .jeu-phrase-container {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
-  }
-  
-  .available-words, .selected-words {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .available-words button {
-    background-color: #e0e0e0;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    margin: 5px;
-    padding: 10px 15px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  
-  .available-words button:hover {
-    background-color: #d6d6d6;
-    transform: scale(1.05);
-  }
-  
-  .selected-words span {
-    background-color: #a5d6a7;
-    border: 2px solid #81c784;
-    border-radius: 10px;
-    margin: 5px;
-    padding: 10px 15px;
-    font-size: 18px;
-    display: inline-block;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  
-  .selected-words span:hover {
-    background-color: #81c784;
-    transform: scale(1.05);
-  }
-  
-  .controls {
-    margin-top: 30px;
-  }
-  
-  button.btn-primary, button.btn-secondary {
-    margin: 10px;
-    font-size: 18px;
-    padding: 10px 20px;
-  }
-  
-  .validation-message {
-    margin-top: 20px;
-    font-size: 22px;
-    font-weight: bold;
-    height: 40px;
-  
-    &.correct {
-      color: green;
-    }
-  
-    &.incorrect {
-      color: red;
-    }
-  }
-  
+  background-color: #f0f8ff; /* Fond bleu très clair */
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.btn-config {
+  background-color: #4da6ff;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-config:hover {
+  background-color: #3399ff;
+}
+
+.main-content {
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #0056b3;
+}
+
+.instruction {
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.controls-top {
+  margin-bottom: 2rem;
+}
+
+.btn-primary, .btn-secondary, .btn-success {
+  background-color: #4da6ff;
+  border: none;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #3399ff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.answer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.selected-word {
+  background-color: #cce5ff;
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.selected-word:hover {
+  background-color: #b8daff;
+}
+
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.final-input-section {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.final-input {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  width: 80%;
+  max-width: 500px;
+  font-size: 1.2rem;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+}
+
+.final-success {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+  color: green;
+}
+
+.word-chip {
+  background-color: #e2e6ea;
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.word-chip:hover {
+  background-color: #d6d8db;
+}
+
+.validation-message {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.validation-message.correct {
+  color: green;
+}
+
+.validation-message.incorrect {
+  color: red;
+}
+
+.controls-bottom {
+  margin-top: 2rem;
+}

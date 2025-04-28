@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 
 export interface ParcoursPersonnalise {
   eleve: {
-    id: string;
+    id: number;
     nom: string;
   };
   niveau: {
@@ -34,7 +34,7 @@ export class ParcoursService {
 
   creerParcoursXML(parcoursData: ParcoursPersonnalise): Observable<any> {
     const xmlContent = this.genererXML(parcoursData);
-    
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml'
@@ -55,7 +55,7 @@ export class ParcoursService {
     try {
       const xmlContent = this.genererXML(parcoursData);
       const blob = new Blob([xmlContent], { type: 'application/xml' });
-      
+
       if ('showSaveFilePicker' in window) {
         const fileHandle = await (window as any).showSaveFilePicker({
           suggestedName: `parcours_${parcoursData.eleve.nom.replace(/\s+/g, '_')}.xml`,
@@ -64,7 +64,7 @@ export class ParcoursService {
             accept: { 'application/xml': ['.xml'] }
           }]
         });
-        
+
         const writable = await fileHandle.createWritable();
         await writable.write(blob);
         await writable.close();
@@ -89,12 +89,12 @@ export class ParcoursService {
   private genererXML(parcoursData: ParcoursPersonnalise): string {
     const xmlDoc = document.implementation.createDocument(null, 'parcoursPersonnalise', null);
     const rootElement = xmlDoc.documentElement;
-    
+
     // Rest of the XML generation code remains the same
     // ...
-    
+
     const serializer = new XMLSerializer();
-    return '<?xml version="1.0" encoding="UTF-8"?>\n' + 
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' +
            serializer.serializeToString(xmlDoc);
   }
 

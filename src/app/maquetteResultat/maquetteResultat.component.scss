@@ -16,10 +16,10 @@ button {
     z-index: 10; /* Assure-toi que le bouton est au-dessus des autres éléments */
     cursor: pointer; /* Change le curseur quand on passe sur le bouton */
 }
-  
+
 button:hover {
     background-color: #6C63FF; /* Change la couleur au survol pour tester */
-}  
+}
 
 .MaquetteResultat * {
     margin: 0;
@@ -432,4 +432,28 @@ button:hover {
         height: auto;
         padding: 10px 0;
     }
+
+    /* maquetteResultat.component.scss */
+
+    .progress-bar-fill.verb {
+        background-color: #f39c12; /* orange pour verbes */
+    }
+
+    .progress-bar-fill.adjective {
+        background-color: #3498db; /* bleu pour adjectifs */
+    }
+
+    .progress-bar-fill.other {
+        background-color: #9b59b6; /* violet pour autres erreurs */
+    }
+
+    .error-bars {
+        margin-top: 8px;
+    }
+
+    .error-bar {
+        margin-bottom: 6px;
+        font-size: 0.9rem;
+    }
+
 }

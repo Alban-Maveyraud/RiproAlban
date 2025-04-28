@@ -81,10 +81,10 @@ button {
     z-index: 10; /* Assure-toi que le bouton est au-dessus des autres éléments */
     cursor: pointer; /* Change le curseur quand on passe sur le bouton */
 }
-  
+
 button:hover {
     background-color: #6C63FF; /* Change la couleur au survol pour tester */
-}  
+}
 
 .MaquetteConfig .nav-button:hover,
 .MaquetteConfig .nav-button.active {
@@ -377,4 +377,146 @@ button:hover {
         padding: 8px;
         font-size: 14px;
     }
+
+    /* Modal styles */
+    .MaquetteConfig .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(51, 51, 51, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Au-dessus de tout */
+    }
+
+    .MaquetteConfig .modal-content {
+        background-color: var(--card-bg);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: var(--card-shadow);
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .MaquetteConfig .modal-content h3 {
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .MaquetteConfig .modal-content form > div {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .MaquetteConfig .modal-content input,
+    .MaquetteConfig .modal-content textarea {
+        width: 100%;
+        padding: 10px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.2s;
+    }
+
+    .MaquetteConfig .modal-content input:focus,
+    .MaquetteConfig .modal-content textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+    }
+
+    .MaquetteConfig .modal-content button {
+        margin: 10px 5px 0 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .MaquetteConfig .modal-content .btn-primary {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    .MaquetteConfig .modal-content .btn-primary:hover {
+        background-color: #554dff;
+    }
+
+    .MaquetteConfig .modal-content .btn-secondary {
+        background-color: var(--secondary);
+        color: white;
+    }
+
+    .MaquetteConfig .modal-content .btn-secondary:hover {
+        background-color: #e04e6c;
+    }
+
+    .btn-lightblue {
+        background-color: #5dade2;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-lightblue:hover {
+        background-color: #3498db;
+    }
+
+    .student-item {
+        cursor: pointer;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.2s;
+    }
+
+    .student-item:hover {
+        background-color: #eef7fc;
+    }
+
+    .modal {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+    }
+
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        width: 300px;
+        text-align: center;
+    }
+
 }
