@@ -53,6 +53,7 @@ export class JeuVoitureComponent implements OnInit, OnDestroy {
       // 🚀 Redirection vers jeu-phrase avec participant
       const participant = this.gameStateService.getParticipant();
       if (participant) {
+        this.gameStateService.increaseTour();
         this.router.navigate(['/jeu-phrase'], { state: { participant } });
       } else {
         alert("Pas de participant sélectionné 😅");
