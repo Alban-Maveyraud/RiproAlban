@@ -4,15 +4,18 @@ export interface Word {
 }
 
 export interface Phrase {
+  id: number;
   text: string;
   words: Word[];
 }
 
-export const phrases = [
+
+export const phrases: Phrase[] = [
   {
+    id: 1,
     text: "Le chat dort sous le soleil.",
     words: [
-      { word: "Le", type: "determinant" },
+      { word: "Le", type: "déterminant" },
       { word: "chat", type: "nom" },
       { word: "dort", type: "verbe" },
       { word: "sous", type: "préposition" },
@@ -21,9 +24,10 @@ export const phrases = [
     ]
   },
   {
+    id: 2,
     text: "La voiture rouge roule vite.",
     words: [
-      { word: "La", type: "determinant" },
+      { word: "La", type: "déterminant" },
       { word: "voiture", type: "nom" },
       { word: "rouge", type: "adjectif" },
       { word: "roule", type: "verbe" },
@@ -31,9 +35,10 @@ export const phrases = [
     ]
   },
   {
+    id: 3,
     text: "Le livre est sur la table.",
     words: [
-      { word: "Le", type: "determinant" },
+      { word: "Le", type: "déterminant" },
       { word: "livre", type: "nom" },
       { word: "est", type: "verbe" },
       { word: "sur", type: "préposition" },
@@ -42,30 +47,33 @@ export const phrases = [
     ]
   },
   {
+    id: 4,
     text: "Alban est le plus gros neuille de la terre.",
     words: [
       { word: "Alban", type: "nom propre" },
       { word: "est", type: "verbe" },
-      { word: "le", type: "determinant" },
+      { word: "le", type: "déterminant" },
       { word: "plus", type: "adverbe" },
       { word: "gros", type: "adjectif" },
       { word: "neuille", type: "nom" },
       { word: "de", type: "préposition" },
-      { word: "la", type: "determinant" },
+      { word: "la", type: "déterminant" },
       { word: "terre", type: "nom" }
     ]
   },
   {
+    id: 5,
     text: "Je mange un tacos succulent.",
     words: [
       { word: "Je", type: "pronom" },
       { word: "mange", type: "verbe" },
-      { word: "un", type: "determinant" },
+      { word: "un", type: "déterminant" },
       { word: "tacos", type: "nom" },
-      { word: "succulent", type: "adjectif" },
+      { word: "succulent", type: "adjectif" }
     ]
   },
   {
+    id: 6,
     text: "Je nage très vite.",
     words: [
       { word: "Je", type: "pronom" },
@@ -76,19 +84,28 @@ export const phrases = [
   }
 ];
 
-// Fonction pour ajouter une phrase avec les types manuellement définis
+let phraseIdCounter = phrases.length > 0 ? Math.max(...phrases.map(p => p.id)) + 1 : 1;
+
 export function addPhraseWithTypes(phraseText: string, wordTypes: { [key: string]: string }): void {
-  const words = phraseText.split(' ').map((word: string, index: number) => {
-    // On récupère le type du mot selon l'index
-    const type = wordTypes[word] || 'autre'; // Si aucun type n'est trouvé, le type sera "autre"
-    return { word, type };
-  });
+  const words = phraseText.split(' ').map(word => ({
+    word,
+    type: wordTypes[word] || 'autre'
+  }));
 
   const newPhrase: Phrase = {
+    id: phraseIdCounter++,
     text: phraseText,
-    words: words
+    words
   };
 
-  phrases.push(newPhrase); // Ajouter la nouvelle phrase au tableau des phrases
+  phrases.push(newPhrase);
   console.log('Phrase ajoutée:', newPhrase);
+}
+
+// 🔥 Fonction pour supprimer une phrase par son id
+export function removePhraseById(id: number) {
+  const index = phrases.findIndex(p => p.id === id);
+  if (index !== -1) {
+    phrases.splice(index, 1);
+  }
 }

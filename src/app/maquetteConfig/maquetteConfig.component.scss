@@ -526,4 +526,36 @@ button:hover {
     font-weight: bold;
     margin-right: 5px;
   }
+
+  .MaquetteConfig .student-item {
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .MaquetteConfig .student-item.selected {
+    background-color: #e8f0ff;
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+    border-left: 4px solid var(--primary);
+  }
+
+  .MaquetteConfig .student-expanded {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text);
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px dashed var(--primary);
+  }
+
+  .MaquetteConfig .student-expanded {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
 }

@@ -6,8 +6,8 @@
         <span>MusiMots</span>
       </div>
       <nav>
-        <button (click)="lancerLeJeu()" class="btn btn-lightblue">🎮 Lancer le jeu</button>
-        <button class="btn btn-lightblue">Résultats</button>
+        <button (click)="goToJeu()" class="btn btn-lightblue">🎮 Lancer le jeu</button>
+        <button (click)="goToRes()" class="btn btn-lightblue">📊 Résultats</button>
       </nav>
       <div class="user-profile">
         <div class="user-avatar">L</div>
@@ -20,7 +20,7 @@
 
     <h2>Configuration</h2>
 
-    <!-- Section pour ajouter une nouvelle phrase -->
+    <!-- Section d’ajout de phrase -->
     <div class="add-phrase-section">
       <h3>Ajouter une Phrase</h3>
       <form [formGroup]="addPhraseForm" (ngSubmit)="addPhrase()">
@@ -32,17 +32,20 @@
       </form>
     </div>
 
-    <!-- Bouton pour afficher/masquer les phrases -->
-    <button (click)="togglePhrases()" class="btn btn-lightblue">Voir les phrases</button>
+    <!-- Toggle affichage phrases -->
+    <button (click)="togglePhrases()" class="btn btn-lightblue">
+      {{ showPhrases ? 'Masquer les phrases' : 'Voir les phrases' }}
+    </button>
 
     <!-- Liste des phrases -->
-    <div *ngIf="showPhrases">
+    <div *ngIf="showPhrases" class="phrases-list">
       <div *ngFor="let phrase of phrases" class="phrase">
         <p>
-      <span *ngFor="let word of phrase.words" [ngStyle]="{'color': getColorForType(word.type)}">
-        {{ word.word }}
-      </span>
+          <span *ngFor="let word of phrase.words" [ngStyle]="{'color': getColorForType(word.type)}">
+            {{ word.word }}
+          </span>
         </p>
+        <button (click)="deletePhrase(phrase.id)" class="btn btn-danger">🗑️ Supprimer</button>
       </div>
     </div>
 
@@ -50,18 +53,42 @@
     <div class="card">
       <div class="card-header">
         <div class="card-title">Liste des participants</div>
+        <button class="btn btn-lightblue" (click)="ouvrirPopup()">➕ Ajouter un étudiant</button>
       </div>
 
-      <!-- Liste des étudiants sans cases à cocher -->
       <ul class="student-list">
-        <li *ngFor="let student of studentsList" class="student-item" (click)="selectStudent(student)">
+        <li *ngFor="let student of studentsList" class="student-item" (click)="voirDetails(student)">
           <div class="student-avatar">{{ student.nom.charAt(0) }}</div>
           <div class="student-details">
             <div class="student-name">{{ student.nom }}</div>
             <div class="student-info">{{ student.age }} ans - Niveau {{ student.niveau }}</div>
           </div>
+          <button class="btn btn-danger btn-sm" (click)="supprimerEtudiant(student); $event.stopPropagation()">Supprimer</button>
         </li>
       </ul>
     </div>
+  </div>
+
+  <!-- Popup ajout étudiant -->
+  <div class="popup" *ngIf="popupVisible">
+    <h3>Ajouter un étudiant</h3>
+    <form [formGroup]="parcourForm" (ngSubmit)="ajouterEtudiant()">
+      <label>Nom :
+        <input formControlName="eleve" />
+      </label>
+      <label>Âge :
+        <input type="number" formControlName="age" />
+      </label>
+      <label>Niveau :
+        <input type="number" formControlName="niveau" />
+      </label>
+      <label>Description :
+        <input formControlName="description" />
+      </label>
+      <div class="actions">
+        <button type="submit" class="btn btn-lightblue">Ajouter</button>
+        <button type="button" class="btn btn-grey" (click)="fermerPopup()">Annuler</button>
+      </div>
+    </form>
   </div>
 </div>
