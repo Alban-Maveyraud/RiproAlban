@@ -32,6 +32,12 @@
                   (click)="removeWordFromAnswer(i)">
               {{ word.text }}
             </span>
+              <!-- Bouton point (visible seulement si dotEnd est false) -->
+            <button *ngIf="!config.dotEnd && selectedWords.length > 0"
+                class="word-chip dot-button"
+                (click)="addDotToAnswer()">
+                .
+            </button>
           </div>
         <div class="word-bank">
             <button *ngFor="let word of availableWords"
