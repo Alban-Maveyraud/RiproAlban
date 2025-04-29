@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Etudiant</title>
+</head>
+<body>
+<button (click)="goToConfig()">Admin</button>
+<div *ngIf="student">
+  <h2>Détails de {{ student.nom }}</h2>
+  <p>Âge : {{ student.age }}</p>
+  <p>Niveau : {{ student.niveau }}</p>
+  <p>Description : {{ student.description }}</p>
+
+  <div *ngFor="let stat of statsHistory" class="phrase-stat fade-in-up">
+    <h3>📚 Partie précédente</h3>
+    <ul>
+      <li>👂 Écoutes effectuées : {{ stat.listenCount }}</li>
+      <li>❌ Total d'erreurs : {{ stat.totalErrors }}</li>
+      <li>📏 Mots longs mal écrits : {{ stat.longWordErrors }}</li>
+      <li>🔤 Erreurs de verbes : {{ stat.verbErrors }}</li>
+      <li>🧱 Erreurs de noms : {{ stat.nounErrors }}</li>
+      <li>🎨 Erreurs d'adjectifs : {{ stat.adjectiveErrors }}</li>
+      <li>🧩 Erreurs de déterminants : {{ stat.determinantErrors }}</li>
+      <li>🧷 Erreurs de ponctuation : {{ stat.punctuationErrors }}</li>
+      <li>✍️ Réécritures ratées : {{ stat.rewriteErrors }}</li>
+      <li>
+        🧾 Mots mal réécrits :
+        <ul *ngIf="stat.wrongRewriteWords.length > 0; else noWrongWordsHist">
+          <li *ngFor="let word of stat.wrongRewriteWords">{{ word }}</li>
+        </ul>
+        <ng-template #noWrongWordsHist>
+          <em>Aucun</em>
+        </ng-template>
+      </li>
+    </ul>
+    <small>🕒 {{ formatDate(stat.date) }}</small>
+    <hr>
+  </div>
+</div>
+</body>
+</html>

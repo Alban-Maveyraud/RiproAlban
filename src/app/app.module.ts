@@ -15,6 +15,7 @@ import { JeuVoitureComponent } from './jeu-voiture/jeu-voiture.component';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { JeuPhraseComponent } from './jeu-phrase/jeu-phrase.component';
 import { StatsDisplayComponent } from './stats-display/stats-display.component';
+import { EtudiantDetailsComponent } from './etudiantPageInfo/maquetteEtudiant.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'statistique', component: StatsDisplayComponent },
   { path: 'res', component: MaquetteResultatComponent},
   { path: 'jeu-voiture', component: JeuVoitureComponent },
-  { path: 'jeu-phrase', component: JeuPhraseComponent }
+  { path: 'jeu-phrase', component: JeuPhraseComponent },
+  { path: 'etudiant/:id', component: EtudiantDetailsComponent }
 ];
 
 @NgModule({
@@ -39,7 +41,8 @@ const routes: Routes = [
     JeuVoitureComponent,
     SafeUrlPipe,
     JeuPhraseComponent,
-    StatsDisplayComponent
+    StatsDisplayComponent,
+    EtudiantDetailsComponent
   ],
   imports: [
     BrowserModule,

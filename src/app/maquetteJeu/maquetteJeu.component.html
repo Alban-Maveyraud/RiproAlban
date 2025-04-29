@@ -12,6 +12,7 @@
           <div class="user-role">Niveau {{ participant.niveau }}</div>
         </div>
       </div>
+      <button (click)="goToAdmin()">Admin</button>
     </header>
 
     <h2>🚦 Prêt pour la course {{ participant?.nom || '...' }} ?</h2>

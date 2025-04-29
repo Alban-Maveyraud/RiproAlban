@@ -147,7 +147,8 @@ export class MaquetteConfigComponent implements OnInit {
   }
 
   voirDetails(student: Student) {
-    this.selectedStudent = student;
+    this.studentService.setCurrentStudent(student);
+    this.router.navigate(['/etudiant', student.id]);
   }
 
   fermerDetails() {

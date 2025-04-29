@@ -55,4 +55,13 @@ export class MaquetteJeuComponent implements OnInit {
       this.router.navigate(['/jeu-voiture']);
     }, 3000);
   }
+
+  goToAdmin() {
+    const password = prompt('Entrez le mot de passe admin :');
+    if (password === 'caca') {
+      this.router.navigate(['/config']);
+    } else {
+      alert('Mot de passe incorrect !');
+    }
+  }
 }
