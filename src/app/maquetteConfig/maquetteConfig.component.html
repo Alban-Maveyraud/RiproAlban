@@ -10,16 +10,16 @@
         <button (click)="goToRes()" class="btn btn-lightblue">📊 Résultats</button>
       </nav>
     </header>
-
     <h2>Configuration</h2>
+    <button (click)="toggleConfig()" class="btn btn-secondary" style="margin-bottom: 10px;">
+      ⚙️ Paramètres avancés
+    </button>
+  
     <div
   *ngIf="showConfig"
   @fadeInOut
   class="config-panel"
 >
-<button (click)="toggleConfig()" class="btn btn-secondary" style="margin-bottom: 10px;">
-  ⚙️ Paramètres avancés
-</button>
 
   <h3>Panneau de Configuration</h3>
 
