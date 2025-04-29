@@ -121,6 +121,7 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
     // Ajoute le point final si dotEnd est true
     if (this.config.dotEnd && this.correctPhraseWords.length > 0) {
     this.correctPhraseWords[this.correctPhraseWords.length - 1].text += '.';
+    this.availableWords.push('.'); // Ajoute le point comme mot sélectionnable
   }
 
     this.correctSentence = this.correctPhraseWords.map(w => w.text).join(' ');
@@ -153,20 +154,20 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
       default: return 'other';
     }
   }
-  addDotToAnswer(): void {
-    if (this.selectedWords.length > 0) {
-      const lastWord = this.selectedWords[this.selectedWords.length - 1];
-      lastWord.text = lastWord.text.replace(/\.$/, '') + '.';
-    }
-  }
   validateAnswer(): void {
-    let answer = this.selectedWords.map(w => w.text).join(' ').trim();
+    // Construire la réponse en prenant en compte que le point peut être un élément séparé
+    let answer = this.selectedWords
+        .map(w => w.text === '.' ? '.' : w.text)
+        .join(' ')
+        .replace(/ \./g, '.') // Supprime l'espace avant le point
+        .trim();
+    
     let expected = this.correctSentence.trim();
     
     // Normalise en enlevant les points finaux pour la comparaison
     if (!this.config.dotEnd) {
-      answer = answer.replace(/\.$/, '');
-      expected = expected.replace(/\.$/, '');
+        answer = answer.replace(/\.$/, '');
+        expected = expected.replace(/\.$/, '');
     }
   
     if (answer === expected) {
