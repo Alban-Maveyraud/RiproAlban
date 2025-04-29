@@ -1,5 +1,6 @@
 <div class="MaquetteConfig">
   <div class="container">
+    <!-- HEADER -->
     <header>
       <div class="logo">
         <div class="logo-icon">🎵</div>
@@ -13,19 +14,61 @@
 
     <h2>Configuration</h2>
 
-    <!-- Section d’ajout de phrase -->
+    <!-- AJOUT PHRASE -->
     <div class="add-phrase-section">
       <h3>Ajouter une Phrase</h3>
+
+      <!-- Formulaire de saisie -->
       <form [formGroup]="addPhraseForm" (ngSubmit)="addPhrase()">
         <div class="form-group">
           <label for="phrase">Phrase</label>
           <input id="phrase" type="text" class="form-control" formControlName="phrase" placeholder="Entrez une phrase" />
         </div>
+
         <button type="submit" class="btn btn-lightblue" [disabled]="addPhraseForm.invalid">Ajouter la Phrase</button>
       </form>
+
+      <!-- Étape de choix du type pour chaque mot -->
+      <div *ngIf="showTypeSelection" class="type-selection">
+        <h4>Quel est le type de chaque mot dans : <em>{{ tempPhrase }}</em> ?</h4>
+        <div class="word-type" *ngFor="let tw of typedWords">
+          <strong>{{ tw.word }}</strong>
+          <select [(ngModel)]="tw.type" name="{{ tw.word }}">
+            <option value="déterminant">Déterminant</option>
+            <option value="nom">Nom</option>
+            <option value="verbe">Verbe</option>
+            <option value="adjectif">Adjectif</option>
+            <option value="adverbe">Adverbe</option>
+            <option value="préposition">Préposition</option>
+            <option value="pronom">Pronom</option>
+            <option value="nom propre">Nom propre</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <button class="btn btn-green" (click)="validerTypesEtContinuer()">✅ Valider et continuer</button>
+      </div>
+
+      <!-- Étape suivante : choix d’ajout d’audio -->
+      <div *ngIf="showAudioOptions" class="audio-choice">
+        <p>Souhaitez-vous enregistrer un audio pour : "<strong>{{ tempPhrase }}</strong>" ?</p>
+        <button class="btn btn-lightblue" (click)="prepareRecording()">🎙️ Oui</button>
+        <button class="btn btn-grey" (click)="envoyerPhraseSansAudio()">🚫 Non</button>
+      </div>
+
+      <!-- Zone d'enregistrement audio -->
+      <div *ngIf="showAudioRecording" class="form-group">
+        <label>Enregistrement audio</label>
+        <div class="audio-controls">
+          <button class="btn btn-lightblue" type="button" (click)="startRecording()" [disabled]="isRecording">🎙️ Démarrer</button>
+          <button class="btn btn-lightblue" type="button" (click)="stopRecording()" [disabled]="!isRecording">⏹️ Arrêter</button>
+          <button class="btn btn-green" type="button" (click)="uploadRecordedAudio(tempPhrase!)" [disabled]="!audioBlob">📤 Envoyer</button>
+        </div>
+
+        <audio *ngIf="audioBlob" controls [src]="audioPreviewUrl"></audio>
+      </div>
     </div>
 
-    <!-- Toggle affichage phrases -->
+    <!-- Toggle phrases -->
     <button (click)="togglePhrases()" class="btn btn-lightblue">
       {{ showPhrases ? 'Masquer les phrases' : 'Voir les phrases' }}
     </button>
@@ -38,6 +81,12 @@
             {{ word.word }}
           </span>
         </p>
+
+        <audio *ngIf="phrase.audioUrl" controls>
+          <source [src]="phrase.audioUrl" type="audio/mpeg" />
+          Votre navigateur ne supporte pas l'audio HTML5.
+        </audio>
+
         <button (click)="deletePhrase(phrase.id)" class="btn btn-danger">🗑️ Supprimer</button>
       </div>
     </div>
@@ -62,22 +111,14 @@
     </div>
   </div>
 
-  <!-- Popup ajout étudiant -->
+  <!-- POPUP AJOUT ÉTUDIANT -->
   <div class="popup" *ngIf="popupVisible">
     <h3>Ajouter un étudiant</h3>
     <form [formGroup]="parcourForm" (ngSubmit)="ajouterEtudiant()">
-      <label>Nom :
-        <input formControlName="eleve" />
-      </label>
-      <label>Âge :
-        <input type="number" formControlName="age" />
-      </label>
-      <label>Niveau :
-        <input type="number" formControlName="niveau" />
-      </label>
-      <label>Description :
-        <input formControlName="description" />
-      </label>
+      <label>Nom : <input formControlName="eleve" /></label>
+      <label>Âge : <input type="number" formControlName="age" /></label>
+      <label>Niveau : <input type="number" formControlName="niveau" /></label>
+      <label>Description : <input formControlName="description" /></label>
       <div class="actions">
         <button type="submit" class="btn btn-lightblue">Ajouter</button>
         <button type="button" class="btn btn-grey" (click)="fermerPopup()">Annuler</button>

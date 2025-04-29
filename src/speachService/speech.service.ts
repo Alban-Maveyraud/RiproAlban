@@ -39,3 +39,4 @@ export class SpeechService {
     return this.isSupported;
   }
 }
+
