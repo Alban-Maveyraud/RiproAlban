@@ -27,6 +27,13 @@ export class MaquetteJeuComponent implements OnInit {
       this.students = students;
     });
   }
+  quitter(): void {
+    this.router.navigate(['']); // adapte cette route si besoin
+  }
+
+  goToAdmin(): void {
+    this.router.navigate(['config']); // adapte cette route aussi
+  }
 
   onParticipantSelected(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -54,14 +61,5 @@ export class MaquetteJeuComponent implements OnInit {
       this.showAnimation = false;
       this.router.navigate(['/jeu-voiture']);
     }, 3000);
-  }
-
-  goToAdmin() {
-    const password = prompt('Entrez le mot de passe admin :');
-    if (password === 'caca') {
-      this.router.navigate(['/config']);
-    } else {
-      alert('Mot de passe incorrect !');
-    }
   }
 }

@@ -35,6 +35,12 @@
         🚀 Démarrer la course
       </button>
     </div>
+    <div class="start-button-container" *ngIf="!raceStarted" style="text-align: center; margin: 20px;">
+      <button (click)="quitter()" class="btn btn-secondary" style="margin-left: 10px;">
+        ❌ Quitter
+      </button>
+    </div>
+    
 
     <!-- Animation au lancement -->
     <div *ngIf="showAnimation" class="launch-animation">
