@@ -13,6 +13,17 @@
     </header>
 
     <h2>Configuration</h2>
+    <button (click)="toggleConfig()" class="btn btn-secondary" style="margin-bottom: 10px;">
+      ⚙️ Paramètres avancés
+    </button>
+
+    <div
+  *ngIf="showConfig"
+  @fadeInOut
+  class="config-panel"
+>
+
+  <h3>Panneau de Configuration</h3>
 
     <!-- AJOUT PHRASE -->
     <div class="add-phrase-section">
@@ -24,7 +35,6 @@
           <label for="phrase">Phrase</label>
           <input id="phrase" type="text" class="form-control" formControlName="phrase" placeholder="Entrez une phrase" />
         </div>
-
         <button type="submit" class="btn btn-lightblue" [disabled]="addPhraseForm.invalid">Ajouter la Phrase</button>
       </form>
 
