@@ -27,6 +27,13 @@ export class MaquetteJeuComponent implements OnInit {
       this.students = students;
     });
   }
+  quitter(): void {
+    this.router.navigate(['']); // adapte cette route si besoin
+  }
+
+  goToAdmin(): void {
+    this.router.navigate(['config']); // adapte cette route aussi
+  }
 
   onParticipantSelected(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -55,10 +62,4 @@ export class MaquetteJeuComponent implements OnInit {
       this.router.navigate(['/jeu-voiture']);
     }, 3000);
   }
-  
-  quitter(): void {
-    this.router.navigate(['']);
-  }
-  
-
 }
