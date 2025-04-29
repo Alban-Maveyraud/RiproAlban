@@ -628,24 +628,39 @@
     });
 
     function reset(options) {
-      options       = options || {};
-      canvas.width  = width  = Util.toInt(options.width,          width);
-      canvas.height = height = Util.toInt(options.height,         height);
-      lanes                  = Util.toInt(options.lanes,          lanes);
-      roadWidth              = Util.toInt(options.roadWidth,      roadWidth);
-      cameraHeight           = Util.toInt(options.cameraHeight,   cameraHeight);
-      drawDistance           = Util.toInt(options.drawDistance,   drawDistance);
-      fogDensity             = Util.toInt(options.fogDensity,     fogDensity);
-      fieldOfView            = Util.toInt(options.fieldOfView,    fieldOfView);
-      segmentLength          = Util.toInt(options.segmentLength,  segmentLength);
-      rumbleLength           = Util.toInt(options.rumbleLength,   rumbleLength);
-      cameraDepth            = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
-      playerZ                = (cameraHeight * cameraDepth);
-      resolution             = height/480;
-      refreshTweakUI();
+      options = options || {};
 
-      if ((segments.length==0) || (options.segmentLength) || (options.rumbleLength))
-        resetRoad(); // only rebuild road when necessary
+      // dimensions canvas
+      canvas.width  = width  = Util.toInt(options.width,  width);
+      canvas.height = height = Util.toInt(options.height, height);
+
+      // réglages du jeu
+      lanes         = Util.toInt(options.lanes,         lanes);
+      roadWidth     = Util.toInt(options.roadWidth,     roadWidth);
+      cameraHeight  = Util.toInt(options.cameraHeight,  cameraHeight);
+      drawDistance  = Util.toInt(options.drawDistance,  drawDistance);
+      fogDensity    = Util.toInt(options.fogDensity,    fogDensity);
+      fieldOfView   = Util.toInt(options.fieldOfView,   fieldOfView);
+      segmentLength = Util.toInt(options.segmentLength, segmentLength);
+      rumbleLength  = Util.toInt(options.rumbleLength,  rumbleLength);
+
+      // calculs dérivés
+      cameraDepth = 1 / Math.tan((fieldOfView/2) * Math.PI/180);
+      playerZ     = cameraHeight * cameraDepth;
+      resolution  = height / 480;
+
+      // on génère la route si elle est vide ou forcée
+      if (segments.length === 0 || options.segmentLength || options.rumbleLength)
+        resetRoad();
+
+      // calcul de la longueur de la route (important pour spawn aléatoire)
+      trackLength = segments.length * segmentLength;
+
+      // 💥 Nouvelle position de départ du joueur : spawn aléatoire
+      position = Math.random() * (trackLength - playerZ - 1);
+
+      // recharge les valeurs de l'UI
+      refreshTweakUI();
     }
 
     //=========================================================================
