@@ -44,6 +44,7 @@
                     class="word-chip"
                     [class.word-verb]="config.colorTypes && getWordType(word) === 'verb'"
                     [class.word-noun]="config.colorTypes && getWordType(word) === 'noun'"
+                    [class.word-pronoun]="config.colorTypes && getWordType(word) === 'pronoun'"
                     [class.word-adjective]="config.colorTypes && getWordType(word) === 'adjective'"
                     [class.word-determiner]="config.colorTypes && getWordType(word) === 'determiner'"
                     [class.word-long]="config.colorTypes && getWordType(word) === 'longWord'"

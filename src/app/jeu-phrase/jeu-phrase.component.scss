@@ -212,6 +212,12 @@
     color: #4a148c;
     &:hover { background-color: #ce93d8; }
   }
+  &.pronoun {
+    background-color: #ffccbc;
+    color: #e65100;
+    &:hover { background-color: #ffab91; }
+  }
+
 
   &:hover {
     transform: translateY(-2px);

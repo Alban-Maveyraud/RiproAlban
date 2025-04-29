@@ -13,12 +13,15 @@ import { ConfigService } from '../config/config.service'; // <<< Ajout
 interface Word {
   text: string;
   selected: boolean;
-  type?: 'verb' | 'adjective' | 'noun' | 'determiner' | 'other' | 'longWord';
+  type?: 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' | 'other' | 'longWord';
 }
 interface ConfigOptions {
   rewrite: boolean;
   dotEnd: boolean;
   colorTypes: boolean;
+  soundEnabled: boolean;
+  difficultyLevel: number;
+  fontSize: number;
 }
 @Component({
   selector: 'app-jeu-phrase',
@@ -53,6 +56,7 @@ export class JeuPhraseComponent implements OnInit {
     private speechService: SpeechService,
     private configService: ConfigService
   ) {}
+
   // Ajoutez cette propriété à votre composant
 readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   'verb': { bg: '#FFCDD2', text: '#B71C1C' },      // Rouge
@@ -60,10 +64,13 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   'adjective': { bg: '#BBDEFB', text: '#0D47A1' }, // Bleu
   'determiner': { bg: '#FFF9C4', text: '#F57F17' },// Jaune
   'longWord': { bg: '#E1BEE7', text: '#4A148C' },  // Violet
+  'pronoun': { bg: '#FFAB91', text: '#BF360C' }, // Orange
   'other': { bg: '#F5F5F5', text: '#212121' }     // Gris (par défaut)
 };
   ngOnInit(): void {
-    this.config = this.configService.getConfig();
+    this.configService.getConfig().subscribe(config => {
+      this.config = config;
+    });
     const student = this.studentService.getCurrentStudent();
 
     if (student) {
@@ -83,6 +90,8 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
         return 'word-verb';
       case 'noun':
         return 'word-noun';
+      case 'pronoun':
+        return 'word-pronoun';
       case 'adjective':
         return 'word-adjective';
       case 'determiner':
@@ -133,11 +142,12 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   };
 }
 
-  mapType(type: string): 'verb' | 'adjective' | 'noun' | 'determiner' | 'other' | 'longWord' {
+  mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' | 'other' | 'longWord' {
     switch (type) {
       case 'verbe': return 'verb';
       case 'adjectif': return 'adjective';
       case 'nom': return 'noun';
+      case 'pronom': return 'pronoun';
       case 'déterminant': return 'determiner';
       case 'longMot': return 'longWord';
       default: return 'other';
