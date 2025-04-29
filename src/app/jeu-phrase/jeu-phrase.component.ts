@@ -95,26 +95,30 @@ export class JeuPhraseComponent implements OnInit {
     }
   }
 
-  validateAnswer() {
-    const correctWords = this.correctPhraseWords.map(w => w.text);
-    const userWords = this.getDisplayWords().map(w => w.text);
-
-    if (this.arraysEqual(correctWords, userWords)) {
+  validateAnswer(): void {
+    const answer = this.selectedWords.map(w => w.text).join(' ').trim();
+    const expected = this.correctSentence.trim();
+  
+    if (answer === expected) {
       this.isAnswerValid = true;
-      this.validationMessage = '✅ Bravo, bonne réponse !';
+      this.validationMessage = '✅ Bonne réponse !';
+  
+      if (!this.config.rewrite) {
+        this.finalValidationDone = true;
+        this.validationMessage = '✅ Bonne réponse ! Passage au jeu de voiture...';
+  
+        setTimeout(() => {
+          this.gameStateService.refillFuel();
+          this.router.navigate(['/jeu-voiture']);
+        }, 1500); // petit délai pour laisser lire le message
+      }
     } else {
       this.isAnswerValid = false;
-      this.validationMessage = '❌ Désolé, ce n\'est pas encore correct.';
-      this.currentStudent.currentSession.rewriteErrors++;
-
-      // Analyse des erreurs
-      userWords.forEach((word, index) => {
-        if (word !== correctWords[index]) {
-          this.trackWordError(word);
-        }
-      });
+      this.validationMessage = '❌ Ce n\'est pas tout à fait ça. Réessaie !';
+      this.currentStudent.currentSession.totalErrors++;
     }
   }
+  
 
   trackWordError(word: string) {
     const wordInfo = this.correctPhraseWords.find(w => w.text === word);

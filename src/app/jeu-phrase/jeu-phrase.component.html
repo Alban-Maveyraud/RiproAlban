@@ -47,7 +47,8 @@
             <button class="btn btn-secondary" (click)="resetAnswer()">↩️ Réinitialiser</button>
             <button class="btn btn-success" (click)="validateAnswer()">✅ Valider</button>
         </div>
-        <div *ngIf="isAnswerValid && !finalValidationDone" class="final-input-section">
+        <div *ngIf="isAnswerValid && !finalValidationDone && config.rewrite" class="final-input-section">
+
             <h3>Bravo ! Maintenant, écris la phrase pour valider définitivement :</h3>
             <input type="text"
                    [(ngModel)]="typedAnswer"
@@ -66,7 +67,7 @@
             </div>
         </div>
 
-        <div *ngIf="finalValidationDone" class="final-success">
+        <div *ngIf="finalValidationDone && config.rewrite" class="final-success">
             <h2>🎉 Bravo ! Phrase validée !</h2>
         </div>
     </main>
