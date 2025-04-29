@@ -4,11 +4,22 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService, Student } from '../student/student.service';
 import { phrases } from '../../assets/phrasesTS';
 import { addPhraseWithTypes, removePhraseById } from '../../assets/phrasesTS';
-
+import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-maquetteConfig',
   templateUrl: './maquetteConfig.component.html',
-  styleUrls: ['./maquetteConfig.component.scss']
+  styleUrls: ['./maquetteConfig.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
+    ])
+  ]
 })
 export class MaquetteConfigComponent implements OnInit {
   parcourForm!: FormGroup;
@@ -22,6 +33,18 @@ export class MaquetteConfigComponent implements OnInit {
   selectedStudent: Student | null = null;
 
   phrases = phrases;
+
+  showConfig = false;
+
+  config = {
+    rewrite: true,
+    dotEnd: false,
+    colorTypes: true
+  };
+
+  toggleConfig(): void {
+    this.showConfig = !this.showConfig;
+  }
 
   constructor(
     private router: Router,

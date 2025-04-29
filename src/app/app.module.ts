@@ -17,6 +17,7 @@ import { JeuPhraseComponent } from './jeu-phrase/jeu-phrase.component';
 import { StatsDisplayComponent } from './stats-display/stats-display.component';
 import { EtudiantDetailsComponent } from './etudiantPageInfo/maquetteEtudiant.component';
 
+
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'jeu', component: MaquetteJeuComponent },

@@ -12,6 +12,28 @@
     </header>
 
     <h2>Configuration</h2>
+    <div
+  *ngIf="showConfig"
+  @fadeInOut
+  class="config-panel"
+>
+  <h3>Panneau de Configuration</h3>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="config.rewrite" />
+    Réécriture des phrases
+  </label>
+  <br />
+  <label>
+    <input type="checkbox" [(ngModel)]="config.dotEnd" />
+    Point à la fin du dernier mot
+  </label>
+  <br />
+  <label>
+    <input type="checkbox" [(ngModel)]="config.colorTypes" />
+    Colorisation des types de mots
+  </label>
+</div>
 
     <!-- Section d’ajout de phrase -->
     <div class="add-phrase-section">
