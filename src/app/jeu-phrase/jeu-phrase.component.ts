@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { phrases } from '../../assets/phrasesTS';
 import { StudentService, Student, GameSessionStats } from '../student/student.service'; // <<< Ajout
 import { ActivatedRoute } from '@angular/router';
+import { SpeechService } from '../../speachService/speech.service';
 
 
 interface Word {
@@ -40,7 +41,8 @@ export class JeuPhraseComponent implements OnInit {
     private gameStateService: GameStateService,
     private studentService: StudentService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private speechService: SpeechService
   ) {}
 
   ngOnInit(): void {
@@ -187,18 +189,15 @@ export class JeuPhraseComponent implements OnInit {
 
   playSentence(): void {
     this.currentStudent.currentSession.listenCount++;
+
     if (this.listenStartTime) {
-      // Deuxième écoute → pauseCount++
       this.listenStartTime = null;
     } else {
       this.listenStartTime = new Date();
     }
 
     const phrase = this.correctPhraseWords.map(w => w.text).join(' ');
-    const utterance = new SpeechSynthesisUtterance(phrase);
-    utterance.lang = 'fr-FR';
-    utterance.onend = () => (this.listenStartTime = null);
-    speechSynthesis.speak(utterance);
+    this.speechService.speak(phrase);
   }
 
   addWordToAnswer(word: string): void {
@@ -243,7 +242,7 @@ export class JeuPhraseComponent implements OnInit {
   goToRes() {
     this.gameStateService.resetTour();
     this.gameStateService.refillFuel();
-    
+
     if (this.currentStudent) {
       this.studentService.saveCurrentSessionToHistory(this.currentStudent);
     } else {
