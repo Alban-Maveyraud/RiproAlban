@@ -13,32 +13,6 @@
     </header>
 
     <h2>Configuration</h2>
-    <div
-  *ngIf="showConfig"
-  @fadeInOut
-  class="config-panel"
->
-<button (click)="toggleConfig()" class="btn btn-secondary" style="margin-bottom: 10px;">
-  ⚙️ Paramètres avancés
-</button>
-
-  <h3>Panneau de Configuration</h3>
-
-  <label>
-    <input type="checkbox" [(ngModel)]="config.rewrite" />
-    Réécriture des phrases
-  </label>
-  <br />
-  <label>
-    <input type="checkbox" [(ngModel)]="config.dotEnd" />
-    Point à la fin du dernier mot
-  </label>
-  <br />
-  <label>
-    <input type="checkbox" [(ngModel)]="config.colorTypes" />
-    Colorisation des types de mots
-  </label>
-</div>
 
     <!-- AJOUT PHRASE -->
     <div class="add-phrase-section">
