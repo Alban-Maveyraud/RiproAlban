@@ -12,7 +12,7 @@ export const phrases = [
   {
     text: "Le chat dort sous le soleil.",
     words: [
-      { word: "Le", type: "déterminant" },
+      { word: "Le", type: "determinant" },
       { word: "chat", type: "nom" },
       { word: "dort", type: "verbe" },
       { word: "sous", type: "préposition" },
@@ -23,7 +23,7 @@ export const phrases = [
   {
     text: "La voiture rouge roule vite.",
     words: [
-      { word: "La", type: "déterminant" },
+      { word: "La", type: "determinant" },
       { word: "voiture", type: "nom" },
       { word: "rouge", type: "adjectif" },
       { word: "roule", type: "verbe" },
@@ -33,7 +33,7 @@ export const phrases = [
   {
     text: "Le livre est sur la table.",
     words: [
-      { word: "Le", type: "déterminant" },
+      { word: "Le", type: "determinant" },
       { word: "livre", type: "nom" },
       { word: "est", type: "verbe" },
       { word: "sur", type: "préposition" },
@@ -46,12 +46,12 @@ export const phrases = [
     words: [
       { word: "Alban", type: "nom propre" },
       { word: "est", type: "verbe" },
-      { word: "le", type: "déterminant" },
+      { word: "le", type: "determinant" },
       { word: "plus", type: "adverbe" },
       { word: "gros", type: "adjectif" },
       { word: "neuille", type: "nom" },
       { word: "de", type: "préposition" },
-      { word: "la", type: "déterminant" },
+      { word: "la", type: "determinant" },
       { word: "terre", type: "nom" }
     ]
   },
@@ -60,7 +60,7 @@ export const phrases = [
     words: [
       { word: "Je", type: "pronom" },
       { word: "mange", type: "verbe" },
-      { word: "un", type: "déterminant" },
+      { word: "un", type: "determinant" },
       { word: "tacos", type: "nom" },
       { word: "succulent", type: "adjectif" },
     ]
@@ -71,7 +71,7 @@ export const phrases = [
       { word: "Je", type: "pronom" },
       { word: "nage", type: "verbe" },
       { word: "très", type: "adverbe" },
-      { word: "vite", type: "adverbe" }
+      { word: "vite", type: "adjectif" }
     ]
   }
 ];

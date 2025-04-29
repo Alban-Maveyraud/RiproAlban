@@ -137,9 +137,11 @@ export class JeuPhraseComponent implements OnInit {
     this.currentStudent.currentSession.totalErrors++;
   }
 
-  validateTypedAnswer() {
+  validateTypedAnswer(): void {
     const expected = this.correctSentence.trim();
-    if (this.typedAnswer.trim() === expected) {
+    const typed = this.typedAnswer.trim();
+
+    if (typed === expected) {
       this.typedValidationMessage = '✅ Bien joué, phrase correctement recopiée !';
       this.typedAnswerIsCorrect = true;
       this.finalValidationDone = true;
@@ -151,6 +153,23 @@ export class JeuPhraseComponent implements OnInit {
       this.typedAnswerIsCorrect = false;
       this.currentStudent.currentSession.rewriteErrors++;
       this.currentStudent.currentSession.totalErrors++;
+
+      // ➕ Extraire les mots mal recopiés
+      const expectedWords = expected.split(/\s+/);
+      const typedWords = typed.split(/\s+/);
+
+      const wrongWords: string[] = [];
+
+      for (let i = 0; i < Math.max(expectedWords.length, typedWords.length); i++) {
+        const expectedWord = expectedWords[i] ?? '';
+        const typedWord = typedWords[i] ?? '';
+
+        if (expectedWord !== typedWord && typedWord !== '') {
+          wrongWords.push(typedWord);
+        }
+      }
+      // ➕ Ajouter à l'historique de session
+      this.currentStudent.currentSession.wrongRewriteWords.push(...wrongWords);
     }
   }
 

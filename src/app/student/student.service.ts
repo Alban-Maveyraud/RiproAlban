@@ -140,15 +140,11 @@ export class StudentService {
       console.error('Aucun étudiant fourni à saveCurrentSessionToHistory()');
       return;
     }
-
     // Clone proprement la session actuelle pour éviter les effets de bord
     const sessionCopy: GameSessionStats = { ...student.currentSession, date: new Date() };
 
     // Ajoute au début de l'historique pour avoir les dernières parties en haut (optionnel)
     student.history.unshift(sessionCopy);
-
-    // Réinitialise la session actuelle
-    student.currentSession = this.createEmptySession();
   }
 
   clearStudentHistory(student: Student): void {
@@ -159,5 +155,13 @@ export class StudentService {
 
     student.history = [];
     student.currentSession = this.createEmptySession(); // On reset aussi la session actuelle pour être propre
+  }
+
+  resetCurrentSession(student: Student): void {
+    if (!student) {
+      console.error('Aucun étudiant fourni à resetCurrentSession()');
+      return;
+    }
+    student.currentSession = this.createEmptySession();
   }
 }

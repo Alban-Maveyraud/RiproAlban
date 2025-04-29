@@ -47,6 +47,9 @@ export class MaquetteJeuComponent implements OnInit {
     this.gameStateService.setParticipant(this.participant);
     this.studentService.setCurrentStudent(this.participant);
 
+    // 💥 Réinitialise la session actuelle du participant sélectionné
+    this.studentService.resetCurrentSession(this.participant);
+
     setTimeout(() => {
       this.showAnimation = false;
       this.router.navigate(['/jeu-voiture']);

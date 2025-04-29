@@ -9,6 +9,7 @@ import { StudentService, Student, GameSessionStats } from '../student/student.se
 })
 export class StatsDisplayComponent implements OnInit {
   selectedStudent!: Student;
+  currentSession!: GameSessionStats;
   statsHistory: GameSessionStats[] = [];
 
   constructor(private router: Router, private studentService: StudentService) {}
@@ -18,17 +19,16 @@ export class StatsDisplayComponent implements OnInit {
 
     if (currentStudent) {
       this.selectedStudent = currentStudent;
-      // 🔥 On récupère l'historique correctement
+      this.currentSession = this.studentService.getCurrentSession(currentStudent);
       this.statsHistory = this.studentService.getStudentHistory(currentStudent);
     } else {
       console.error('Aucun étudiant sélectionné');
-      this.router.navigate(['/jeu']); // Sécurité au cas où
+      this.router.navigate(['/jeu']); // Redirection sécurité
     }
   }
 
-  // 🧠 Total des erreurs sur UNE session
   getTotalErrors(stat: GameSessionStats): number {
-    return (stat.totalErrors || 0);
+    return stat.totalErrors || 0;
   }
 
   getErrorByType(stat: GameSessionStats, type: 'verbErrors' | 'nounErrors' | 'adjectiveErrors' | 'determinantErrors' | 'longWordErrors' | 'punctuationErrors' | 'rewriteErrors'): number {
@@ -43,7 +43,6 @@ export class StatsDisplayComponent implements OnInit {
     return stat.rewriteErrors || 0;
   }
 
-  // Format de date joli
   formatDate(timestamp: Date | string): string {
     const date = new Date(timestamp);
     return date.toLocaleString('fr-FR', {
