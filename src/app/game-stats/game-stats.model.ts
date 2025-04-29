@@ -1,11 +1,14 @@
-// game-stats.model.ts
 export interface GameStats {
-  phrase: string;
-  listenStats: {
+  rewriteEnabled: boolean;
+  dotAtEnd: boolean;
+  colorizeTypes: boolean;
+
+  phrase?: string;
+  listenStats?: {
     listenCount: number;
     pauseCount: number;
   };
-  reconstructionStats: {
+  reconstructionStats?: {
     startTime: Date;
     endTime?: Date;
     attempts: number;
@@ -24,8 +27,8 @@ export interface GameStats {
     }[];
     listenCountBeforeWriting: number;
   };
-  finalScore: number;
-  difficultyAdjustments: {
+  finalScore?: number;
+  difficultyAdjustments?: {
     suggested: string[];
     applied: string[];
   };

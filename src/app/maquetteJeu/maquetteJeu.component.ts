@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService, Student } from '../student/student.service';
 import { Router } from '@angular/router';
 import { GameStateService } from '../game-state.service'; // ⚡ ajouter GameStateService
-
+import { GameStats } from '../game-stats/game-stats.model'; // ⚡ ajouter GameStats
 @Component({
   selector: 'app-maquette-jeu',
   templateUrl: './maquetteJeu.component.html',
@@ -15,6 +15,13 @@ export class MaquetteJeuComponent implements OnInit {
   showAnimation = false;
   showGame = false;
   raceStarted = false;
+  
+  config = {
+    rewrite: false,
+    dotEnd: false,
+    colorTypes: false
+  };
+  
 
   constructor(
       private studentService: StudentService,
@@ -25,6 +32,26 @@ export class MaquetteJeuComponent implements OnInit {
   ngOnInit() {
     this.studentService.getStudents().subscribe((students) => {
       this.students = students;
+      const stats: GameStats = {
+        rewriteEnabled: this.config.rewrite,
+        dotAtEnd: this.config.dotEnd,
+        colorizeTypes: this.config.colorTypes,
+        phrase: '',
+        listenStats: {
+          listenCount: 0,
+          pauseCount: 0
+        },
+        reconstructionStats: {
+          startTime: new Date(),
+          attempts: 0,
+          misplacedWords: []
+        },
+        finalScore: 0,
+        difficultyAdjustments: {
+          suggested: [],
+          applied: []
+        }
+      };
     });
   }
   quitter(): void {
@@ -61,5 +88,16 @@ export class MaquetteJeuComponent implements OnInit {
       this.showAnimation = false;
       this.router.navigate(['/jeu-voiture']);
     }, 3000);
+  }
+  appliquerConfiguration(): void {
+    const stats: GameStats = {
+      rewriteEnabled: this.config.rewrite,
+      dotAtEnd: this.config.dotEnd,
+      colorizeTypes: this.config.colorTypes
+      // + autres propriétés par défaut si nécessaire
+    };
+  
+    console.log('Configuration enregistrée dans les stats :', stats);
+    // this.statsService.update(stats); // Exemple si tu veux envoyer vers un service
   }
 }

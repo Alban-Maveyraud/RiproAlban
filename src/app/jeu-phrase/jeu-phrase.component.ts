@@ -5,6 +5,9 @@ import { phrases } from '../../assets/phrasesTS';
 import { StudentService, Student, GameSessionStats } from '../student/student.service'; // <<< Ajout
 import { ActivatedRoute } from '@angular/router';
 import { SpeechService } from '../../speachService/speech.service';
+import { GameStats } from '../game-stats/game-stats.model';
+import { MaquetteConfigComponent } from '../maquetteConfig/maquetteConfig.component'; // <<< Ajout
+import { ConfigService } from '../config/config.service'; // <<< Ajout
 
 
 interface Word {
@@ -12,7 +15,11 @@ interface Word {
   selected: boolean;
   type?: 'verb' | 'adjective' | 'noun' | 'determiner' | 'other' | 'longWord';
 }
-
+interface ConfigOptions {
+  rewrite: boolean;
+  dotEnd: boolean;
+  colorTypes: boolean;
+}
 @Component({
   selector: 'app-jeu-phrase',
   templateUrl: './jeu-phrase.component.html',
@@ -36,16 +43,19 @@ export class JeuPhraseComponent implements OnInit {
 
   currentStudent!: Student; // <<< Étudiant courant
   listenStartTime: Date | null = null;
-
+  
+  config!: ConfigOptions;
   constructor(
     private gameStateService: GameStateService,
     private studentService: StudentService,
     private router: Router,
     private route: ActivatedRoute,
-    private speechService: SpeechService
+    private speechService: SpeechService,
+    private configService: ConfigService
   ) {}
 
   ngOnInit(): void {
+    this.config = this.configService.getConfig();
     const student = this.studentService.getCurrentStudent();
 
     if (student) {
@@ -140,6 +150,15 @@ export class JeuPhraseComponent implements OnInit {
   }
 
   validateTypedAnswer(): void {
+    if (!this.config.rewrite) {
+      this.finalValidationDone = true;
+      setTimeout(() => {
+        this.gameStateService.refillFuel();
+        this.router.navigate(['/jeu-voiture']);
+      }, 1000);
+      return;
+    }
+    
     const expected = this.correctSentence.trim();
     const typed = this.typedAnswer.trim();
 

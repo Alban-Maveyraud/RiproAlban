@@ -5,6 +5,7 @@ import { StudentService, Student } from '../student/student.service';
 import { phrases } from '../../assets/phrasesTS';
 import { addPhraseWithTypes, removePhraseById } from '../../assets/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ConfigService } from '../config/config.service';
 @Component({
   selector: 'app-maquetteConfig',
   templateUrl: './maquetteConfig.component.html',
@@ -49,7 +50,8 @@ export class MaquetteConfigComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private configService: ConfigService
   ) {}
 
   ngOnInit() {
@@ -70,7 +72,11 @@ export class MaquetteConfigComponent implements OnInit {
       phrase: ['', Validators.required]
     });
   }
-
+  appliquerConfiguration(): void {
+    this.configService.setConfig(this.config);
+    console.log('Configuration appliquée :', this.config);
+  }
+  
   // Chargement des étudiants depuis le service
   loadStudents() {
     this.studentService.getStudents().subscribe(students => {
