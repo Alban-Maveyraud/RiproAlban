@@ -53,7 +53,15 @@ export class JeuPhraseComponent implements OnInit {
     private speechService: SpeechService,
     private configService: ConfigService
   ) {}
-
+  // Ajoutez cette propriété à votre composant
+readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
+  'verb': { bg: '#FFCDD2', text: '#B71C1C' },      // Rouge
+  'noun': { bg: '#C8E6C9', text: '#1B5E20' },     // Vert
+  'adjective': { bg: '#BBDEFB', text: '#0D47A1' }, // Bleu
+  'determiner': { bg: '#FFF9C4', text: '#F57F17' },// Jaune
+  'longWord': { bg: '#E1BEE7', text: '#4A148C' },  // Violet
+  'other': { bg: '#F5F5F5', text: '#212121' }     // Gris (par défaut)
+};
   ngOnInit(): void {
     this.config = this.configService.getConfig();
     const student = this.studentService.getCurrentStudent();
@@ -67,22 +75,58 @@ export class JeuPhraseComponent implements OnInit {
 
     this.loadRandomPhrase();
   }
-
+  getWordClass(word: Word): string {
+    if (!this.config.colorTypes) return '';
+    
+    switch(word.type) {
+      case 'verb':
+        return 'word-verb';
+      case 'noun':
+        return 'word-noun';
+      case 'adjective':
+        return 'word-adjective';
+      case 'determiner':
+        return 'word-determiner';
+      case 'longWord':
+        return 'word-long';
+      default:
+        return '';
+    }
+  }
+  getWordType(wordText: string): string {
+    if (!this.config.colorTypes) return '';
+    
+    const word = this.correctPhraseWords.find(w => w.text === wordText);
+    return word?.type || '';
+  }
   loadRandomPhrase(): void {
-
     const randomIndex = Math.floor(Math.random() * phrases.length);
     const randomPhrase = phrases[randomIndex];
-
+  
     this.correctPhraseWords = randomPhrase.words.map(w => ({
       text: w.word,
       selected: false,
-      type: this.mapType(w.type)
+      type: this.mapType(w.type) // Cette méthode doit être correctement définie
     }));
 
     this.correctSentence = this.correctPhraseWords.map(w => w.text).join(' ');
     this.availableWords = this.shuffleArray(this.correctPhraseWords.map(w => w.text));
     this.currentStudent.currentSession.date = new Date(); // Met à jour la date
   }
+  getWordStyle(word: Word | string): any {
+  if (!this.config.colorTypes) return {};
+  
+  // Gère à la fois les objets Word et les strings
+  const type = typeof word === 'string' 
+    ? this.correctPhraseWords.find(w => w.text === word)?.type || 'other'
+    : word.type || 'other';
+
+  return {
+    'background-color': this.wordTypeColors[type].bg,
+    'color': this.wordTypeColors[type].text,
+    'border': `1px solid ${this.wordTypeColors[type].text}`
+  };
+}
 
   mapType(type: string): 'verb' | 'adjective' | 'noun' | 'determiner' | 'other' | 'longWord' {
     switch (type) {

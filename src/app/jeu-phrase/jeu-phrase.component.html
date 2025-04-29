@@ -22,16 +22,25 @@
         </div>
 
         <div class="answer-container">
-      <span *ngFor="let word of getDisplayWords(); let i = index"
-            class="selected-word"
-            (click)="removeWordFromAnswer(i)">
-        {{ word.text }}
-      </span>
-        </div>
-
+            <span *ngFor="let word of getDisplayWords(); let i = index"
+                  class="selected-word"
+                  [class.word-verb]="config.colorTypes && word.type === 'verb'"
+                  [class.word-noun]="config.colorTypes && word.type === 'noun'"
+                  [class.word-adjective]="config.colorTypes && word.type === 'adjective'"
+                  [class.word-determiner]="config.colorTypes && word.type === 'determiner'"
+                  [class.word-long]="config.colorTypes && word.type === 'longWord'"
+                  (click)="removeWordFromAnswer(i)">
+              {{ word.text }}
+            </span>
+          </div>
         <div class="word-bank">
             <button *ngFor="let word of availableWords"
                     class="word-chip"
+                    [class.word-verb]="config.colorTypes && getWordType(word) === 'verb'"
+                    [class.word-noun]="config.colorTypes && getWordType(word) === 'noun'"
+                    [class.word-adjective]="config.colorTypes && getWordType(word) === 'adjective'"
+                    [class.word-determiner]="config.colorTypes && getWordType(word) === 'determiner'"
+                    [class.word-long]="config.colorTypes && getWordType(word) === 'longWord'"
                     (click)="addWordToAnswer(word)">
                 {{ word }}
             </button>
