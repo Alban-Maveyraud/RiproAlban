@@ -54,6 +54,22 @@
         <button type="submit" class="btn btn-lightblue" [disabled]="addPhraseForm.invalid">Ajouter la Phrase</button>
       </form>
     </div>
+    <div *ngIf="showTypingPanel" class="typing-panel">
+      <h4>Spécifiez le type de chaque mot :</h4>
+      <div *ngFor="let entry of typedWords; let i = index" class="word-type-selector">
+        <span>{{ entry.word }}</span>
+        <div class="type-buttons">
+          <button 
+            *ngFor="let type of availableTypes"
+            (click)="typedWords[i].type = type"
+            [class.selected]="typedWords[i].type === type">
+            {{ type }}
+          </button>
+        </div>
+      </div>
+      <button class="btn btn-primary" (click)="validerTypes()">✅ Valider</button>
+    </div>
+    
 
     <!-- Toggle affichage phrases -->
     <button (click)="togglePhrases()" class="btn btn-lightblue">

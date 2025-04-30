@@ -46,6 +46,9 @@ export class MaquetteConfigComponent implements OnInit {
   toggleConfig(): void {
     this.showConfig = !this.showConfig;
   }
+  availableTypes = ['verb', 'adjective', 'noun', 'pronoun', 'determiner', 'other', 'longWord'];
+  typedWords: { word: string; type: string }[] = [];
+  showTypingPanel = false;
 
   constructor(
     private router: Router,
@@ -104,13 +107,28 @@ export class MaquetteConfigComponent implements OnInit {
       alert('Veuillez saisir une phrase.');
       return;
     }
-
+  
     const phraseText = this.addPhraseForm.value.phrase;
-    const wordTypes = this.promptWordTypes(phraseText);
+    const words = phraseText.split(' ');
+  
+    // Initialise les mots sans type
+    this.typedWords = words.map((word: string) => ({ word, type: 'other' }));
 
+    this.showTypingPanel = true;
+  }
+  validerTypes() {
+    const phraseText = this.addPhraseForm.value.phrase;
+    const wordTypes: { [key: string]: string } = {};
+  
+    this.typedWords.forEach(({ word, type }) => {
+      wordTypes[word] = type;
+    });
+  
     addPhraseWithTypes(phraseText, wordTypes);
     this.addPhraseForm.reset();
+    this.showTypingPanel = false;
   }
+  
 
   // Invite l'utilisateur à spécifier un type pour chaque mot
   promptWordTypes(phrase: string): { [key: string]: string } {

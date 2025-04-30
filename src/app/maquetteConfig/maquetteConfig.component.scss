@@ -557,5 +557,19 @@ button:hover {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  .word-type-selector {
+    margin-bottom: 10px;
+  }
+  
+  .type-buttons button {
+    margin: 2px;
+    padding: 4px 8px;
+  }
+  
+  .type-buttons .selected {
+    background-color: #007bff;
+    color: white;
+  }
+  
 
 }
