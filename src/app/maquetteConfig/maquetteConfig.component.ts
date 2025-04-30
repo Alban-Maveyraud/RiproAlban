@@ -96,9 +96,6 @@ export class MaquetteConfigComponent implements OnInit {
     this.router.navigate(['/jeu']);
   }
 
-  goToRes() {
-    this.router.navigate(['/resultat']);
-  }
   addPhrase() {
     if (this.addPhraseForm.invalid) {
       alert('Veuillez saisir une phrase.');

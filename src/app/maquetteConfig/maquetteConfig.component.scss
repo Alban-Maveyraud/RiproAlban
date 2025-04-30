@@ -1,608 +1,348 @@
-:root {
-    --primary: #6C63FF;
-    --secondary: #FF6584;
-    --accent: #FFC107;
-    --success: #4CAF50;
-    --error: #F44336;
-    --background: #f9f7ff;
-    --text: #333333;
-    --light-text: #777777;
-    --card-bg: #ffffff;
-    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+.MaquetteConfig {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+  padding: 2rem;
 
-.MaquetteConfig * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Comfortaa', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.MaquetteConfig body {
-    background-color: var(--background);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-.MaquetteConfig .container {
+  .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-}
-
-.MaquetteConfig header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    margin-bottom: 20px;
-}
-
-.MaquetteConfig .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--primary);
-}
-
-.MaquetteConfig .logo-icon {
-    width: 40px;
-    height: 40px;
-    background-color: var(--primary);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-}
-
-.MaquetteConfig nav {
-    display: flex;
-    gap: 20px;
-}
-
-.MaquetteConfig .nav-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--light-text);
-    font-weight: 500;
-    transition: all 0.2s;
-    padding: 8px 15px;
-    border-radius: 20px;
-}
-
-button {
-    position: relative;
-    z-index: 10; /* Assure-toi que le bouton est au-dessus des autres éléments */
-    cursor: pointer; /* Change le curseur quand on passe sur le bouton */
-}
-
-button:hover {
-    background-color: #6C63FF; /* Change la couleur au survol pour tester */
-}
-
-.MaquetteConfig .nav-button:hover,
-.MaquetteConfig .nav-button.active {
-    background-color: var(--primary);
-    color: white;
-}
-
-.MaquetteConfig .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 20px;
-    transition: all 0.2s;
-}
-
-.MaquetteConfig .user-profile:hover {
-    background-color: rgba(108, 99, 255, 0.1);
-}
-
-.MaquetteConfig .user-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-}
-
-.MaquetteConfig .user-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.MaquetteConfig .user-name {
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.MaquetteConfig .user-role {
-    font-size: 12px;
-    color: var(--light-text);
-}
-
-.MaquetteConfig h2 {
-    margin-bottom: 20px;
-    color: var(--primary);
-    font-size: 28px;
-}
-
-/* Cards and components */
-.MaquetteConfig .card {
-    background-color: var(--card-bg);
+    background-color: white;
+    padding: 2rem;
     border-radius: 16px;
-    box-shadow: var(--card-shadow);
-    padding: 20px;
-    margin-bottom: 20px;
-}
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
 
-.MaquetteConfig .btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.MaquetteConfig .btn-primary {
-    background-color: var(--primary);
-    color: white;
-}
-
-.MaquetteConfig .btn-primary:hover {
-    background-color: #554dff;
-    transform: translateY(-2px);
-}
-
-.MaquetteConfig .btn-icon {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.MaquetteConfig .form-group {
-    margin-bottom: 15px;
-}
-
-.MaquetteConfig .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-}
-
-.MaquetteConfig .form-control {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.2s;
-}
-
-.MaquetteConfig .form-control:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-/* Config specific */
-.MaquetteConfig .config-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.MaquetteConfig .tab-navigation {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 20px;
-}
-
-.MaquetteConfig .tab-button {
-    padding: 10px 20px;
-    background-color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.MaquetteConfig .tab-button.active {
-    background-color: var(--primary);
-    color: white;
-}
-
-.MaquetteConfig .student-list {
-    list-style: none;
-}
-
-.MaquetteConfig .student-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: white;
-    transition: all 0.2s;
-}
-
-.MaquetteConfig .student-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.MaquetteConfig .student-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    margin-right: 15px;
-    font-weight: bold;
-}
-
-.MaquetteConfig .student-details {
-    flex: 1;
-}
-
-.MaquetteConfig .student-name {
-    font-weight: 600;
-}
-
-.MaquetteConfig .student-info {
-    color: var(--light-text);
-    font-size: 12px;
-}
-
-.MaquetteConfig .student-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.MaquetteConfig .action-button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--background);
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.MaquetteConfig .action-button:hover {
-    background-color: var(--primary);
-    color: white;
-}
-
-.MaquetteConfig .exercise-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.MaquetteConfig .exercise-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.MaquetteConfig .exercise-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.MaquetteConfig .exercise-card.selected {
-    border: 2px solid var(--primary);
-}
-
-.MaquetteConfig .exercise-icon {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: var(--primary);
-}
-
-.MaquetteConfig .exercise-title {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.MaquetteConfig .exercise-desc {
-    font-size: 12px;
-    color: var(--light-text);
-}
-
-.MaquetteConfig .card-header {
+  header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-}
+    margin-bottom: 2rem;
 
-.MaquetteConfig .card-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--primary);
-}
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #3b82f6;
 
-/* Responsive */
-@media (max-width: 768px) {
-    .MaquetteConfig .config-grid {
-        grid-template-columns: 1fr;
+      .logo-icon {
+        font-size: 2rem;
+        margin-right: 0.5rem;
+      }
     }
 
-    .MaquetteConfig .exercise-list {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    nav {
+      button {
+        margin-left: 1rem;
+      }
     }
-
-    .MaquetteConfig nav {
-        display: none;
-    }
-
-    .MaquetteConfig .user-info {
-        display: none;
-    }
-
-    .MaquetteConfig .logo span {
-        display: none;
-    }
-
-    .MaquetteConfig .tab-navigation {
-        flex-wrap: wrap;
-    }
-
-    .MaquetteConfig .tab-button {
-        flex: 1;
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    /* Modal styles */
-    .MaquetteConfig .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(51, 51, 51, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000; /* Au-dessus de tout */
-    }
-
-    .MaquetteConfig .modal-content {
-        background-color: var(--card-bg);
-        padding: 30px;
-        border-radius: 16px;
-        box-shadow: var(--card-shadow);
-        width: 90%;
-        max-width: 500px;
-        text-align: center;
-    }
-
-    .MaquetteConfig .modal-content h3 {
-        color: var(--primary);
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
-
-    .MaquetteConfig .modal-content form > div {
-        margin-bottom: 15px;
-        text-align: left;
-    }
-
-    .MaquetteConfig .modal-content input,
-    .MaquetteConfig .modal-content textarea {
-        width: 100%;
-        padding: 10px 15px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: all 0.2s;
-    }
-
-    .MaquetteConfig .modal-content input:focus,
-    .MaquetteConfig .modal-content textarea:focus {
-        outline: none;
-        border-color: var(--primary);
-    }
-
-    .MaquetteConfig .modal-content button {
-        margin: 10px 5px 0 5px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .MaquetteConfig .modal-content .btn-primary {
-        background-color: var(--primary);
-        color: white;
-    }
-
-    .MaquetteConfig .modal-content .btn-primary:hover {
-        background-color: #554dff;
-    }
-
-    .MaquetteConfig .modal-content .btn-secondary {
-        background-color: var(--secondary);
-        color: white;
-    }
-
-    .MaquetteConfig .modal-content .btn-secondary:hover {
-        background-color: #e04e6c;
-    }
-
-    .btn-lightblue {
-        background-color: #5dade2;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 5px;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .btn-lightblue:hover {
-        background-color: #3498db;
-    }
-
-    .student-item {
-        cursor: pointer;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        transition: background-color 0.2s;
-    }
-
-    .student-item:hover {
-        background-color: #eef7fc;
-    }
-
-    .modal {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
-
-    .btn-danger {
-        background-color: #e74c3c;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 5px;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .btn-danger:hover {
-        background-color: #c0392b;
-    }
-
-
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        width: 300px;
-        text-align: center;
-    }
-  .phrase {
-    margin-bottom: 10px;
   }
 
-  .phrase span {
-    font-weight: bold;
-    margin-right: 5px;
+  h2, h3, h4 {
+    color: #111827;
+    margin-bottom: 1rem;
   }
 
-  .MaquetteConfig .student-item {
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-
-  .MaquetteConfig .student-item.selected {
-    background-color: #e8f0ff;
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
-    border-left: 4px solid var(--primary);
-  }
-
-  .MaquetteConfig .student-expanded {
-    margin-top: 10px;
-    font-size: 14px;
-    color: var(--text);
-    background-color: #fff;
-    padding: 10px 15px;
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
     border-radius: 8px;
-    border: 1px dashed var(--primary);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+
+    &.btn-lightblue {
+      background-color: #3b82f6;
+      color: white;
+
+      &:hover {
+        background-color: #2563eb;
+      }
+    }
+
+    &.btn-secondary {
+      background-color: #e5e7eb;
+      color: #374151;
+
+      &:hover {
+        background-color: #d1d5db;
+      }
+    }
+
+    &.btn-success {
+      background-color: #10b981;
+      color: white;
+
+      &:hover {
+        background-color: #059669;
+      }
+    }
+
+    &.btn-danger {
+      background-color: #ef4444;
+      color: white;
+
+      &:hover {
+        background-color: #dc2626;
+      }
+    }
+
+    &.btn-grey {
+      background-color: #9ca3af;
+      color: white;
+
+      &:hover {
+        background-color: #6b7280;
+      }
+    }
+    .btn:disabled {
+      background-color: #cbd5e1 !important; // gris clair
+      color: #ffffff;
+      cursor: not-allowed;
+      opacity: 0.7;
+      pointer-events: none;
+    }
   }
 
-  .MaquetteConfig .student-expanded {
-    animation: fadeIn 0.3s ease-in-out;
+  .btn {
+    transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.3s ease;
+
+    &.btn-lightblue {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    &:disabled,
+    &[disabled] {
+      background-color: #a1a1aa; // gris neutre
+      color: #f4f4f5;
+      cursor: not-allowed;
+      opacity: 0.6;
+      transform: none;
+      pointer-events: none;
+    }
+
+    &:not(:disabled):hover {
+      transform: scale(1.03);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .word-type-selector {
-    margin-bottom: 10px;
+
+  .config-panel {
+    background-color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid #d1d5db;
+
+    label {
+      display: flex;
+      align-items: center;
+      margin: 0.5rem 0;
+      gap: 0.5rem;
+
+      input[type="checkbox"] {
+        transform: scale(1.2);
+        accent-color: #3b82f6;
+      }
+    }
+
+    .config-actions {
+      margin-top: 1rem;
+    }
   }
 
-  .type-buttons button {
-    margin: 2px;
-    padding: 4px 8px;
-  }
+  .add-phrase-section {
+    margin-bottom: 2rem;
 
-  .type-buttons .selected {
-    background-color: #007bff;
-    color: white;
+    .form-group {
+      margin-bottom: 1rem;
+
+      label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+      }
+    }
   }
 
   .typing-panel {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f4f8ff;
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    padding: 1rem;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    .word-type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+
+      .word-type-box {
+        background: white;
+        border: 1px solid #e5e7eb;
+        padding: 0.5rem;
+        border-radius: 8px;
+
+        .word {
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+        }
+
+        .type-select {
+          width: 100%;
+          padding: 0.25rem;
+          border-radius: 6px;
+        }
+      }
+    }
   }
 
-  .word-type-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+  .phrases-list {
+    margin-top: 1rem;
+
+    .phrase {
+      background-color: #f3f4f6;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+
+      p {
+        margin: 0 0 0.5rem;
+      }
+
+      button {
+        margin-top: 0.5rem;
+      }
+    }
   }
 
-  .word-type-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  .card {
+    background-color: #f9fafb;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 2rem;
+    border: 1px solid #e5e7eb;
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+    }
+
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+
+      .student-card {
+        background-color: white;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        padding: 1rem;
+        cursor: pointer;
+        position: relative;
+        transition: box-shadow 0.2s;
+
+        &:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .student-avatar {
+          font-size: 2rem;
+          background-color: #3b82f6;
+          color: white;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          margin: 0 auto 0.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .student-name {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .student-info {
+          font-size: 0.9rem;
+          color: #6b7280;
+          text-align: center;
+        }
+
+        .student-actions {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          display: flex;
+          gap: 0.5rem;
+
+          button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+
+            &:hover {
+              color: #ef4444;
+            }
+          }
+        }
+      }
+    }
   }
 
-  .word {
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
+  .popup {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
 
-  .type-select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    h3 {
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      input {
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+      }
+    }
   }
 }
