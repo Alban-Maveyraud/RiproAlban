@@ -12,13 +12,13 @@ export class PhraseService {
   addPhrase(text: string, types: { [key: string]: string }) {
     addPhraseWithTypes(text, types);
   }
-  
+
   removePhrase(id: number) {
     removePhraseById(id);
   }
-  
+
   getPhrases(): Phrase[] {
     return phrases;
   }
-  
+
 }
