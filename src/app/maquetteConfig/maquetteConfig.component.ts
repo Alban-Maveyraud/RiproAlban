@@ -28,7 +28,6 @@ export class MaquetteConfigComponent implements OnInit {
   parcourForm!: FormGroup;
   addPhraseForm!: FormGroup;
 
-  activeTab = 'participants';
   popupVisible = false;
   showPhrases = false;
 
@@ -47,6 +46,7 @@ export class MaquetteConfigComponent implements OnInit {
   toggleConfig(): void {
     this.showConfig = !this.showConfig;
   }
+
   availableTypes = ['verbe', 'adjectif', 'nom', 'pronoum', 'déterminant', 'autre', 'longMot'];
   typedWords: { word: string; type: string }[] = [];
   showTypingPanel = false;
@@ -78,9 +78,11 @@ export class MaquetteConfigComponent implements OnInit {
       phrase: ['', Validators.required]
     });
   }
+
   appliquerConfiguration(): void {
     this.configService.setConfig(this.config);
     console.log('Configuration appliquée :', this.config);
+    this.showConfig = false;
   }
 
   // Chargement des étudiants depuis le service
@@ -90,12 +92,7 @@ export class MaquetteConfigComponent implements OnInit {
     });
   }
 
-  // Changement d'onglet
-  changeTab(tab: string) {
-    this.activeTab = tab;
-  }
-
-  // Navigation
+    // Navigation
   goToJeu() {
     this.router.navigate(['/jeu']);
   }
@@ -118,26 +115,6 @@ export class MaquetteConfigComponent implements OnInit {
     this.showTypingPanel = true;
   }
 
-  // Ajout d'une phrase avec typage manuel
-  validerTypes() {
-    if (this.typedWords.length === 0) {
-      alert('Veuillez ajouter des mots à la phrase.');
-      return;
-    }
-    const phraseText = this.addPhraseForm.value.phrase;
-    const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
-      word,
-      type: this.mapToStandardType(type)
-    }));
-    const typeMap = Object.fromEntries(wordsWithTypes.map(w => [w.word, w.type]));
-
-
-    // Ajoute la nouvelle phrase à la liste locale
-    this.addPhraseToLocalList(phraseText, typeMap);
-    this.addPhraseForm.reset();
-    this.typedWords = [];
-    this.showTypingPanel = false;
-  }
   addPhraseToLocalList(text: string, types: { [key: string]: string }) {
     this.phraseService.addPhrase(text, types);
   }
@@ -168,11 +145,7 @@ export class MaquetteConfigComponent implements OnInit {
     this.showTypingPanel = false;
 
     console.log('Phrase ajoutée avec succès:', phraseText);
-
   }
-
-
-
 
   private mapToStandardType(type: string): string {
     const typeMap: {[key: string]: string} = {
@@ -185,20 +158,6 @@ export class MaquetteConfigComponent implements OnInit {
       'other': 'autre'
     };
     return typeMap[type] || 'autre';
-  }
-
-
-  // Invite l'utilisateur à spécifier un type pour chaque mot
-  promptWordTypes(phrase: string): { [key: string]: string } {
-    const words = phrase.split(' ');
-    const types: { [key: string]: string } = {};
-
-    words.forEach(word => {
-      const type = prompt(`Quel est le type du mot "${word}" ?`) || 'autre';
-      types[word] = type;
-    });
-
-    return types;
   }
 
   // Gestion de l'affichage
@@ -273,8 +232,5 @@ export class MaquetteConfigComponent implements OnInit {
     if (confirm('Supprimer cette phrase ?')) {
       this.phrases = this.phrases.filter(p => p.id !== id);
     }
-  }
-  removePhrase(id: number) {
-    this.phraseService.removePhrase(id);
   }
 }

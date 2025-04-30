@@ -11,29 +11,38 @@
 
   .game-ui {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 90%;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 15px;
-    padding: 10px 20px;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px 30px;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+
+  .fuel-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .fuel-icon {
+    font-size: 1.8rem;
   }
 
   .fuel-bar {
-    background: #dbeafe;
+    position: relative;
+    width: 300px; // ← tu peux ajuster ici
+    height: 20px;
+    background-color: #ccc;
     border-radius: 10px;
     overflow: hidden;
-    height: 20px;
-    width: 200px;
-    position: relative;
+    box-shadow: inset 0 0 4px #00000066;
+  }
 
-    .fuel-level {
-      height: 100%;
-      background: linear-gradient(90deg, #60a5fa, #3b82f6);
-      transition: width 0.4s ease-in-out;
-    }
+  .fuel-level {
+    height: 100%;
+    background: linear-gradient(to right, #00c3ff, #0050ff);
+    transition: width 0.5s ease;
   }
 
   .lap-counter {

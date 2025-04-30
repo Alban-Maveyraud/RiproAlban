@@ -2,8 +2,11 @@
 
   <!-- Barre d'infos essence + tours -->
   <div class="game-ui">
-    <div class="fuel-bar">
-      <div class="fuel-level" [style.width.%]="fuel"></div>
+    <div class="fuel-container">
+      <span class="fuel-icon">⛽</span>
+      <div class="fuel-bar">
+        <div class="fuel-level" [style.width.%]="fuel"></div>
+      </div>
     </div>
     <div class="lap-counter">
       Tours : {{ tours }}

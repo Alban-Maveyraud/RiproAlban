@@ -5,7 +5,7 @@ export interface ConfigOptions {
   rewrite: boolean;
   dotEnd: boolean;
   colorTypes: boolean;
-  // Ajout de nouvelles options potentielles
+  doubleClique: boolean;
   soundEnabled: boolean;
   difficultyLevel: number;
   fontSize: number;
@@ -20,6 +20,7 @@ export class ConfigService {
     dotEnd: false,
     colorTypes: false,
     soundEnabled: true,
+    doubleClique: false,
     difficultyLevel: 1,
     fontSize: 16
   };
@@ -32,7 +33,6 @@ export class ConfigService {
   getConfig(): Observable<ConfigOptions> {
     return of(this.config);
   }
-
 
   // Met à jour toute la configuration
   setConfig(config: Partial<ConfigOptions>): void {
