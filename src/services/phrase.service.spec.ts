@@ -1,16 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { phrases, addPhraseWithTypes, removePhraseById, Phrase } from '../../assets/phrasesTS';
 
-import { PhraseService } from './phrase.service';
+@Injectable({
+  providedIn: 'root'
+})
+export class PhraseService {
 
-describe('PhraseService', () => {
-  let service: PhraseService;
+  getPhrases(): Phrase[] {
+    return phrases;
+  }
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PhraseService);
-  });
+  addPhrase(text: string, types: { [key: string]: string }) {
+    addPhraseWithTypes(text, types);
+  }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  removePhrase(id: number) {
+    removePhraseById(id);
+  }
+}
+
