@@ -14,6 +14,8 @@ export class JeuVoitureComponent implements OnInit, OnDestroy {
   private fuelInterval!: any;
   private tourInterval!: any;
   showPhraseGame: boolean = false;
+  currentStudent: any;
+  studentService: any;
 
   constructor(private gameStateService: GameStateService, private router: Router) {}
 
@@ -76,5 +78,17 @@ export class JeuVoitureComponent implements OnInit, OnDestroy {
 
   get tours(): number {
     return this.gameStateService.getTours();
+  }
+  goToRes() {
+    this.gameStateService.resetTour();
+    this.gameStateService.refillFuel();
+
+    if (this.currentStudent) {
+      this.studentService.saveCurrentSessionToHistory(this.currentStudent);
+    } else {
+      console.error('Aucun étudiant sélectionné pour sauvegarder la session.');
+    }
+
+    this.router.navigate(['/statistique']); // ou vers ta route de résultats
   }
 }

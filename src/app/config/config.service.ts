@@ -1,4 +1,3 @@
-// src/app/config.service.ts
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
@@ -34,10 +33,6 @@ export class ConfigService {
     return of(this.config);
   }
 
-  // Retourne la configuration synchrone (alternative)
-  getConfigSync(): ConfigOptions {
-    return this.config;
-  }
 
   // Met à jour toute la configuration
   setConfig(config: Partial<ConfigOptions>): void {
