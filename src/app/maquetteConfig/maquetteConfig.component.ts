@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService, Student } from '../../services/student.service';
 import { phrases } from '../../services/phrasesTS';
-import { addPhraseWithTypes, removePhraseById } from '../../services/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { PhraseService } from '../../services/phrase.service';
 import { ConfigService } from '../../services/config.service';
@@ -47,7 +46,7 @@ export class MaquetteConfigComponent implements OnInit {
     this.showConfig = !this.showConfig;
   }
 
-  availableTypes = ['verbe', 'adjectif', 'nom', 'pronoum', 'déterminant', 'autre', 'longMot'];
+  availableTypes = ['verbe', 'adjectif', 'nom', 'pronom', 'déterminant', 'autre', 'longMot'];
   typedWords: { word: string; type: string }[] = [];
   showTypingPanel = false;
 
@@ -65,7 +64,6 @@ export class MaquetteConfigComponent implements OnInit {
     this.phrases = this.phraseService.getPhrases();
   }
 
-  // Initialisation des formulaires
   initForms() {
     this.parcourForm = this.fb.group({
       eleve: ['', Validators.required],
@@ -85,14 +83,12 @@ export class MaquetteConfigComponent implements OnInit {
     this.showConfig = false;
   }
 
-  // Chargement des étudiants depuis le service
   loadStudents() {
     this.studentService.getStudents().subscribe(students => {
       this.studentsList = students;
     });
   }
 
-    // Navigation
   goToJeu() {
     this.router.navigate(['/jeu']);
   }
@@ -106,10 +102,9 @@ export class MaquetteConfigComponent implements OnInit {
     const phraseText = this.addPhraseForm.value.phrase;
     const words = phraseText.split(' ');
 
-    // Initialise les mots sans type (par défaut 'other')
     this.typedWords = words.map((word: string) => ({
       word,
-      type: 'other' // Valeur par défaut
+      type: 'autre'
     }));
 
     this.showTypingPanel = true;
@@ -126,20 +121,10 @@ export class MaquetteConfigComponent implements OnInit {
     }
 
     const phraseText = this.addPhraseForm.value.phrase;
+    const typeMap = Object.fromEntries(this.typedWords.map(w => [w.word, w.type]));
 
-    const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
-      word,
-      type: this.mapToStandardType(type)
-    }));
-    console.log('Typed words:', this.typedWords);
-
-
-    const typeMap = Object.fromEntries(wordsWithTypes.map(w => [w.word, w.type]));
-
-    // Ajout via le service
     this.phraseService.addPhrase(phraseText, typeMap);
 
-    // Réinitialisation
     this.addPhraseForm.reset();
     this.typedWords = [];
     this.showTypingPanel = false;
@@ -147,20 +132,6 @@ export class MaquetteConfigComponent implements OnInit {
     console.log('Phrase ajoutée avec succès:', phraseText);
   }
 
-  private mapToStandardType(type: string): string {
-    const typeMap: {[key: string]: string} = {
-      'verb': 'verbe',
-      'noun': 'nom',
-      'adjective': 'adjectif',
-      'pronoun': 'pronom',
-      'determiner': 'déterminant',
-      'longWord': 'longMot',
-      'other': 'autre'
-    };
-    return typeMap[type] || 'autre';
-  }
-
-  // Gestion de l'affichage
   togglePhrases() {
     this.showPhrases = !this.showPhrases;
   }
@@ -173,22 +144,21 @@ export class MaquetteConfigComponent implements OnInit {
     this.popupVisible = false;
   }
 
-  // Couleur associée à chaque type de mot
   getColorForType(type: string): string {
     const colorMap: { [key: string]: string } = {
       déterminant: 'blue',
       nom: 'green',
       verbe: 'red',
       adjectif: 'orange',
-      adverbe: 'purple',
       préposition: 'brown',
       pronom: 'pink',
       'nom propre': 'violet',
+      autre: 'gray',
+      longMot: 'teal'
     };
     return colorMap[type] || 'black';
   }
 
-  // Gestion des étudiants
   ajouterEtudiant() {
     if (this.parcourForm.invalid) {
       alert('Veuillez remplir tous les champs.');
@@ -227,10 +197,10 @@ export class MaquetteConfigComponent implements OnInit {
     }
   }
 
-  // Suppression d'une phrase
   deletePhrase(id: number) {
     if (confirm('Supprimer cette phrase ?')) {
-      this.phrases = this.phrases.filter(p => p.id !== id);
+      this.phraseService.removePhrase(id);
+      this.phrases = this.phraseService.getPhrases();
     }
   }
 }
