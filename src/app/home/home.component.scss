@@ -1,17 +1,72 @@
-.home-container {
-  text-align: center;
-  margin-top: 100px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-.buttons {
+:host {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 30px;
+  align-items: center;
+  height: 100vh;
+  background-image: url('/assets/backgrounds/garage-cartoon.jpg'); // Assure-toi que ce fichier existe
+  background-size: cover;
+  background-position: center;
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  overflow: hidden;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
 }
 
-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  cursor: pointer;
+.home-container {
+  text-align: center;
+  animation: zoomIn 0.8s ease-out;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 25px #00ffff;
+
+  h1 {
+    font-size: 28px;
+    margin-bottom: 40px;
+    color: #00ffff;
+    text-shadow: 2px 2px #001f3f;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+
+    button {
+      background: #00bfff;
+      border: none;
+      padding: 20px 40px;
+      font-size: 16px;
+      font-family: 'Press Start 2P', cursive;
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px #007acc;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        transform: scale(1.05);
+        background: #33ccff;
+      }
+
+      &:active {
+        box-shadow: 0 2px #005f99;
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

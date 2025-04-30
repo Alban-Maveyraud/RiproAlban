@@ -1,89 +1,81 @@
 <div class="jeu-phrase-container">
-    <header class="header">
-        <div class="logo">
-            <div class="logo-icon">🎵</div>
-            <span class="logo-text">MusiMots</span>
-        </div>
-        <button class="btn-config" (click)="goToRes()">Quitter le jeu</button>
-      <div *ngIf="currentStudent" class="current-student">
-        🎯 Joueur : <strong>{{ currentStudent.nom }}</strong> (Niveau {{ currentStudent.niveau }})
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">🎵</div>
+      <span class="logo-text">MusiMots</span>
+    </div>
+    <div class="current-student" *ngIf="currentStudent">
+      🎯 Joueur : <strong>{{ currentStudent.nom }}</strong> (Niveau {{ currentStudent.niveau }})
+    </div>
+    <button class="btn btn-secondary" (click)="goToRes()">❌ Quitter le jeu</button>
+  </header>
+
+  <main class="main-content">
+    <h1 class="title">🚦 Ouvre tes oreilles, {{ currentStudent?.nom || 'joueur' }} !</h1>
+    <p class="instruction">Remets les mots dans le bon ordre pour compléter la phrase !</p>
+
+    <div class="controls-top">
+      <button class="btn btn-primary" (click)="playSentence()">🔊 Écouter la phrase</button>
+    </div>
+
+    <div class="answer-container">
+      <span *ngFor="let word of getDisplayWords(); let i = index"
+            class="selected-word"
+            [class.word-verb]="config.colorTypes && word.type === 'verb'"
+            [class.word-noun]="config.colorTypes && word.type === 'noun'"
+            [class.word-adjective]="config.colorTypes && word.type === 'adjective'"
+            [class.word-determiner]="config.colorTypes && word.type === 'determiner'"
+            [class.word-long]="config.colorTypes && word.type === 'longWord'"
+            (click)="removeWordFromAnswer(i)">
+        {{ word.text }}
+      </span>
+      <span *ngIf="!config.dotEnd && selectedWords.length > 0" class="word-chip dot-button">.</span>
+    </div>
+
+    <div class="word-bank">
+      <button *ngFor="let word of availableWords"
+              class="word-chip"
+              [class.word-verb]="config.colorTypes && getWordType(word) === 'verb'"
+              [class.word-noun]="config.colorTypes && getWordType(word) === 'noun'"
+              [class.word-pronoun]="config.colorTypes && getWordType(word) === 'pronoun'"
+              [class.word-adjective]="config.colorTypes && getWordType(word) === 'adjective'"
+              [class.word-determiner]="config.colorTypes && getWordType(word) === 'determiner'"
+              [class.word-long]="config.colorTypes && getWordType(word) === 'longWord'"
+              (click)="addWordToAnswer(word)">
+        {{ word }}
+      </button>
+    </div>
+
+    <div class="validation-message"
+         [class.correct]="isAnswerValid"
+         [class.incorrect]="isAnswerValid === false">
+      {{ validationMessage }}
+    </div>
+
+    <div class="controls-bottom">
+      <button class="btn btn-secondary" (click)="resetAnswer()">↩️ Réinitialiser</button>
+      <button class="btn btn-success" (click)="validateAnswer()">✅ Valider</button>
+    </div>
+
+    <div *ngIf="isAnswerValid && !finalValidationDone && config.rewrite" class="final-input-section">
+      <h3>✍️ Tape la phrase pour la valider définitivement :</h3>
+      <input type="text"
+             [(ngModel)]="typedAnswer"
+             placeholder="Écris ici..."
+             class="final-input" />
+      <div class="controls-bottom">
+        <button class="btn btn-success" (click)="validateTypedAnswer()">✅ Valider l'écriture</button>
       </div>
-    </header>
+      <div *ngIf="typedValidationMessage"
+           [class.correct]="typedAnswerIsCorrect"
+           [class.incorrect]="typedAnswerIsCorrect === false"
+           class="validation-message">
+        {{ typedValidationMessage }}
+      </div>
+    </div>
 
-    <main class="main-content">
-        <h1 class="title">Ouvre tes oreilles 🎧</h1>
-
-        <p class="instruction">
-            Remets les mots dans le bon ordre pour compléter la phrase !
-        </p>
-
-        <div class="controls-top">
-            <button class="btn btn-primary" (click)="playSentence()">🔊 Écouter la phrase</button>
-        </div>
-
-        <div class="answer-container">
-            <span *ngFor="let word of getDisplayWords(); let i = index"
-                  class="selected-word"
-                  [class.word-verb]="config.colorTypes && word.type === 'verb'"
-                  [class.word-noun]="config.colorTypes && word.type === 'noun'"
-                  [class.word-adjective]="config.colorTypes && word.type === 'adjective'"
-                  [class.word-determiner]="config.colorTypes && word.type === 'determiner'"
-                  [class.word-long]="config.colorTypes && word.type === 'longWord'"
-                  (click)="removeWordFromAnswer(i)">
-              {{ word.text }}
-            </span>
-              <!-- Bouton point (visible seulement si dotEnd est false) -->
-              <span *ngIf="!config.dotEnd && selectedWords.length > 0"
-                class="word-chip dot-button">
-              .
-          </span>
-          </div>
-        <div class="word-bank">
-            <button *ngFor="let word of availableWords"
-                    class="word-chip"
-                    [class.word-verb]="config.colorTypes && getWordType(word) === 'verb'"
-                    [class.word-noun]="config.colorTypes && getWordType(word) === 'noun'"
-                    [class.word-pronoun]="config.colorTypes && getWordType(word) === 'pronoun'"
-                    [class.word-adjective]="config.colorTypes && getWordType(word) === 'adjective'"
-                    [class.word-determiner]="config.colorTypes && getWordType(word) === 'determiner'"
-                    [class.word-long]="config.colorTypes && getWordType(word) === 'longWord'"
-                    (click)="addWordToAnswer(word)">
-                {{ word }}
-            </button>
-        </div>
-
-        <div class="validation-message"
-             [class.correct]="isAnswerValid"
-             [class.incorrect]="isAnswerValid === false">
-            {{ validationMessage }}
-        </div>
-
-        <div class="controls-bottom">
-            <button class="btn btn-secondary" (click)="resetAnswer()">↩️ Réinitialiser</button>
-            <button class="btn btn-success" (click)="validateAnswer()">✅ Valider</button>
-        </div>
-        <div *ngIf="isAnswerValid && !finalValidationDone && config.rewrite" class="final-input-section">
-
-            <h3>Bravo ! Maintenant, écris la phrase pour valider définitivement :</h3>
-            <input type="text"
-                   [(ngModel)]="typedAnswer"
-                   placeholder="Écris ici..."
-                   class="final-input" />
-
-            <div class="controls-bottom">
-                <button class="btn btn-success" (click)="validateTypedAnswer()">✅ Valider l'écriture</button>
-            </div>
-
-            <div *ngIf="typedValidationMessage"
-                 [class.correct]="typedAnswerIsCorrect"
-                 [class.incorrect]="typedAnswerIsCorrect === false"
-                 class="validation-message">
-                {{ typedValidationMessage }}
-            </div>
-        </div>
-
-        <div *ngIf="finalValidationDone && config.rewrite" class="final-success">
-            <h2>🎉 Bravo ! Phrase validée !</h2>
-        </div>
-    </main>
+    <div *ngIf="finalValidationDone && config.rewrite" class="final-success">
+      <h2>🎉 Bravo ! Phrase validée !</h2>
+    </div>
+  </main>
 </div>
