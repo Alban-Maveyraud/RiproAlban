@@ -107,30 +107,39 @@ export class MaquetteConfigComponent implements OnInit {
 
     const phraseText = this.addPhraseForm.value.phrase;
     const words = phraseText.split(' ');
-  
+
     // Initialise les mots sans type (par défaut 'other')
-    this.typedWords = words.map((word: string) => ({ 
-      word, 
+    this.typedWords = words.map((word: string) => ({
+      word,
       type: 'other' // Valeur par défaut
     }));
-  
+
     this.showTypingPanel = true;
   }
 
   // Ajout d'une phrase avec typage manuel
-  validerTypes() {
+  validerTypesEtContinuer() {
     const phraseText = this.addPhraseForm.value.phrase;
-    const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
-      word,
-      type: this.mapToStandardType(type)
-    }));
 
-    // Ajoute la nouvelle phrase à la liste locale
-    this.addPhraseToLocalList(phraseText, wordsWithTypes);
+    if (!phraseText || this.typedWords.length === 0) {
+      alert("Aucune phrase à valider.");
+      return;
+    }
+
+    const wordTypes: { [key: string]: string } = {};
+
+    this.typedWords.forEach(({ word, type }) => {
+      wordTypes[word] = type;
+    });
+
+    addPhraseWithTypes(phraseText, wordTypes);
+
+    // Reset des formulaires et de l'état
     this.addPhraseForm.reset();
     this.typedWords = [];
     this.showTypingPanel = false;
   }
+
   private addPhraseToLocalList(text: string, words: {word: string, type: string}[]) {
     const newPhrase = {
       id: this.phrases.length + 1,
@@ -139,7 +148,7 @@ export class MaquetteConfigComponent implements OnInit {
     };
     this.phrases.push(newPhrase);
   }
-  
+
   private mapToStandardType(type: string): string {
     const typeMap: {[key: string]: string} = {
       'verb': 'verbe',
@@ -152,7 +161,7 @@ export class MaquetteConfigComponent implements OnInit {
     };
     return typeMap[type] || 'autre';
   }
-  
+
 
   // Invite l'utilisateur à spécifier un type pour chaque mot
   promptWordTypes(phrase: string): { [key: string]: string } {

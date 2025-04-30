@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { GameStateService } from '../game-state.service';
+import { GameStateService } from '../../services/game-state.service';
 import { Router } from '@angular/router';
 import { phrases } from '../../services/phrasesTS';
 import { StudentService, Student, GameSessionStats } from '../../services/student.service'; // <<< Ajout

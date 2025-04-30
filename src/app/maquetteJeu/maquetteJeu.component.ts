@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentService, Student } from '../../services/student.service';
 import { Router } from '@angular/router';
-import { GameStateService } from '../game-state.service'; // ⚡ ajouter GameStateService
+import { GameStateService } from '../../services/game-state.service'; // ⚡ ajouter GameStateService
 import { GameStats } from '../game-stats/game-stats.model'; // ⚡ ajouter GameStats
 @Component({
   selector: 'app-maquette-jeu',
@@ -58,8 +58,13 @@ export class MaquetteJeuComponent implements OnInit {
     this.router.navigate(['']); // adapte cette route si besoin
   }
 
-  goToAdmin(): void {
-    this.router.navigate(['config']); // adapte cette route aussi
+  goToAdmin() {
+    const password = prompt('Entrez le mot de passe admin :');
+    if (password === 'admin') {
+      this.router.navigate(['/config']);
+    } else {
+      alert('Mot de passe incorrect !');
+    }
   }
 
   onParticipantSelected(event: Event) {
