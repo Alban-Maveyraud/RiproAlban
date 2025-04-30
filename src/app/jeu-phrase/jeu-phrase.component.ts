@@ -5,14 +5,24 @@ import { phrases } from '../../assets/phrasesTS';
 import { StudentService, Student, GameSessionStats } from '../student/student.service'; // <<< Ajout
 import { ActivatedRoute } from '@angular/router';
 import { SpeechService } from '../../speachService/speech.service';
+import { GameStats } from '../game-stats/game-stats.model';
+import { MaquetteConfigComponent } from '../maquetteConfig/maquetteConfig.component'; // <<< Ajout
+import { ConfigService } from '../config/config.service'; // <<< Ajout
 
 
 interface Word {
   text: string;
   selected: boolean;
-  type?: 'verb' | 'adjective' | 'noun' | 'determiner' | 'other' | 'longWord';
+  type?: 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' | 'other' | 'longWord';
 }
-
+interface ConfigOptions {
+  rewrite: boolean;
+  dotEnd: boolean;
+  colorTypes: boolean;
+  soundEnabled: boolean;
+  difficultyLevel: number;
+  fontSize: number;
+}
 @Component({
   selector: 'app-jeu-phrase',
   templateUrl: './jeu-phrase.component.html',
@@ -36,16 +46,31 @@ export class JeuPhraseComponent implements OnInit {
 
   currentStudent!: Student; // <<< Étudiant courant
   listenStartTime: Date | null = null;
-
+  
+  config!: ConfigOptions;
   constructor(
     private gameStateService: GameStateService,
     private studentService: StudentService,
     private router: Router,
     private route: ActivatedRoute,
-    private speechService: SpeechService
+    private speechService: SpeechService,
+    private configService: ConfigService
   ) {}
 
+  // Ajoutez cette propriété à votre composant
+readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
+  'verb': { bg: '#FFCDD2', text: '#B71C1C' },      // Rouge
+  'noun': { bg: '#C8E6C9', text: '#1B5E20' },     // Vert
+  'adjective': { bg: '#BBDEFB', text: '#0D47A1' }, // Bleu
+  'determiner': { bg: '#FFF9C4', text: '#F57F17' },// Jaune
+  'longWord': { bg: '#E1BEE7', text: '#4A148C' },  // Violet
+  'pronoun': { bg: '#FFAB91', text: '#BF360C' }, // Orange
+  'other': { bg: '#F5F5F5', text: '#212121' }     // Gris (par défaut)
+};
   ngOnInit(): void {
+    this.configService.getConfig().subscribe(config => {
+      this.config = config;
+    });
     const student = this.studentService.getCurrentStudent();
 
     if (student) {
@@ -57,54 +82,114 @@ export class JeuPhraseComponent implements OnInit {
 
     this.loadRandomPhrase();
   }
-
+  getWordClass(word: Word): string {
+    if (!this.config.colorTypes) return '';
+    
+    switch(word.type) {
+      case 'verb':
+        return 'word-verb';
+      case 'noun':
+        return 'word-noun';
+      case 'pronoun':
+        return 'word-pronoun';
+      case 'adjective':
+        return 'word-adjective';
+      case 'determiner':
+        return 'word-determiner';
+      case 'longWord':
+        return 'word-long';
+      default:
+        return '';
+    }
+  }
+  getWordType(wordText: string): string {
+    if (!this.config.colorTypes) return '';
+    
+    const word = this.correctPhraseWords.find(w => w.text === wordText);
+    return word?.type || '';
+  }
   loadRandomPhrase(): void {
-
     const randomIndex = Math.floor(Math.random() * phrases.length);
     const randomPhrase = phrases[randomIndex];
-
+  
     this.correctPhraseWords = randomPhrase.words.map(w => ({
       text: w.word,
       selected: false,
-      type: this.mapType(w.type)
+      type: this.mapType(w.type) // Cette méthode doit être correctement définie
     }));
+
+    // Ajoute le point final si dotEnd est true
+    if (this.config.dotEnd && this.correctPhraseWords.length > 0) {
+    this.correctPhraseWords[this.correctPhraseWords.length - 1].text += '.';
+    this.availableWords.push('.'); // Ajoute le point comme mot sélectionnable
+  }
 
     this.correctSentence = this.correctPhraseWords.map(w => w.text).join(' ');
     this.availableWords = this.shuffleArray(this.correctPhraseWords.map(w => w.text));
     this.currentStudent.currentSession.date = new Date(); // Met à jour la date
   }
+  getWordStyle(word: Word | string): any {
+  if (!this.config.colorTypes) return {};
+  
+  // Gère à la fois les objets Word et les strings
+  const type = typeof word === 'string' 
+    ? this.correctPhraseWords.find(w => w.text === word)?.type || 'other'
+    : word.type || 'other';
 
-  mapType(type: string): 'verb' | 'adjective' | 'noun' | 'determiner' | 'other' | 'longWord' {
+  return {
+    'background-color': this.wordTypeColors[type].bg,
+    'color': this.wordTypeColors[type].text,
+    'border': `1px solid ${this.wordTypeColors[type].text}`
+  };
+}
+
+  mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' | 'other' | 'longWord' {
     switch (type) {
       case 'verbe': return 'verb';
       case 'adjectif': return 'adjective';
       case 'nom': return 'noun';
+      case 'pronom': return 'pronoun';
       case 'déterminant': return 'determiner';
       case 'longMot': return 'longWord';
       default: return 'other';
     }
   }
-
-  validateAnswer() {
-    const correctWords = this.correctPhraseWords.map(w => w.text);
-    const userWords = this.getDisplayWords().map(w => w.text);
-
-    if (this.arraysEqual(correctWords, userWords)) {
+  validateAnswer(): void {
+    // Construire la réponse en prenant en compte que le point peut être un élément séparé
+    let answer = this.selectedWords
+        .map(w => w.text === '.' ? '.' : w.text)
+        .join(' ')
+        .replace(/ \./g, '.') // Supprime l'espace avant le point
+        .trim();
+    
+    let expected = this.correctSentence.trim();
+    
+    // Normalise en enlevant les points finaux pour la comparaison
+    if (!this.config.dotEnd) {
+        answer = answer.replace(/\.$/, '');
+        expected = expected.replace(/\.$/, '');
+    }
+  
+    if (answer === expected) {
       this.isAnswerValid = true;
-      this.validationMessage = '✅ Bravo, bonne réponse !';
+      this.validationMessage = '✅ Bonne réponse !';
+  
+      if (!this.config.rewrite) {
+        this.finalValidationDone = true;
+        this.validationMessage = '✅ Bonne réponse ! Passage au jeu de voiture...';
+  
+        setTimeout(() => {
+          this.gameStateService.refillFuel();
+          this.router.navigate(['/jeu-voiture']);
+        }, 1500); // petit délai pour laisser lire le message
+      }
     } else {
       this.isAnswerValid = false;
-      this.validationMessage = '❌ Désolé, ce n\'est pas encore correct.';
-      this.currentStudent.currentSession.rewriteErrors++;
-
-      // Analyse des erreurs
-      userWords.forEach((word, index) => {
-        if (word !== correctWords[index]) {
-          this.trackWordError(word);
-        }
-      });
+      this.validationMessage = '❌ Ce n\'est pas tout à fait ça. Réessaie !';
+      this.currentStudent.currentSession.totalErrors++;
     }
   }
+  
 
   trackWordError(word: string) {
     const wordInfo = this.correctPhraseWords.find(w => w.text === word);
@@ -140,6 +225,15 @@ export class JeuPhraseComponent implements OnInit {
   }
 
   validateTypedAnswer(): void {
+    if (!this.config.rewrite) {
+      this.finalValidationDone = true;
+      setTimeout(() => {
+        this.gameStateService.refillFuel();
+        this.router.navigate(['/jeu-voiture']);
+      }, 1000);
+      return;
+    }
+    
     const expected = this.correctSentence.trim();
     const typed = this.typedAnswer.trim();
 

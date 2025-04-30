@@ -4,45 +4,57 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentService, Student } from '../student/student.service';
 import { phrases } from '../../assets/phrasesTS';
 import { addPhraseWithTypes, removePhraseById } from '../../assets/phrasesTS';
-import { HttpClient } from '@angular/common/http';
-
+import { trigger, transition, style, animate } from '@angular/animations';
+import { ConfigService } from '../config/config.service';
 @Component({
   selector: 'app-maquetteConfig',
   templateUrl: './maquetteConfig.component.html',
-  styleUrls: ['./maquetteConfig.component.scss']
+  styleUrls: ['./maquetteConfig.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
+    ])
+  ]
 })
 export class MaquetteConfigComponent implements OnInit {
   parcourForm!: FormGroup;
   addPhraseForm!: FormGroup;
 
-  studentsList: Student[] = [];
-  phrases = phrases;
-
   activeTab = 'participants';
   popupVisible = false;
   showPhrases = false;
 
-  // Phrase temporaire et étapes d’ajout
-  tempPhrase: string | null = null;
-  showAudioOptions = false;
-  showAudioRecording = false;
+  studentsList: Student[] = [];
+  selectedStudent: Student | null = null;
 
-  // Audio recording
-  isRecording = false;
-  mediaRecorder: MediaRecorder | null = null;
-  recordedChunks: Blob[] = [];
-  audioBlob: Blob | null = null;
-  audioPreviewUrl: string | null = null;
+  phrases = phrases;
 
+  showConfig = false;
+
+  config = {
+    rewrite: true,
+    dotEnd: false,
+    colorTypes: true
+  };
+
+  toggleConfig(): void {
+    this.showConfig = !this.showConfig;
+  }
+  availableTypes = ['verb', 'adjective', 'noun', 'pronoun', 'determiner', 'other', 'longWord'];
   typedWords: { word: string; type: string }[] = [];
-  showTypeSelection: boolean = false;
-
+  showTypingPanel = false;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private studentService: StudentService,
-    private http: HttpClient
+    private configService: ConfigService
   ) {}
 
   ngOnInit() {
@@ -50,7 +62,7 @@ export class MaquetteConfigComponent implements OnInit {
     this.loadStudents();
   }
 
-  /** ---------------- FORMULAIRES ---------------- **/
+  // Initialisation des formulaires
   initForms() {
     this.parcourForm = this.fb.group({
       eleve: ['', Validators.required],
@@ -63,16 +75,108 @@ export class MaquetteConfigComponent implements OnInit {
       phrase: ['', Validators.required]
     });
   }
-
-  /** ---------------- ÉTUDIANTS ---------------- **/
+  appliquerConfiguration(): void {
+    this.configService.setConfig(this.config);
+    console.log('Configuration appliquée :', this.config);
+  }
+  
+  // Chargement des étudiants depuis le service
   loadStudents() {
     this.studentService.getStudents().subscribe(students => {
       this.studentsList = students;
     });
   }
 
+  // Changement d'onglet
+  changeTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  // Navigation
+  goToJeu() {
+    this.router.navigate(['/jeu']);
+  }
+
+  goToRes() {
+    this.router.navigate(['/resultat']);
+  }
+
+  // Ajout d'une phrase avec typage manuel
+  addPhrase() {
+    if (this.addPhraseForm.invalid) {
+      alert('Veuillez saisir une phrase.');
+      return;
+    }
+  
+    const phraseText = this.addPhraseForm.value.phrase;
+    const words = phraseText.split(' ');
+  
+    // Initialise les mots sans type
+    this.typedWords = words.map((word: string) => ({ word, type: 'other' }));
+
+    this.showTypingPanel = true;
+  }
+  validerTypes() {
+    const phraseText = this.addPhraseForm.value.phrase;
+    const wordTypes: { [key: string]: string } = {};
+  
+    this.typedWords.forEach(({ word, type }) => {
+      wordTypes[word] = type;
+    });
+  
+    addPhraseWithTypes(phraseText, wordTypes);
+    this.addPhraseForm.reset();
+    this.showTypingPanel = false;
+  }
+  
+
+  // Invite l'utilisateur à spécifier un type pour chaque mot
+  promptWordTypes(phrase: string): { [key: string]: string } {
+    const words = phrase.split(' ');
+    const types: { [key: string]: string } = {};
+
+    words.forEach(word => {
+      const type = prompt(`Quel est le type du mot "${word}" ?`) || 'autre';
+      types[word] = type;
+    });
+
+    return types;
+  }
+
+  // Gestion de l'affichage
+  togglePhrases() {
+    this.showPhrases = !this.showPhrases;
+  }
+
+  ouvrirPopup() {
+    this.popupVisible = true;
+  }
+
+  fermerPopup() {
+    this.popupVisible = false;
+  }
+
+  // Couleur associée à chaque type de mot
+  getColorForType(type: string): string {
+    const colorMap: { [key: string]: string } = {
+      déterminant: 'blue',
+      nom: 'green',
+      verbe: 'red',
+      adjectif: 'orange',
+      adverbe: 'purple',
+      préposition: 'brown',
+      pronom: 'pink',
+      'nom propre': 'violet',
+    };
+    return colorMap[type] || 'black';
+  }
+
+  // Gestion des étudiants
   ajouterEtudiant() {
-    if (this.parcourForm.invalid) return alert('Veuillez remplir tous les champs.');
+    if (this.parcourForm.invalid) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
 
     const newStudent: Student = {
       id: this.studentsList.length + 1,
@@ -89,192 +193,28 @@ export class MaquetteConfigComponent implements OnInit {
     this.fermerPopup();
   }
 
-  supprimerEtudiant(student: Student) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')) {
-      this.studentService.removeStudent(student);
-      this.loadStudents();
-    }
-  }
-
   voirDetails(student: Student) {
     this.studentService.setCurrentStudent(student);
     this.router.navigate(['/etudiant', student.id]);
   }
 
-  /** ---------------- GESTION PHRASES ---------------- **/
-    addPhrase() {
-    if (this.addPhraseForm.invalid) return;
-
-    this.tempPhrase = this.addPhraseForm.value.phrase.trim();
-    const words = this.tempPhrase?.split(/\s+/) ?? [];
-
-    this.typedWords = words.map(word => ({ word, type: 'autre' }));
-    this.showTypeSelection = true;
-    this.addPhraseForm.reset();
-    this.showAudioOptions = true;
+  fermerDetails() {
+    this.selectedStudent = null;
   }
 
-  validerTypesEtContinuer() {
-    const typesMap: { [key: string]: string } = {};
-    this.typedWords.forEach(w => typesMap[w.word] = w.type);
-
-    addPhraseWithTypes(this.tempPhrase!, typesMap);
-    this.showTypeSelection = false;
-    this.showAudioOptions = true;
-    this.showTypeSelection = false;
-  }
-
-  envoyerPhraseSansAudio() {
-    if (!this.tempPhrase) return;
-    addPhraseWithTypes(this.tempPhrase, {}); // À adapter si typage obligatoire
-    this.resetAudioWorkflow();
-  }
-
-  prepareRecording() {
-    this.showAudioOptions = false;
-    this.showAudioRecording = true;
-  }
-
-  deletePhrase(id: number) {
-    if (confirm('Supprimer cette phrase ?')) {
-      removePhraseById(id);
-      this.phrases = [...phrases]; // Refresh
+  supprimerEtudiant(student: Student) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')) {
+      this.studentService.removeStudent(student);
+      this.loadStudents();
+      this.fermerDetails();
     }
   }
 
-  togglePhrases() {
-    this.showPhrases = !this.showPhrases;
+  // Suppression d'une phrase
+  deletePhrase(id: number) {
+    if (confirm('Supprimer cette phrase ?')) {
+      removePhraseById(id);
+      this.phrases = [...phrases];
+    }
   }
-
-  /** ---------------- AUDIO ---------------- **/
-  startRecording() {
-    this.recordedChunks = [];
-
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
-        this.mediaRecorder = new MediaRecorder(stream);
-        this.mediaRecorder.start();
-        this.isRecording = true;
-
-        this.mediaRecorder.ondataavailable = e => {
-          if (e.data.size > 0) this.recordedChunks.push(e.data);
-        };
-
-        this.mediaRecorder.onstop = () => {
-          stream.getTracks().forEach(track => track.stop());
-          this.audioBlob = new Blob(this.recordedChunks, { type: 'audio/webm' });
-          if (this.audioPreviewUrl) URL.revokeObjectURL(this.audioPreviewUrl);
-          this.audioPreviewUrl = URL.createObjectURL(this.audioBlob!);
-        };
-      })
-      .catch(err => {
-        console.error('Erreur micro :', err);
-        alert('Micro non accessible.');
-      });
-  }
-
-  stopRecording() {
-    if (!this.mediaRecorder || !this.isRecording) return;
-
-    this.mediaRecorder.stop();
-    this.isRecording = false;
-
-    this.mediaRecorder.onstop = () => {
-      // Stop toutes les pistes (libère le micro)
-      const stream = this.mediaRecorder!.stream;
-      stream.getTracks().forEach(track => track.stop());
-
-      // Création du blob audio
-      this.audioBlob = new Blob(this.recordedChunks, { type: 'audio/webm' });
-
-      if (this.audioPreviewUrl) {
-        URL.revokeObjectURL(this.audioPreviewUrl);
-      }
-
-      this.audioPreviewUrl = URL.createObjectURL(this.audioBlob);
-
-      // Upload automatique du fichier
-      if (this.tempPhrase && this.audioBlob) {
-        const formData = new FormData();
-        formData.append('audio', this.audioBlob, 'recording.webm');
-        formData.append('phrase', this.tempPhrase);
-
-        this.http.post('http://localhost:3000/upload-audio', formData).subscribe({
-          next: (res: any) => {
-            const audioUrl = res.audioUrl || null; // À adapter selon réponse backend
-            addPhraseWithTypes(this.tempPhrase!, {}, audioUrl);
-            alert('Phrase avec audio enregistrée !');
-            this.resetAudioWorkflow();
-          },
-          error: err => {
-            console.error('Erreur upload audio :', err);
-            alert("Échec de l'envoi de l'audio.");
-          }
-        });
-      } else {
-        alert("Pas de phrase ou audio à envoyer.");
-      }
-    };
-  }
-
-  uploadRecordedAudio(phraseText: string) {
-    if (!this.audioBlob) return alert("Pas d'audio enregistré.");
-
-    const formData = new FormData();
-    formData.append('audio', this.audioBlob, 'recording.webm');
-    formData.append('phrase', phraseText);
-
-    this.http.post('http://localhost:3000/upload-audio', formData).subscribe({
-      next: () => {
-        alert('Audio enregistré avec succès.');
-        this.resetAudioWorkflow();
-      },
-      error: err => {
-        console.error(err);
-        alert("Erreur lors de l'envoi de l'audio.");
-      }
-    });
-  }
-
-  /** ---------------- UI & UTILS ---------------- **/
-  ouvrirPopup() {
-    this.popupVisible = true;
-  }
-
-  fermerPopup() {
-    this.popupVisible = false;
-  }
-
-  // Navigation
-  goToJeu() {
-    this.router.navigate(['/jeu']);
-  }
-
-  goToRes() {
-    this.router.navigate(['/resultat']);
-  }
-
-  getColorForType(type: string): string {
-    const colorMap: { [key: string]: string } = {
-      déterminant: 'blue',
-      nom: 'green',
-      verbe: 'red',
-      adjectif: 'orange',
-      adverbe: 'purple',
-      préposition: 'brown',
-      pronom: 'pink',
-      'nom propre': 'violet'
-    };
-    return colorMap[type] || 'black';
-  }
-
-  resetAudioWorkflow() {
-    this.tempPhrase = null;
-    this.audioBlob = null;
-    this.audioPreviewUrl = null;
-    this.showAudioOptions = false;
-    this.showAudioRecording = false;
-  }
-
-  protected readonly URL = URL;
 }

@@ -16,7 +16,7 @@ export class HomeComponent {
 
   goToAdmin() {
     const password = prompt('Entrez le mot de passe admin :');
-    if (password === 'caca') {
+    if (password === 'admin') {
       this.router.navigate(['/config']);
     } else {
       alert('Mot de passe incorrect !');
