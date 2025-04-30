@@ -5,8 +5,8 @@ import { StudentService, Student } from '../../services/student.service';
 import { phrases } from '../../services/phrasesTS';
 import { addPhraseWithTypes, removePhraseById } from '../../services/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { ConfigService } from '../config/config.service';
-import { PhraseService } from '../services/phrase.service';
+import { ConfigService } from "../../services/config.service";
+import { PhraseService } from '../../services/phrase.service';
 
 @Component({
   selector: 'app-maquetteConfig',
@@ -130,7 +130,7 @@ export class MaquetteConfigComponent implements OnInit {
       type: this.mapToStandardType(type)
     }));
     const typeMap = Object.fromEntries(wordsWithTypes.map(w => [w.word, w.type]));
-    
+
 
     // Ajoute la nouvelle phrase à la liste locale
     this.addPhraseToLocalList(phraseText, typeMap);
@@ -147,33 +147,33 @@ export class MaquetteConfigComponent implements OnInit {
       alert('Veuillez saisir une phrase et définir le type de chaque mot.');
       return;
     }
-  
+
     const phraseText = this.addPhraseForm.value.phrase;
-  
+
     const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
       word,
       type: this.mapToStandardType(type)
     }));
     console.log('Typed words:', this.typedWords);
 
-  
+
     const typeMap = Object.fromEntries(wordsWithTypes.map(w => [w.word, w.type]));
-  
+
     // Ajout via le service
     this.phraseService.addPhrase(phraseText, typeMap);
-  
+
     // Réinitialisation
     this.addPhraseForm.reset();
     this.typedWords = [];
     this.showTypingPanel = false;
-  
+
     console.log('Phrase ajoutée avec succès:', phraseText);
-    
+
   }
-  
-  
-  
-  
+
+
+
+
   private mapToStandardType(type: string): string {
     const typeMap: {[key: string]: string} = {
       'verb': 'verbe',
