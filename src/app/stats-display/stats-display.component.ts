@@ -55,6 +55,9 @@ export class StatsDisplayComponent implements OnInit {
   }
 
   goToAccueil() {
+    if (this.selectedStudent) {
+      this.studentService.finishGame(this.selectedStudent);
+    }
     this.router.navigate(['/jeu']);
   }
 }
