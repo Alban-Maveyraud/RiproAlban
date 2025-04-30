@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { phrases, addPhraseWithTypes, removePhraseById, Phrase } from '../../assets/phrasesTS';
+import { phrases, addPhraseWithTypes, removePhraseById, Phrase } from './phrasesTS';
 
 @Injectable({
   providedIn: 'root'

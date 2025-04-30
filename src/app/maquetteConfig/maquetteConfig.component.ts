@@ -5,8 +5,8 @@ import { StudentService, Student } from '../../services/student.service';
 import { phrases } from '../../services/phrasesTS';
 import { addPhraseWithTypes, removePhraseById } from '../../services/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { ConfigService } from '../config/config.service';
-import { PhraseService } from '../services/phrase.service';
+import { PhraseService } from '../../services/phrase.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-maquetteConfig',
