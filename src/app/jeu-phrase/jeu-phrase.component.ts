@@ -143,17 +143,30 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   };
 }
 
-  mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' | 'other' | 'longWord' {
-    switch (type) {
-      case 'verbe': return 'verb';
-      case 'adjectif': return 'adjective';
-      case 'nom': return 'noun';
-      case 'pronom': return 'pronoun';
-      case 'déterminant': return 'determiner';
-      case 'longMot': return 'longWord';
-      default: return 'other';
-    }
+mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' | 'other' | 'longWord' {
+  switch (type.toLowerCase()) {
+    case 'verbe':
+    case 'verb':
+      return 'verb';
+    case 'adjectif':
+    case 'adjective':
+      return 'adjective';
+    case 'nom':
+    case 'noun':
+      return 'noun';
+    case 'pronom':
+    case 'pronoun':
+      return 'pronoun';
+    case 'déterminant':
+    case 'determiner':
+      return 'determiner';
+    case 'longmot':
+    case 'longword':
+      return 'longWord';
+    default:
+      return 'other';
   }
+}
   validateAnswer(): void {
     // Construire la réponse en prenant en compte que le point peut être un élément séparé
     let answer = this.selectedWords

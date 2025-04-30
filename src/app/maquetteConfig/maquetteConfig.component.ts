@@ -34,7 +34,6 @@ export class MaquetteConfigComponent implements OnInit {
   selectedStudent: Student | null = null;
 
   phrases = phrases;
-
   showConfig = false;
 
   config = {
@@ -100,8 +99,6 @@ export class MaquetteConfigComponent implements OnInit {
   goToRes() {
     this.router.navigate(['/resultat']);
   }
-
-  // Ajout d'une phrase avec typage manuel
   addPhrase() {
     if (this.addPhraseForm.invalid) {
       alert('Veuillez saisir une phrase.');
@@ -111,22 +108,48 @@ export class MaquetteConfigComponent implements OnInit {
     const phraseText = this.addPhraseForm.value.phrase;
     const words = phraseText.split(' ');
   
-    // Initialise les mots sans type
-    this.typedWords = words.map((word: string) => ({ word, type: 'other' }));
-
+    // Initialise les mots sans type (par défaut 'other')
+    this.typedWords = words.map((word: string) => ({ 
+      word, 
+      type: 'other' // Valeur par défaut
+    }));
+  
     this.showTypingPanel = true;
   }
+
+  // Ajout d'une phrase avec typage manuel
   validerTypes() {
     const phraseText = this.addPhraseForm.value.phrase;
-    const wordTypes: { [key: string]: string } = {};
-  
-    this.typedWords.forEach(({ word, type }) => {
-      wordTypes[word] = type;
-    });
-  
-    addPhraseWithTypes(phraseText, wordTypes);
+    const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
+      word,
+      type: this.mapToStandardType(type)
+    }));
+
+    // Ajoute la nouvelle phrase à la liste locale
+    this.addPhraseToLocalList(phraseText, wordsWithTypes);
     this.addPhraseForm.reset();
     this.showTypingPanel = false;
+  }
+  private addPhraseToLocalList(text: string, words: {word: string, type: string}[]) {
+    const newPhrase = {
+      id: this.phrases.length + 1,
+      text,
+      words
+    };
+    this.phrases.push(newPhrase);
+  }
+  
+  private mapToStandardType(type: string): string {
+    const typeMap: {[key: string]: string} = {
+      'verb': 'verbe',
+      'noun': 'nom',
+      'adjective': 'adjectif',
+      'pronoun': 'pronom',
+      'determiner': 'déterminant',
+      'longWord': 'longMot',
+      'other': 'autre'
+    };
+    return typeMap[type] || 'autre';
   }
   
 
@@ -213,8 +236,7 @@ export class MaquetteConfigComponent implements OnInit {
   // Suppression d'une phrase
   deletePhrase(id: number) {
     if (confirm('Supprimer cette phrase ?')) {
-      removePhraseById(id);
-      this.phrases = [...phrases];
+      this.phrases = this.phrases.filter(p => p.id !== id);
     }
   }
 }
