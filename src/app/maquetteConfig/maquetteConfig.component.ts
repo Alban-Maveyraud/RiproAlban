@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StudentService, Student } from '../student/student.service';
-import { phrases } from '../../assets/phrasesTS';
-import { addPhraseWithTypes, removePhraseById } from '../../assets/phrasesTS';
+import { StudentService, Student } from '../../services/student.service';
+import { phrases } from '../../services/phrasesTS';
+import { addPhraseWithTypes, removePhraseById } from '../../services/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ConfigService } from '../config/config.service';
 import { PhraseService } from '../services/phrase.service';
@@ -100,9 +100,6 @@ export class MaquetteConfigComponent implements OnInit {
     this.router.navigate(['/jeu']);
   }
 
-  goToRes() {
-    this.router.navigate(['/resultat']);
-  }
   addPhrase() {
     if (this.addPhraseForm.invalid) {
       alert('Veuillez saisir une phrase.');
@@ -111,13 +108,13 @@ export class MaquetteConfigComponent implements OnInit {
 
     const phraseText = this.addPhraseForm.value.phrase;
     const words = phraseText.split(' ');
-  
+
     // Initialise les mots sans type (par défaut 'other')
-    this.typedWords = words.map((word: string) => ({ 
-      word, 
+    this.typedWords = words.map((word: string) => ({
+      word,
       type: 'other' // Valeur par défaut
     }));
-  
+
     this.showTypingPanel = true;
   }
 
@@ -189,7 +186,7 @@ export class MaquetteConfigComponent implements OnInit {
     };
     return typeMap[type] || 'autre';
   }
-  
+
 
   // Invite l'utilisateur à spécifier un type pour chaque mot
   promptWordTypes(phrase: string): { [key: string]: string } {

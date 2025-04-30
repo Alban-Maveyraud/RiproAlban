@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StudentService, Student } from '../student/student.service'; // <- bonne importation
+import { StudentService, Student } from '../../services/student.service'; // <- bonne importation
 
 @Component({
   selector: 'app-maquetteResultat',

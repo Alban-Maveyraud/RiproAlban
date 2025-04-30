@@ -1,13 +1,13 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { GameStateService } from '../game-state.service';
+import { GameStateService } from '../../services/game-state.service';
 import { Router } from '@angular/router';
-import { phrases } from '../../assets/phrasesTS';
-import { StudentService, Student, GameSessionStats } from '../student/student.service'; // <<< Ajout
+import { phrases } from '../../services/phrasesTS';
+import { StudentService, Student, GameSessionStats } from '../../services/student.service'; // <<< Ajout
 import { ActivatedRoute } from '@angular/router';
-import { SpeechService } from '../../speachService/speech.service';
+import { SpeechService } from '../../services/speech.service';
 import { GameStats } from '../game-stats/game-stats.model';
 import { MaquetteConfigComponent } from '../maquetteConfig/maquetteConfig.component'; // <<< Ajout
-import { ConfigService } from '../config/config.service'; // <<< Ajout
+import { ConfigService } from '../../services/config.service'; // <<< Ajout
 
 
 interface Word {
@@ -46,7 +46,7 @@ export class JeuPhraseComponent implements OnInit {
 
   currentStudent!: Student; // <<< Étudiant courant
   listenStartTime: Date | null = null;
-  
+
   config!: ConfigOptions;
   constructor(
     private gameStateService: GameStateService,
@@ -84,7 +84,7 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   }
   getWordClass(word: Word): string {
     if (!this.config.colorTypes) return '';
-    
+
     switch(word.type) {
       case 'verb':
         return 'word-verb';
@@ -104,14 +104,14 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   }
   getWordType(wordText: string): string {
     if (!this.config.colorTypes) return '';
-    
+
     const word = this.correctPhraseWords.find(w => w.text === wordText);
     return word?.type || '';
   }
   loadRandomPhrase(): void {
     const randomIndex = Math.floor(Math.random() * phrases.length);
     const randomPhrase = phrases[randomIndex];
-  
+
     this.correctPhraseWords = randomPhrase.words.map(w => ({
       text: w.word,
       selected: false,
@@ -130,9 +130,9 @@ readonly wordTypeColors: Record<string, {bg: string, text: string}> = {
   }
   getWordStyle(word: Word | string): any {
   if (!this.config.colorTypes) return {};
-  
+
   // Gère à la fois les objets Word et les strings
-  const type = typeof word === 'string' 
+  const type = typeof word === 'string'
     ? this.correctPhraseWords.find(w => w.text === word)?.type || 'other'
     : word.type || 'other';
 
@@ -174,23 +174,23 @@ mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' 
         .join(' ')
         .replace(/ \./g, '.') // Supprime l'espace avant le point
         .trim();
-    
+
     let expected = this.correctSentence.trim();
-    
+
     // Normalise en enlevant les points finaux pour la comparaison
     if (!this.config.dotEnd) {
         answer = answer.replace(/\.$/, '');
         expected = expected.replace(/\.$/, '');
     }
-  
+
     if (answer === expected) {
       this.isAnswerValid = true;
       this.validationMessage = '✅ Bonne réponse !';
-  
+
       if (!this.config.rewrite) {
         this.finalValidationDone = true;
         this.validationMessage = '✅ Bonne réponse ! Passage au jeu de voiture...';
-  
+
         setTimeout(() => {
           this.gameStateService.refillFuel();
           this.router.navigate(['/jeu-voiture']);
@@ -202,7 +202,7 @@ mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' 
       this.currentStudent.currentSession.totalErrors++;
     }
   }
-  
+
 
   trackWordError(word: string) {
     const wordInfo = this.correctPhraseWords.find(w => w.text === word);
@@ -246,7 +246,7 @@ mapType(type: string): 'verb' | 'adjective' | 'noun' | 'pronoun' | 'determiner' 
       }, 1000);
       return;
     }
-    
+
     const expected = this.correctSentence.trim();
     const typed = this.typedAnswer.trim();
 
