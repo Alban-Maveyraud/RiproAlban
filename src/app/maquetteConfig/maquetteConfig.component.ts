@@ -6,6 +6,8 @@ import { phrases } from '../../assets/phrasesTS';
 import { addPhraseWithTypes, removePhraseById } from '../../assets/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ConfigService } from '../config/config.service';
+import { PhraseService } from '../services/phrase.service';
+
 @Component({
   selector: 'app-maquetteConfig',
   templateUrl: './maquetteConfig.component.html',
@@ -50,6 +52,7 @@ export class MaquetteConfigComponent implements OnInit {
   showTypingPanel = false;
 
   constructor(
+    private phraseService: PhraseService,
     private router: Router,
     private fb: FormBuilder,
     private studentService: StudentService,
@@ -59,6 +62,7 @@ export class MaquetteConfigComponent implements OnInit {
   ngOnInit() {
     this.initForms();
     this.loadStudents();
+    this.phrases = this.phraseService.getPhrases();
   }
 
   // Initialisation des formulaires
@@ -119,26 +123,59 @@ export class MaquetteConfigComponent implements OnInit {
 
   // Ajout d'une phrase avec typage manuel
   validerTypes() {
+    if (this.typedWords.length === 0) {
+      alert('Veuillez ajouter des mots à la phrase.');
+      return;
+    }
     const phraseText = this.addPhraseForm.value.phrase;
     const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
       word,
       type: this.mapToStandardType(type)
     }));
+    const typeMap = Object.fromEntries(wordsWithTypes.map(w => [w.word, w.type]));
+    
 
     // Ajoute la nouvelle phrase à la liste locale
-    this.addPhraseToLocalList(phraseText, wordsWithTypes);
+    this.addPhraseToLocalList(phraseText, typeMap);
     this.addPhraseForm.reset();
     this.typedWords = [];
     this.showTypingPanel = false;
   }
-  private addPhraseToLocalList(text: string, words: {word: string, type: string}[]) {
-    const newPhrase = {
-      id: this.phrases.length + 1,
-      text,
-      words
-    };
-    this.phrases.push(newPhrase);
+  addPhraseToLocalList(text: string, types: { [key: string]: string }) {
+    this.phraseService.addPhrase(text, types);
   }
+
+  validerTypesEtContinuer() {
+    if (this.typedWords.length === 0 || this.addPhraseForm.invalid) {
+      alert('Veuillez saisir une phrase et définir le type de chaque mot.');
+      return;
+    }
+  
+    const phraseText = this.addPhraseForm.value.phrase;
+  
+    const wordsWithTypes = this.typedWords.map(({ word, type }) => ({
+      word,
+      type: this.mapToStandardType(type)
+    }));
+    console.log('Typed words:', this.typedWords);
+
+  
+    const typeMap = Object.fromEntries(wordsWithTypes.map(w => [w.word, w.type]));
+  
+    // Ajout via le service
+    this.phraseService.addPhrase(phraseText, typeMap);
+  
+    // Réinitialisation
+    this.addPhraseForm.reset();
+    this.typedWords = [];
+    this.showTypingPanel = false;
+  
+    console.log('Phrase ajoutée avec succès:', phraseText);
+    
+  }
+  
+  
+  
   
   private mapToStandardType(type: string): string {
     const typeMap: {[key: string]: string} = {
@@ -239,5 +276,8 @@ export class MaquetteConfigComponent implements OnInit {
     if (confirm('Supprimer cette phrase ?')) {
       this.phrases = this.phrases.filter(p => p.id !== id);
     }
+  }
+  removePhrase(id: number) {
+    this.phraseService.removePhrase(id);
   }
 }
