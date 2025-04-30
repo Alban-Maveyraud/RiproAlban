@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StudentService, Student } from '../student/student.service';
-import { phrases } from '../../assets/phrasesTS';
-import { addPhraseWithTypes, removePhraseById } from '../../assets/phrasesTS';
+import { StudentService, Student } from '../../services/student.service';
+import { phrases } from '../../services/phrasesTS';
+import { addPhraseWithTypes, removePhraseById } from '../../services/phrasesTS';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '../../services/config.service';
 @Component({
   selector: 'app-maquetteConfig',
   templateUrl: './maquetteConfig.component.html',

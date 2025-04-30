@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GameStateService } from '../game-state.service';
 import { Router } from '@angular/router';
-import { StudentService, Student } from '../student/student.service';
+import { StudentService, Student } from '../../services/student.service';
 
 
 @Component({

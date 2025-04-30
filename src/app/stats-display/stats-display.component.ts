@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StudentService, Student, GameSessionStats } from '../student/student.service';
+import { StudentService, Student, GameSessionStats } from '../../services/student.service';
 
 @Component({
   selector: 'app-stats-display',
