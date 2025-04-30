@@ -14,12 +14,8 @@
     <button (click)="toggleConfig()" class="btn btn-secondary" style="margin-bottom: 10px;">
       ⚙️ Paramètres avancés
     </button>
-  
-    <div
-  *ngIf="showConfig"
-  @fadeInOut
-  class="config-panel"
->
+
+    <div *ngIf="showConfig" @fadeInOut class="config-panel">
 
   <h3>Panneau de Configuration</h3>
 
@@ -40,7 +36,7 @@
   <div class="config-actions">
     <button class="btn btn-success" (click)="appliquerConfiguration()">✅ Appliquer</button>
   </div>
-  
+
 </div>
 
     <!-- Section d’ajout de phrase -->
@@ -55,21 +51,17 @@
       </form>
     </div>
     <div *ngIf="showTypingPanel" class="typing-panel">
-      <h4>Spécifiez le type de chaque mot :</h4>
-      <div *ngFor="let entry of typedWords; let i = index" class="word-type-selector">
-        <span>{{ entry.word }}</span>
-        <div class="type-buttons">
-          <button 
-            *ngFor="let type of availableTypes"
-            (click)="typedWords[i].type = type"
-            [class.selected]="typedWords[i].type === type">
-            {{ type }}
-          </button>
+      <h4>Définir le type de chaque mot</h4>
+      <div class="word-type-grid">
+        <div *ngFor="let entry of typedWords; let i = index" class="word-type-box">
+          <div class="word">{{ entry.word }}</div>
+          <select [(ngModel)]="typedWords[i].type" class="type-select">
+            <option *ngFor="let type of availableTypes" [value]="type">{{ type }}</option>
+          </select>
         </div>
       </div>
-      <button class="btn btn-primary" (click)="validerTypes()">✅ Valider</button>
+      <button class="btn btn-success" (click)="validerTypesEtContinuer()">✅ Valider et continuer</button>
     </div>
-    
 
     <!-- Toggle affichage phrases -->
     <button (click)="togglePhrases()" class="btn btn-lightblue">

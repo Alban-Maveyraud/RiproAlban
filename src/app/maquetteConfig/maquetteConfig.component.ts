@@ -45,7 +45,7 @@ export class MaquetteConfigComponent implements OnInit {
   toggleConfig(): void {
     this.showConfig = !this.showConfig;
   }
-  availableTypes = ['verb', 'adjective', 'noun', 'pronoun', 'determiner', 'other', 'longWord'];
+  availableTypes = ['verbe', 'adjectif', 'nom', 'pronoum', 'déterminant', 'autre', 'longMot'];
   typedWords: { word: string; type: string }[] = [];
   showTypingPanel = false;
 
@@ -78,7 +78,7 @@ export class MaquetteConfigComponent implements OnInit {
     this.configService.setConfig(this.config);
     console.log('Configuration appliquée :', this.config);
   }
-  
+
   // Chargement des étudiants depuis le service
   loadStudents() {
     this.studentService.getStudents().subscribe(students => {
@@ -104,7 +104,7 @@ export class MaquetteConfigComponent implements OnInit {
       alert('Veuillez saisir une phrase.');
       return;
     }
-  
+
     const phraseText = this.addPhraseForm.value.phrase;
     const words = phraseText.split(' ');
   
@@ -128,6 +128,7 @@ export class MaquetteConfigComponent implements OnInit {
     // Ajoute la nouvelle phrase à la liste locale
     this.addPhraseToLocalList(phraseText, wordsWithTypes);
     this.addPhraseForm.reset();
+    this.typedWords = [];
     this.showTypingPanel = false;
   }
   private addPhraseToLocalList(text: string, words: {word: string, type: string}[]) {

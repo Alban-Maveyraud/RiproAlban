@@ -7,13 +7,14 @@ export interface Phrase {
   id: number;
   text: string;
   words: Word[];
+  audioUrl?: string; // 🔊 URL vers l'enregistrement audio (optionnel)
 }
-
 
 export const phrases: Phrase[] = [
   {
     id: 1,
     text: "Le chat dort sous le soleil.",
+    audioUrl: '',
     words: [
       { word: "Le", type: "déterminant" },
       { word: "chat", type: "nom" },
@@ -26,6 +27,7 @@ export const phrases: Phrase[] = [
   {
     id: 2,
     text: "La voiture rouge roule vite.",
+    audioUrl: '',
     words: [
       { word: "La", type: "déterminant" },
       { word: "voiture", type: "nom" },
@@ -37,6 +39,7 @@ export const phrases: Phrase[] = [
   {
     id: 3,
     text: "Le livre est sur la table.",
+    audioUrl: '',
     words: [
       { word: "Le", type: "déterminant" },
       { word: "livre", type: "nom" },
@@ -49,6 +52,7 @@ export const phrases: Phrase[] = [
   {
     id: 4,
     text: "Alban est le plus gros neuille de la terre.",
+    audioUrl: '',
     words: [
       { word: "Alban", type: "nom propre" },
       { word: "est", type: "verbe" },
@@ -64,6 +68,7 @@ export const phrases: Phrase[] = [
   {
     id: 5,
     text: "Je mange un tacos succulent.",
+    audioUrl: '',
     words: [
       { word: "Je", type: "pronom" },
       { word: "mange", type: "verbe" },
@@ -75,6 +80,7 @@ export const phrases: Phrase[] = [
   {
     id: 6,
     text: "Je nage très vite.",
+    audioUrl: '',
     words: [
       { word: "Je", type: "pronom" },
       { word: "nage", type: "verbe" },
@@ -86,7 +92,7 @@ export const phrases: Phrase[] = [
 
 let phraseIdCounter = phrases.length > 0 ? Math.max(...phrases.map(p => p.id)) + 1 : 1;
 
-export function addPhraseWithTypes(phraseText: string, wordTypes: { [key: string]: string }): void {
+export function addPhraseWithTypes(phraseText: string, wordTypes: { [key: string]: string }, audioUrl?: string): void {
   const words = phraseText.split(' ').map(word => ({
     word,
     type: wordTypes[word] || 'autre'
@@ -95,7 +101,8 @@ export function addPhraseWithTypes(phraseText: string, wordTypes: { [key: string
   const newPhrase: Phrase = {
     id: phraseIdCounter++,
     text: phraseText,
-    words
+    words,
+    audioUrl: audioUrl || ''
   };
 
   phrases.push(newPhrase);
