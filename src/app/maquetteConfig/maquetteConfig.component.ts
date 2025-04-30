@@ -46,7 +46,7 @@ export class MaquetteConfigComponent implements OnInit {
   toggleConfig(): void {
     this.showConfig = !this.showConfig;
   }
-  availableTypes = ['verb', 'adjective', 'noun', 'pronoun', 'determiner', 'other', 'longWord'];
+  availableTypes = ['verbe', 'adjectif', 'nom', 'pronoum', 'déterminant', 'autre', 'longMot'];
   typedWords: { word: string; type: string }[] = [];
   showTypingPanel = false;
 
@@ -79,7 +79,7 @@ export class MaquetteConfigComponent implements OnInit {
     this.configService.setConfig(this.config);
     console.log('Configuration appliquée :', this.config);
   }
-  
+
   // Chargement des étudiants depuis le service
   loadStudents() {
     this.studentService.getStudents().subscribe(students => {
@@ -107,28 +107,36 @@ export class MaquetteConfigComponent implements OnInit {
       alert('Veuillez saisir une phrase.');
       return;
     }
-  
+
     const phraseText = this.addPhraseForm.value.phrase;
     const words = phraseText.split(' ');
-  
+
     // Initialise les mots sans type
     this.typedWords = words.map((word: string) => ({ word, type: 'other' }));
 
     this.showTypingPanel = true;
   }
-  validerTypes() {
+  validerTypesEtContinuer() {
     const phraseText = this.addPhraseForm.value.phrase;
+
+    if (!phraseText || this.typedWords.length === 0) {
+      alert("Aucune phrase à valider.");
+      return;
+    }
+
     const wordTypes: { [key: string]: string } = {};
-  
+
     this.typedWords.forEach(({ word, type }) => {
       wordTypes[word] = type;
     });
-  
+
     addPhraseWithTypes(phraseText, wordTypes);
+
+    // Reset des formulaires et de l'état
     this.addPhraseForm.reset();
+    this.typedWords = [];
     this.showTypingPanel = false;
   }
-  
 
   // Invite l'utilisateur à spécifier un type pour chaque mot
   promptWordTypes(phrase: string): { [key: string]: string } {
